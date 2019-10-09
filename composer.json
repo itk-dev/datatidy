@@ -28,6 +28,7 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.15",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
@@ -68,6 +69,18 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "check-coding-standards/php-cs-fixer": [
+            "php-cs-fixer --config=.php_cs.dist fix --dry-run"
+        ],
+        "check-coding-standards": [
+            "@check-coding-standards/php-cs-fixer"
+        ],
+        "apply-coding-standards/php-cs-fixer": [
+            "php-cs-fixer --config=.php_cs.dist fix"
+        ],
+        "apply-coding-standards": [
+            "@apply-coding-standards/php-cs-fixer"
         ]
     },
     "conflict": {
