@@ -1,6 +1,7 @@
 {
     "devDependencies": {
         "@symfony/webpack-encore": "^0.28.0",
+        "bootstrap": "^4.3.1",
         "core-js": "^3.0.0",
         "eslint": "^6.5.1",
         "eslint-config-standard": "^14.1.0",
@@ -8,7 +9,11 @@
         "eslint-plugin-node": "^10.0.0",
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-standard": "^4.0.1",
+        "jquery": "^3.4.1",
+        "node-sass": "^4.12.0",
+        "popper.js": "^1.15.0",
         "regenerator-runtime": "^0.13.2",
+        "sass-loader": "^7.0.1",
         "stylelint": "^11.0.0",
         "stylelint-config-recommended-scss": "^4.0.0",
         "stylelint-scss": "^3.11.1",
