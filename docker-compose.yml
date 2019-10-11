@@ -6,7 +6,7 @@ networks:
   app:
     driver: bridge
     internal: false
-    
+
 services:
   mariadb:
     image: itkdev/mariadb:latest
