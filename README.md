@@ -98,6 +98,7 @@ Before opening a Pull Request, make sure that our coding standards are followed:
 # PHP
 # Check to see if any violations is found: 
 $ docker-compose exec phpfpm composer check-coding-standards
+$ docker-compose exec phpfpm vendor/bin/phan --allow-polyfill-parser
 
 # You can see if the tools can fix them for you:
 $ docker-compose exec phpfpm composer apply-coding-standards
