@@ -41,21 +41,7 @@ $ docker-compose exec phpfpm bin/phpunit
 
 You will need an environment where the following is present:
 
-- PHP 7.3 or above. With the following extensions enabled:
-  - curl
-  - gd
-  - json
-  - mbstring
-  - mcrypt
-  - mysql
-  - opcache
-  - readline
-  - soap
-  - xml
-  - xsl
-  - zip
-  - memcached
-  - redis
+- PHP 7.3
 - MariaDB 10.3.17.
 - NGINX ([Config example](.docker/vhost.conf))
 - Yarn 1.17.3 or above.
