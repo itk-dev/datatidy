@@ -106,7 +106,7 @@ docker run -v ${PWD}:/app itkdev/yarn:latest apply-coding-standards
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/itkdev/datatidy/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/itk-dev/datatidy/tags). 
 
 ## License
 
