@@ -49,7 +49,7 @@ pipeline {
                     agent {
                         docker {
                             image 'itkdev/yarn:latest'
-                            args '-v /var/lib/jenkins/.yarn-cache:/usr/local/share/.cache/yarn:rw'
+                            args '-v $WORKSPACE:/app -v /var/lib/jenkins/.yarn-cache:/usr/local/share/.cache/yarn:rw'
                         }
                     }
                     stages {
