@@ -46,21 +46,15 @@ pipeline {
                 }
             }
             stage('Assets') {
-                    agent {
-                        docker {
-                            image 'itkdev/yarn:latest'
-                            args '-v $WORKSPACE:/app -v /var/lib/jenkins/.yarn-cache:/usr/local/share/.cache/yarn:rw'
-                        }
-                    }
                     stages {
                         stage('Coding standards') {
                             steps {
-                                sh 'yarn check-coding-standards'
+                                sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.yarn-cache:/usr/local/share/.cache/yarn:rw itkdev/yarn:latest check-coding-standards'
                             }
                         }
                         stage('Build') {
                             steps {
-                                sh 'yarn build'
+                                sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.yarn-cache:/usr/local/share/.cache/yarn:rw itkdev/yarn:latest yarn build'
                             }
                         }
                     }
