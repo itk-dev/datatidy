@@ -46,12 +46,12 @@ You will need an environment where the following is present:
 - NGINX ([Config example](.docker/vhost.conf))
 - Yarn 1.17.3 or above.
 
-Distribute the app to a place where the NGINX can serve it from. 
+Distribute the app to a place where NGINX can serve it from. 
 
 Create a .env.local file where you set the following variables:
 ```ini
 APP_ENV=prod
-APP_ENV=some-very-secret-string-which-is-not-the-same-as-in-.env
+APP_SECRET=some-very-secret-string-which-is-not-the-same-as-in-.env
 
 DATABASE_URL=mysql://user:pass@url:port/database
 DATABASE_SERVER_VERSION='mariadb-10.3.17'
