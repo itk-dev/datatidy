@@ -29,7 +29,7 @@ pipeline {
                 stages {
                     stage('PHP7 compatibility') {
                         steps {
-                            sh 'vendor/bin/phan --allow-polyfill-parser'
+                            sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest vendor/bin/phan --allow-polyfill-parser'
                         }
                     }
                     stage('Coding standards') {
