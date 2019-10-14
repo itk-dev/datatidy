@@ -17,7 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 $ docker-compose pull
 $ docker-compose up -d
 
-$ docker-compose exec phpfpm bin/install
+$ docker-compose exec phpfpm composer install
 $ docker-compose exec phpfpm bin/console doctrine:database:create
 $ docker-compose exec phpfpm bin/console doctrine:migrations:migrate
 
@@ -42,6 +42,7 @@ $ docker-compose exec phpfpm bin/phpunit
 You will need an environment where the following is present:
 
 - PHP 7.3
+- Composer 1.9 or above.
 - MariaDB 10.3.17.
 - NGINX ([Config example](.docker/vhost.conf))
 - Yarn 1.17.3 or above.
@@ -63,7 +64,7 @@ Install the dependencies and build the assets:
 
 ```bash
 # Install the dependencies
-$ ./bin/install --env=prod
+$ composer install --no-dev
 $ yarn install --production
 
 # Build the assets
