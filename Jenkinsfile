@@ -10,11 +10,6 @@ pipeline {
                         sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest composer install'
                     }
                 }
-                stage('PHP7 compatibility') {
-                    steps {
-                        sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest vendor/bin/phan --allow-polyfill-parser'
-                    }
-                }
                 stage('Yarn') {
                     steps {
                         sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.yarn-cache:/usr/local/share/.cache/yarn:rw itkdev/yarn:latest install'
@@ -32,6 +27,11 @@ pipeline {
                     }
                 }
                 stages {
+                    stage('PHP7 compatibility') {
+                        steps {
+                            sh 'vendor/bin/phan --allow-polyfill-parser'
+                        }
+                    }
                     stage('Coding standards') {
                         steps {
                             sh 'composer check-coding-standards'
