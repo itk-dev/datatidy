@@ -14,27 +14,27 @@ These instructions will get you a copy of the project up and running on your loc
 ### Installing
 
 ```bash
-$ docker-compose pull
-$ docker-compose up -d
+docker-compose pull
+docker-compose up -d
 
-$ docker-compose exec phpfpm composer install
-$ docker-compose exec phpfpm bin/console doctrine:database:create
-$ docker-compose exec phpfpm bin/console doctrine:migrations:migrate
+docker-compose exec phpfpm composer install
+docker-compose exec phpfpm bin/console doctrine:database:create
+docker-compose exec phpfpm bin/console doctrine:migrations:migrate
 
-$ docker run -v ${PWD}:/app itkdev/yarn:latest install
-$ docker run -v ${PWD}:/app itkdev/yarn:latest encore dev
+docker run -v ${PWD}:/app itkdev/yarn:latest install
+docker run -v ${PWD}:/app itkdev/yarn:latest encore dev
 ```
 
 Open the site in your default browser:
 
 ```bash
-$ open http://$(docker-compose port nginx 80)
+open http://$(docker-compose port nginx 80)
 ```
 
 ## Running the tests
 
 ```bash
-$ docker-compose exec phpfpm bin/phpunit
+docker-compose exec phpfpm bin/phpunit
 ```
 
 ## Deployment
@@ -64,15 +64,15 @@ Install the dependencies and build the assets:
 
 ```bash
 # Install the dependencies
-$ composer install --no-dev
-$ yarn install --production
+composer install --no-dev
+yarn install --production
 
 # Build the assets
-$ yarn build
+yarn build
 
 # Create the database and run the migrations
-$ php bin/console doctrine:database:create --no-interaction
-$ php bin/console doctrine:migrations:migrate --no-interaction
+php bin/console doctrine:database:create --no-interaction
+php bin/console doctrine:migrations:migrate --no-interaction
 ``` 
 
 Want more? See the [official Symfony 4.3 documentation](https://symfony.com/doc/4.3/deployment.html) section about deployment. 
@@ -84,19 +84,19 @@ Before opening a Pull Request, make sure that our coding standards are followed:
 ```bash
 # PHP
 # Check to see if any violations is found: 
-$ docker-compose exec phpfpm composer check-coding-standards
-$ docker-compose exec phpfpm vendor/bin/phan --allow-polyfill-parser
+docker-compose exec phpfpm composer check-coding-standards
+docker-compose exec phpfpm vendor/bin/phan --allow-polyfill-parser
 
 # You can see if the tools can fix them for you:
-$ docker-compose exec phpfpm composer apply-coding-standards
+docker-compose exec phpfpm composer apply-coding-standards
 
 # Twig
 # Only checks for violations.
-$ docker-compose exec phpfpm composer check-coding-standards/twigcs
+docker-compose exec phpfpm composer check-coding-standards/twigcs
 
 # CSS, SCSS and JS
-$ docker run -v ${PWD}:/app itkdev/yarn:latest check-coding-standards
-$ docker run -v ${PWD}:/app itkdev/yarn:latest apply-coding-standards
+docker run -v ${PWD}:/app itkdev/yarn:latest check-coding-standards
+docker run -v ${PWD}:/app itkdev/yarn:latest apply-coding-standards
 ```
 
 ### Pull Request Process
