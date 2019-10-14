@@ -29,7 +29,7 @@ pipeline {
                 stages {
                     stage('PHP7 compatibility') {
                         steps {
-                            sh 'vendor/bin/phan --allow-polyfill-parser'
+                            sh './vendor/bin/phan --allow-polyfill-parser'
                         }
                     }
                     stage('Coding standards') {
