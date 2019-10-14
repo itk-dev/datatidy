@@ -1,3 +1,4 @@
-require('../scss/app.scss');
+require('../scss/app.scss')
 
-const $ = require('jquery');
+// Uncomment this when we need to use jquery
+// const $ = require('jquery')
