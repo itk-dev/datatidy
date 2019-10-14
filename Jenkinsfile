@@ -18,20 +18,22 @@ pipeline {
             }
         }
         stage('Build and test') {
+          stages {
+            stage('PHP7 compatibility') {
+              steps {
+                sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest vendor/bin/phan --allow-polyfill-parser'
+              }
+            }
+          }
           parallel {
               stage('PHP') {
                 agent {
                     docker {
                         image 'itkdev/php7.3-fpm:latest'
-                        args '-v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw'
+                        args '-v /var/lib/jenkins/.composer-cache:/.composer:rw'
                     }
                 }
                 stages {
-                    stage('PHP7 compatibility') {
-                        steps {
-                            sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest vendor/bin/phan --allow-polyfill-parser'
-                        }
-                    }
                     stage('Coding standards') {
                         steps {
                             sh 'composer check-coding-standards'
