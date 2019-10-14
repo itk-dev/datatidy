@@ -18,8 +18,7 @@ docker-compose pull
 docker-compose up -d
 
 docker-compose exec phpfpm composer install
-docker-compose exec phpfpm bin/console doctrine:database:create
-docker-compose exec phpfpm bin/console doctrine:migrations:migrate
+docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 
 docker run -v ${PWD}:/app itkdev/yarn:latest install
 docker run -v ${PWD}:/app itkdev/yarn:latest encore dev
