@@ -23,13 +23,13 @@ pipeline {
                 agent {
                     docker {
                         image 'itkdev/php7.3-fpm:latest'
-                        args '-v /var/lib/jenkins/.composer-cache:/.composer:rw'
+                        args '-v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw'
                     }
                 }
                 stages {
                     stage('PHP7 compatibility') {
                         steps {
-                            sh './vendor/bin/phan --allow-polyfill-parser'
+                            sh 'vendor/bin/phan --allow-polyfill-parser'
                         }
                     }
                     stage('Coding standards') {
