@@ -17,7 +17,7 @@ pipeline {
                 }
             }
         }
-        stage('Build and test') {
+        stage('Phan') {
           stages {
             stage('PHP7 compatibility') {
               steps {
@@ -25,6 +25,8 @@ pipeline {
               }
             }
           }
+        }
+        stage('Build and test') {
           parallel {
               stage('PHP') {
                 agent {
