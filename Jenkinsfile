@@ -29,22 +29,21 @@ pipeline {
         stage('Build and test') {
           parallel {
               stage('PHP') {
-                agent {
-                    docker {
-                        image 'itkdev/php7.3-fpm:latest'
-                        args '-v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw'
-                    }
-                }
                 stages {
+                    stage('PHP7 compatibility') {
+                      steps {
+                        sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest vendor/bin/phan --allow-polyfill-parser'
+                      }
+                    }
                     stage('Coding standards') {
                         steps {
-                            sh 'composer check-coding-standards'
-                            sh 'composer check-coding-standards/twigcs'
+                            sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest composer check-coding-standards'
+                            sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest composer check-coding-standards/twigcs'
                         }
                     }
                     stage('Tests') {
                         steps {
-                            sh 'bin/phpunit'
+                            sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest bin/phpunit'
                         }
                     }
                 }
