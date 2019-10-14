@@ -30,6 +30,7 @@ pipeline {
           parallel {
               stage('PHP') {
                 stages {
+                  parallel {
                     stage('PHP7 compatibility') {
                       steps {
                         sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest vendor/bin/phan --allow-polyfill-parser'
@@ -46,6 +47,7 @@ pipeline {
                             sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest bin/phpunit'
                         }
                     }
+                  }
                 }
             }
             stage('Assets') {
