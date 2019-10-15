@@ -1,0 +1,5 @@
+layout:
+    navigation:
+        user:
+            profile: Profil
+            logout: Log ud
