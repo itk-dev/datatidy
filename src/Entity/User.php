@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 
 /**
- * @ORM\Entity;
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository");
  * @ORM\Table(name="fos_user")
  */
 class User extends BaseUser
@@ -25,4 +25,9 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 }
