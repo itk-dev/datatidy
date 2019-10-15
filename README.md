@@ -24,6 +24,15 @@ docker run -v ${PWD}:/app itkdev/yarn:latest install
 docker run -v ${PWD}:/app itkdev/yarn:latest encore dev
 ```
 
+Create a user:
+
+```bash
+docker-compose exec phpfpm bin/console fos:user:create
+
+# Super admin user
+docker-compose exec phpfpm bin/console fos:user:create --super-admin
+```
+
 Open the site in your default browser:
 
 ```bash
