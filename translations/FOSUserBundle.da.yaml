@@ -2,7 +2,15 @@ security:
     login:
         title: Login
         form:
-            header: DataTidy | Login
+            header: Login
+            forgot_password: Glemt adgangskode?
             username:
                 label: Brugernavn eller e-mailadresse
                 placeholder: Brugernavn eller e-mailadresse
+
+resetting:
+    request:
+        title: Glemt adgangskode
+        submit: Send
+        form:
+            header: Glemt adgangskode

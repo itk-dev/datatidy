@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}{{ 'resetting.reset.title'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('login') }}
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'form-signin' } }) }}
+        <h1 class="h3 mb-3 font-weight-normal">{{ 'resetting.request.form.header'|trans }}</h1>
+        {{ form_widget(form) }}
+        <button class="btn btn-lg btn-primary btn-block" id="_submit" name="_submit" type="submit">{{ 'resetting.reset.submit'|trans }}</button>
+    {{ form_end(form) }}
+{% endblock %}
