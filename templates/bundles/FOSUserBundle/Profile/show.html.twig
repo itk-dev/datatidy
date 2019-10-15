@@ -1,0 +1,10 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ app.user.username }}{% endblock %}
+
+{% block main %}
+    <h1>
+        @{{ user.username }}
+        <small class="text-muted">{{ user.email }}</small>
+    </h1>
+{% endblock %}
