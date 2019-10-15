@@ -3,19 +3,24 @@
 
 {% block title %}{{ 'resetting.request.title'|trans }}{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('login') }}
-{% endblock %}
-
 {% block body %}
-    <form action="{{ path('fos_user_resetting_send_email') }}" method="post" class="form-signin">
-        <h1 class="h3 mb-3 font-weight-normal">{{ 'resetting.request.form.header'|trans }}</h1>
-        <label for="username" class="sr-only">{{ 'resetting.request.username'|trans }}</label>
-        <input type="text" id="username" name="username" class="form-control" placeholder="{{ 'resetting.request.username'|trans }}" required autofocus>
-        <div class="mb-3">
+    <main class="d-flex align-items-center min-vh-100" role="main">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col col-6">
+                    <h1 class="h3 mb-3 font-weight-normal">{{ 'resetting.request.form.header'|trans }}</h1>
 
+                    <form action="{{ path('fos_user_resetting_send_email') }}" method="post">
+
+                        <div class="form-group">
+                            <label for="username" class="sr-only">{{ 'resetting.request.username'|trans }}</label>
+                            <input type="text" id="username" name="username" class="form-control" placeholder="{{ 'resetting.request.username'|trans }}" required autofocus>
+                        </div>
+
+                        <button class="btn btn-primary btn-block" id="_submit" name="_submit" type="submit">{{ 'resetting.request.submit'|trans }}</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" id="_submit" name="_submit" type="submit">{{ 'resetting.request.submit'|trans }}</button>
-    </form>
+    </main>
 {% endblock %}
