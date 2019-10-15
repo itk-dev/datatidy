@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Form;
 
 use FOS\UserBundle\Form\Type\ResettingFormType;
@@ -12,15 +20,15 @@ class ResettingPasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('plainPassword', RepeatedType::class, array(
+        $builder->add('plainPassword', RepeatedType::class, [
             'type' => PasswordType::class,
-            'options' => array(
+            'options' => [
                 'translation_domain' => 'FOSUserBundle',
-                'attr' => array(
+                'attr' => [
                     'autocomplete' => 'new-password',
-                    'class' => 'form-control'
-                ),
-            ),
+                    'class' => 'form-control',
+                ],
+            ],
             'first_options' => [
                 'label' => 'form.new_password',
             ],
@@ -28,7 +36,7 @@ class ResettingPasswordType extends AbstractType
                 'label' => 'form.new_password_confirmation',
             ],
             'invalid_message' => 'fos_user.password.mismatch',
-        ));
+        ]);
     }
 
     public function getParent()
