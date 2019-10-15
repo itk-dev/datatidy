@@ -7,4 +7,6 @@
         @{{ user.username }}
         <small class="text-muted">{{ user.email }}</small>
     </h1>
+
+    <a class="btn btn-outline-secondary" href="{{ path('fos_user_profile_edit') }}" role="button">{{ 'profile.show.edit_link'|trans }}</a>
 {% endblock %}

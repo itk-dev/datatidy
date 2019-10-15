@@ -1,0 +1,11 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}{{ app.user.username }}{% endblock %}
+
+{% block main %}
+    <h1>{{ 'profile.edit.header'|trans }}</h1>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}</button>
+    {{ form_end(form) }}
+{% endblock %}

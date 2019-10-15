@@ -3,3 +3,9 @@ layout:
         user:
             profile: Profil
             logout: Log ud
+
+profile:
+    show:
+        edit_link: Rediger profil
+    edit:
+        header: Rediger profil
