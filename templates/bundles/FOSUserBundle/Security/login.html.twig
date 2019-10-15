@@ -19,8 +19,8 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
 
         <h1 class="h3 mb-3 font-weight-normal">{{ 'security.login.form.header'|trans }}</h1>
-        <label for="username" class="sr-only">{{ 'security.login.username'|trans }}</label>
-        <input type="text" id="username" name="_username" class="form-control" placeholder="{{ 'security.login.username'|trans }}" required autofocus>
+        <label for="username" class="sr-only">{{ 'security.login.form.username.label'|trans }}</label>
+        <input type="text" id="username" name="_username" class="form-control" placeholder="{{ 'security.login.form.username.placeholder'|trans }}" required autofocus>
         <label for="password" class="sr-only">{{ 'security.login.password'|trans }}</label>
         <input type="password" id="password" name="_password" class="form-control" placeholder="{{ 'security.login.password'|trans }}" required>
         <div class="checkbox mb-3">

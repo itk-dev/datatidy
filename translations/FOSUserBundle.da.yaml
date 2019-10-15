@@ -2,4 +2,7 @@ security:
     login:
         title: Login
         form:
-            header: Datatidy | Login
+            header: DataTidy | Login
+            username:
+                label: Brugernavn eller e-mailadresse
+                placeholder: Brugernavn eller e-mailadresse
