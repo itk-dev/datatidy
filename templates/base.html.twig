@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>{% block title %}!{% endblock %} | Datatidy</title>
+        <title>{% block title %}!{% endblock %} | {{ 'site.name'|trans }}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('base') }}
         {% endblock %}
