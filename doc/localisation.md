@@ -16,6 +16,7 @@ There are two rules we adheres to when creating and writing translations:
 1. Use the translations in your Twig template before creating or defining translation files:
 
 ```twig
+{# Set the default translation domain for the Twig template #}
 {% trans_default_domain 'users' %}
 
 {{ 'Change password'|trans }}
