@@ -32,7 +32,7 @@ There are two rules we adheres to when creating and writing translations:
 docker-compose exec phpfpm DEFAULT_LOCALE=en bin/console translation:update --force da
 ```
 
-Open and edit the translations/users.da.xlf file in your favorite editor for this kind of files.
+3. Open and edit the translations/users.da.xlf file in your favorite editor for this kind of files.
 
 ## Editors
 
