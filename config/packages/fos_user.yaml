@@ -6,5 +6,5 @@ fos_user:
         form:
             type: App\Form\ResettingPasswordType
     from_email:
-        address: "test@domain.com"
-        sender_name: "test@domain.com"
+        address: '%mailer_from_email%'
+        sender_name: '%env(mailer_from_name)%'
