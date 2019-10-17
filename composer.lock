@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc3b1497f77b5d4eebecdee5c0098fe4",
+    "content-hash": "6332d36791d5d9aae14bbdd790750687",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1395,6 +1395,72 @@
                 "User management"
             ],
             "time": "2018-03-08T08:59:27+00:00"
+        },
+        {
+            "name": "itk-dev/user-bundle",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itk-dev/user-bundle.git",
+                "reference": "da13ed34811c90d3a1bf8481843c29553cf4fe02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itk-dev/user-bundle/zipball/da13ed34811c90d3a1bf8481843c29553cf4fe02",
+                "reference": "da13ed34811c90d3a1bf8481843c29553cf4fe02",
+                "shasum": ""
+            },
+            "require": {
+                "friendsofsymfony/user-bundle": "^2.1",
+                "symfony/framework-bundle": "^4.3",
+                "twig/twig": "^2.12"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "friendsoftwig/twigcs": "^3.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "ItkDev\\UserBundle\\": "src/"
+                }
+            },
+            "scripts": {
+                "check-coding-standards/php-cs-fixer": [
+                    "php-cs-fixer --config=.php_cs.dist fix --dry-run"
+                ],
+                "check-coding-standards/twigcs": [
+                    "twigcs lint src/Resources/views/"
+                ],
+                "check-coding-standards": [
+                    "@check-coding-standards/php-cs-fixer",
+                    "@check-coding-standards/twigcs"
+                ],
+                "apply-coding-standards/php-cs-fixer": [
+                    "php-cs-fixer --config=.php_cs.dist fix"
+                ],
+                "apply-coding-standards": [
+                    "@apply-coding-standards/php-cs-fixer"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lars Steen",
+                    "email": "lats@aarhus.dk"
+                },
+                {
+                    "name": "Mikkel Ricky",
+                    "email": "rimi@aarhus.dk"
+                }
+            ],
+            "support": {
+                "source": "https://github.com/itk-dev/user-bundle/tree/0.0.1",
+                "issues": "https://github.com/itk-dev/user-bundle/issues"
+            },
+            "time": "2019-10-17T08:08:31+00:00"
         },
         {
             "name": "jdorn/sql-formatter",

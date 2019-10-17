@@ -123,6 +123,9 @@
     "friendsoftwig/twigcs": {
         "version": "v3.1.3"
     },
+    "itk-dev/user-bundle": {
+        "version": "dev-develop"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
