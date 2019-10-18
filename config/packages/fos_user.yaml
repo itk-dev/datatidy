@@ -8,3 +8,5 @@ fos_user:
     from_email:
         address: '%mailer_from_email%'
         sender_name: 'mailer_from_name'
+    service:
+        user_manager: ItkDev\UserBundle\Doctrine\UserManager
