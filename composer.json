@@ -6,7 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "friendsofsymfony/user-bundle": "^2.1",
-        "itk-dev/user-bundle": "^0.0.1",
+        "itk-dev/user-bundle": "^0.1.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "4.3.*",
         "symfony/console": "4.3.*",
@@ -107,12 +107,6 @@
         "symfony": {
             "allow-contrib": false,
             "require": "4.3.*"
-        }
-    },
-    "repositories": {
-        "itk-dev/user-bundle": {
-            "type": "vcs",
-            "url": "https://github.com/itk-dev/user-bundle"
         }
     }
 }
