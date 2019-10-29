@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="da" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="_JrLEnp" resname="security.login.title">
+        <source>security.login.title</source>
+        <target>Log ind</target>
+      </trans-unit>
+      <trans-unit id="SfnaJs4" resname="security.login.form.header">
+        <source>security.login.form.header</source>
+        <target>Log ind</target>
+      </trans-unit>
+      <trans-unit id="6JZM4Rh" resname="security.login.form.forgot_password">
+        <source>security.login.form.forgot_password</source>
+        <target>Glemt adgangskode?</target>
+      </trans-unit>
+      <trans-unit id="8mxfgSk" resname="security.login.form.username.label">
+        <source>security.login.form.username.label</source>
+        <target>Brugernavn eller e-mailadresse</target>
+      </trans-unit>
+      <trans-unit id="57AAJuU" resname="security.login.form.username.placeholder">
+        <source>security.login.form.username.placeholder</source>
+        <target>Brugernavn eller e-mailadresse</target>
+      </trans-unit>
+      <trans-unit id="_x.Uf9n" resname="security.login.form.password.label">
+        <source>security.login.form.password.label</source>
+        <target>Adgangskode</target>
+      </trans-unit>
+      <trans-unit id="hVaanw1" resname="security.login.form.password.placeholder">
+        <source>security.login.form.password.placeholder</source>
+        <target>Adgangskode</target>
+      </trans-unit>
+      <trans-unit id="HGQKwvx" resname="resetting.reset.title">
+        <source>resetting.reset.title</source>
+        <target>Glemt adgangskode</target>
+      </trans-unit>
+      <trans-unit id="JxUaezc" resname="resetting.request.title">
+        <source>resetting.request.title</source>
+        <target>Glemt adgangskode</target>
+      </trans-unit>
+      <trans-unit id="55aST1i" resname="resetting.request.submit">
+        <source>resetting.request.submit</source>
+        <target>Send</target>
+      </trans-unit>
+      <trans-unit id="6x.QGiJ" resname="resetting.request.form.header">
+        <source>resetting.request.form.header</source>
+        <target>Glemt adgangskode</target>
+      </trans-unit>
+      <trans-unit id="gORugrW" resname="resetting.password_already_requested">
+        <source>resetting.password_already_requested</source>
+        <target state="translated">Denne brugers adgangskode er allerede blevet nulstillet inden for de sidste 24 timer.</target>
+      </trans-unit>
+      <trans-unit id="Jl5Fh8S" resname="layout.back">
+        <source>layout.back</source>
+        <target state="translated">TIlbage</target>
+      </trans-unit>
+      <trans-unit id="_cY.wHP" resname="resetting.check_email">
+        <source>resetting.check_email</source>
+        <target state="translated">Et link til at nulstille din adgangskode er blevet sendt til din e-mailadresse.</target>
+      </trans-unit>
+      <trans-unit id="cf4xzNN" resname="Back to sign in">
+        <source>Back to sign in</source>
+        <target state="translated">Tilbage til log ind</target>
+      </trans-unit>
+      <trans-unit id="kVm_bDp" resname="resetting.create.title">
+        <source>resetting.create.title</source>
+        <target state="translated">Skriv adgangskode</target>
+      </trans-unit>
+      <trans-unit id="KsNOzZz" resname="resetting.reset.submit">
+        <source>resetting.reset.submit</source>
+        <target state="translated">Skift adgangskode</target>
+      </trans-unit>
+      <trans-unit id="o83gKqa" resname="resetting.request.invalid_username">
+        <source>resetting.request.invalid_username</source>
+        <target state="translated">Brugeren “%username” findes ikke</target>
+      </trans-unit>
+      <trans-unit id="f5J.GZt" resname="resetting.request.username">
+        <source>resetting.request.username</source>
+        <target state="translated">E-mailadresse</target>
+      </trans-unit>
+      <trans-unit id="cMU.0rQ" resname="security.login.username">
+        <source>security.login.username</source>
+        <target state="translated">E-mailadresse</target>
+      </trans-unit>
+      <trans-unit id="Redv4tu" resname="resetting.email.subject">
+        <source>resetting.email.subject</source>
+        <target state="translated">Nulstilling af adgangskode (%username%)</target>
+      </trans-unit>
+      <trans-unit id="Lm8o8Qg" resname="resetting.email.message">
+        <source>resetting.email.message</source>
+        <target state="translated">Hej %username%!
+
+For at nulstille din adgangskode, besøg venligst %confirmationUrl%
+
+Venlig hilsen,
+AaPlus</target>
+      </trans-unit>
+      <trans-unit id="tuAV77Z" resname="security.login.submit">
+        <source>security.login.submit</source>
+        <target state="translated">Log ind</target>
+      </trans-unit>
+      <trans-unit id="N_kLMwm" resname="security.login.password">
+        <source>security.login.password</source>
+        <target state="translated">Adgangskode</target>
+      </trans-unit>
+      <trans-unit id="kZSXy.2" resname="resetting.reset.forgot">
+        <source>resetting.reset.forgot</source>
+        <target state="translated">Glemt adgangskode</target>
+      </trans-unit>
+      <trans-unit id="AaZaMf7" resname="profile.show.email">
+        <source>profile.show.email</source>
+        <target state="translated">Email</target>
+      </trans-unit>
+      <trans-unit id="agwdlwc" resname="change_password.submit">
+        <source>change_password.submit</source>
+        <target state="translated">Skift adgangskode</target>
+      </trans-unit>
+      <trans-unit id="1_wnK76" resname="profile.title">
+        <source>profile.title</source>
+        <target state="translated">Profil</target>
+      </trans-unit>
+      <trans-unit id="ci5Tbzf" resname="profile.edit.submit">
+        <source>profile.edit.submit</source>
+        <target state="translated">Opdater</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
