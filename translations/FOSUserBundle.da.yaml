@@ -1,0 +1,21 @@
+security:
+    login:
+        title: Log ind
+        form:
+            header: Log ind
+            forgot_password: Glemt adgangskode?
+            username:
+                label: Brugernavn eller e-mailadresse
+                placeholder: Brugernavn eller e-mailadresse
+            password:
+                label: Adgangskode
+                placeholder: Adgangskode
+
+resetting:
+    reset:
+        title: Glemt adgangskode
+    request:
+        title: Glemt adgangskode
+        submit: Send
+        form:
+            header: Glemt adgangskode

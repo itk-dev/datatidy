@@ -1,0 +1,12 @@
+fos_user:
+    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name: main
+    user_class: App\Entity\User
+    resetting:
+        form:
+            type: App\Form\ResettingPasswordType
+    from_email:
+        address: '%mailer_from_email%'
+        sender_name: 'mailer_from_name'
+    service:
+        user_manager: ItkDev\UserBundle\Doctrine\UserManager

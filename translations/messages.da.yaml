@@ -1,0 +1,15 @@
+layout:
+    navigation:
+        user:
+            profile: Profil
+            logout: Log ud
+
+profile:
+    show:
+        edit: Rediger profil
+        change_password: Skift adgangskode
+    edit:
+        header: Rediger profil
+    change_password:
+        title: Skift adgangskode
+        header: Skift adgangskode
