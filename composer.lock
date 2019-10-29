@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e6a27575b35a0c062171c4ce2d8d414",
+    "content-hash": "10403f5f6bfc0f741925244d93f11a2e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1398,16 +1398,16 @@
         },
         {
             "name": "itk-dev/user-bundle",
-            "version": "0.1.0",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itk-dev/user-bundle.git",
-                "reference": "5bcba08c82bc5168b364088e61a717dc70800c14"
+                "reference": "441ff6aea719b57f2cffced9f0d308931b9e339d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itk-dev/user-bundle/zipball/5bcba08c82bc5168b364088e61a717dc70800c14",
-                "reference": "5bcba08c82bc5168b364088e61a717dc70800c14",
+                "url": "https://api.github.com/repos/itk-dev/user-bundle/zipball/441ff6aea719b57f2cffced9f0d308931b9e339d",
+                "reference": "441ff6aea719b57f2cffced9f0d308931b9e339d",
                 "shasum": ""
             },
             "require": {
@@ -1439,7 +1439,7 @@
                     "email": "rimi@aarhus.dk"
                 }
             ],
-            "time": "2019-10-29T09:18:44+00:00"
+            "time": "2019-10-29T12:16:25+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
