@@ -92,6 +92,10 @@ php bin/console doctrine:migrations:migrate --no-interaction
 
 Want more? See the [official Symfony 4.3 documentation](https://symfony.com/doc/4.3/deployment.html) section about deployment. 
 
+## Documentation
+
+Documentation is kept in the [doc](doc) folder.
+
 ## Contributing
 
 Before opening a Pull Request, make sure that our coding standards are followed:
