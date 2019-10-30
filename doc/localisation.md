@@ -29,7 +29,7 @@ There are two rules we adheres to when creating and writing translations:
 
 ```bash
 # Remember to set the DEFAULT_LOCALE environment variable so the XLF-files will have the correct source-language
-docker-compose exec phpfpm DEFAULT_LOCALE=en bin/console translation:update --force da
+docker-compose exec -e DEFAULT_LOCALE=en phpfpm bin/console translation:update --force da
 ```
 
 3. Open and edit the translations/users.da.xlf file in your favorite editor for this kind of files.
