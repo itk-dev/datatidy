@@ -6,40 +6,56 @@
 {% endblock %}
 
 {% block body %}
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="{{ path('dashboard_index') }}">{{ site_name }}</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown01">
-                        <a class="dropdown-item" href="{{ path('fos_user_profile_show') }}">{{ 'Profile'|trans }}</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">{{ 'Logout'|trans }}</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <main role="main" class="container">
-        {% for label, messages in app.flashes(['success', 'warning']) %}
-            {% for message in messages %}
-                <div class="alert alert-{{ label }}" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <a class="navbar-brand" href="{{ path('dashboard_index') }}">{{ site_name }}</a>
+                <input class="form-control" type="text" placeholder="{{ 'Search'|trans }}" aria-label="{{ 'Search'|trans }}">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a href="{{ path('dashboard_index') }}" class="nav-link {% if app.request.get('_route') == 'dashboard_index' %}active{% endif %}">
+                                <i class="fas {{ iconClass('dashboard') }} mr-2"></i>
+                                {{ 'Dashboard'|trans }}
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                                <a class="dropdown-item" href="{{ path('fos_user_profile_show') }}">{{ 'Profile'|trans }}</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">{{ 'Logout'|trans }}</a>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            {% endfor %}
-        {% endfor %}
+            </nav>
 
-        {% block main %}{% endblock %}
-    </main>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 bg-light">
+                {% for label, messages in app.flashes(['success', 'warning']) %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label }}" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                    <h1 class="h2">{% block header %}{% endblock %}</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        {% block toolbar %}{% endblock %}
+                    </div>
+                </div>
+
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
