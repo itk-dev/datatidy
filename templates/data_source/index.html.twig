@@ -1,0 +1,52 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_source' %}
+
+{% block title %}{{ 'Data library'|trans }}{% endblock %}
+
+{% block header %}{{ 'Data library'|trans }}{% endblock %}
+
+{% block toolbar %}
+    <div class="btn-group" role="group">
+        <button id="newDataSourceDropdown" type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ 'Import data'|trans }}
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="newDataSourceDropdown">
+            {% for format in availableFormats %}
+                <a class="dropdown-item" href="{{ path('data_source_new', {'format': format}) }}">{{ 'From a %format% source'|trans({'%format%': format}) }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ 'Name'|trans }}</th>
+            <th>{{ 'TTL'|trans }}</th>
+            <th>{{ 'Last read at'|trans }}</th>
+            <th>{{ 'Updated at'|trans }}</th>
+            <th>{{ 'Actions'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for data_source in data_sources %}
+        <tr>
+            <td>{{ data_source.name }}</td>
+            <td>{{ data_source.ttl }}</td>
+            <td>{{ data_source.lastReadAt ? data_source.lastReadAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ data_source.updatedAt ? data_source.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td>
+                <a href="{{ path('data_source_show', {'id': data_source.id}) }}">show</a>
+                <a href="{{ path('data_source_edit', {'id': data_source.id}) }}">edit</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="12">{{ 'No records found'|trans }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
