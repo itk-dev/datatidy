@@ -8,6 +8,6 @@ import { faDatabase } from '@fortawesome/free-solid-svg-icons/faDatabase'
 require('../scss/base.scss')
 require('bootstrap')
 library.add(
-    faTachometerAlt, faDatabase
+  faTachometerAlt, faDatabase
 )
 dom.watch()
