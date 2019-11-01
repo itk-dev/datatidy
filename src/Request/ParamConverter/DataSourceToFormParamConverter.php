@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Request\ParamConverter;
 
 use App\Entity\AbstractDataSource;
@@ -57,6 +65,6 @@ class DataSourceToFormParamConverter implements ParamConverterInterface
      */
     public function supports(ParamConverter $configuration)
     {
-        return $configuration->getConverter() === 'data_source_to_form';
+        return 'data_source_to_form' === $configuration->getConverter();
     }
 }

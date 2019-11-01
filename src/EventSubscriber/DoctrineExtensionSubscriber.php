@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\EventSubscriber;
 
 use Gedmo\Blameable\BlameableListener;
@@ -25,7 +33,6 @@ class DoctrineExtensionSubscriber implements EventSubscriberInterface
      */
     private $loggableListener;
 
-
     public function __construct(
         BlameableListener $blameableListener,
         TokenStorageInterface $tokenStorage,
@@ -36,18 +43,18 @@ class DoctrineExtensionSubscriber implements EventSubscriberInterface
         $this->loggableListener = $loggableListener;
     }
 
-
     public static function getSubscribedEvents()
     {
         return [
             KernelEvents::REQUEST => 'onKernelRequest',
         ];
     }
+
     public function onKernelRequest(): void
     {
-        if ($this->tokenStorage !== null &&
-            $this->tokenStorage->getToken() !== null &&
-            $this->tokenStorage->getToken()->isAuthenticated() === true
+        if (null !== $this->tokenStorage &&
+            null !== $this->tokenStorage->getToken() &&
+            true === $this->tokenStorage->getToken()->isAuthenticated()
         ) {
             $this->blameableListener->setUserValue($this->tokenStorage->getToken()->getUser());
         }

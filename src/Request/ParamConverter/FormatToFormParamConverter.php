@@ -1,8 +1,14 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\Request\ParamConverter;
-
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
@@ -33,13 +39,13 @@ class FormatToFormParamConverter implements ParamConverterInterface
         $dataSourceClass = sprintf('App\Entity\%sDataSource', ucfirst($format));
         $dataSourceTypeClass = sprintf('App\Form\%sDataSourceType', ucfirst($format));
 
-        if (!\class_exists($dataSourceClass) || !\class_exists($dataSourceTypeClass)) {
+        if (!class_exists($dataSourceClass) || !class_exists($dataSourceTypeClass)) {
             throw new NotFoundHttpException();
         }
 
         $request->attributes->set(
             $configuration->getName(),
-            $this->formFactory->create($dataSourceTypeClass, new $dataSourceClass)
+            $this->formFactory->create($dataSourceTypeClass, new $dataSourceClass())
         );
 
         return true;
@@ -50,6 +56,6 @@ class FormatToFormParamConverter implements ParamConverterInterface
      */
     public function supports(ParamConverter $configuration)
     {
-        return $configuration->getConverter() === 'format_to_form';
+        return 'format_to_form' === $configuration->getConverter();
     }
 }

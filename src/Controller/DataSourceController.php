@@ -1,12 +1,16 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Controller;
 
-use App\Entity\CsvDataSource;
 use App\Entity\AbstractDataSource;
-use App\Entity\JsonDataSource;
-use App\Form\CsvDataSourceType;
-use App\Form\JsonDataSourceType;
 use App\Repository\DataSourceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +35,7 @@ class DataSourceController extends AbstractController
                                     ->discriminatorMap;
 
         return $this->render('data_source/index.html.twig', [
-            'availableFormats' => \array_keys($discriminatorMap),
+            'availableFormats' => array_keys($discriminatorMap),
             'data_sources' => $dataSourceRepository->findAll(),
         ]);
     }
