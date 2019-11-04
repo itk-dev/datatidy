@@ -25,6 +25,12 @@
                                 {{ 'Data library'|trans({}, 'data_source') }}
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ path('data_flow_index') }}" class="nav-link {% if app.request.get('_route') == 'data_flow_index' %}active{% endif %}">
+                                <i class="fas {{ iconClass('datasource') }} mr-2"></i>
+                                {{ 'Data flows'|trans({}, 'data_flow') }}
+                            </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">

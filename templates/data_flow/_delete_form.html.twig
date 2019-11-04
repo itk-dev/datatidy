@@ -1,0 +1,7 @@
+{% trans_default_domain 'data_source' %}
+
+<form method="post" action="{{ path('data_source_delete', {'id': data_source.id}) }}" onsubmit="return confirm('{{ 'Are you sure you want to delete this item?'|trans }}');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ data_source.id) }}">
+    <button class="btn">Delete</button>
+</form>
