@@ -1,0 +1,8 @@
+App\Entity\JsonDataSource:
+    data_source_odaa:
+        # '@id': 'odaa:b3eeb0ff-c8a8-4824-99d6-e0a3747c8b0d'
+        name: Test
+        url: https://portal.opendata.dk/api/3/action/datastore_search?resource_id=b3eeb0ff-c8a8-4824-99d6-e0a3747c8b0d
+        # format: json
+        root: result.records
+        ttl: 3600

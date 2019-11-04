@@ -1,0 +1,46 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_flow' %}
+
+{% block title %}{{ 'Data flows'|trans }}{% endblock %}
+
+{% block header %}{{ 'Data flows'|trans }}{% endblock %}
+
+{% block toolbar %}
+    <a class="btn btn-success btn-sm" href="{{ path('data_flow_new') }}">{{ 'New data flow'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ 'Name'|trans }}</th>
+            <th>{{ 'Data source'|trans }}</th>
+            <th>{{ 'Number of transforms'|trans }}</th>
+            <th>{{ 'TTL'|trans }}</th>
+            <th>{{ 'Last run at'|trans }}</th>
+            <th>{{ 'Updated at'|trans }}</th>
+            <th>{{ 'Actions'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for data_flow in data_flows %}
+        <tr>
+            <td>{{ data_flow.name }}</td>
+            <td>{{ data_flow.dataSource }}</td>
+            <td>{{ data_flow.transforms|length }}</td>
+            <td>{{ data_flow.ttl }}</td>
+            <td>{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td>
+                <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit properties'|trans }}</a>
+                <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}">{{ 'Edit transforms'|trans }}</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="12">{{ 'No records found'|trans }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

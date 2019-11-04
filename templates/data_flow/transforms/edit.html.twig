@@ -1,0 +1,11 @@
+{% extends 'data_flow/transforms/layout.html.twig' %}
+
+{% set title = transform.id ? 'Edit transform'|trans : 'Add transform'|trans %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block header %}{{ title }}{% endblock %}
+
+{% block content %}
+    {{ include('data_flow/transforms/_form.html.twig') }}
+{% endblock %}

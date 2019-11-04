@@ -1,0 +1,17 @@
+<?php
+
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
+namespace App\Form\Type;
+
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+
+class ColumnsType extends TextareaType
+{
+}

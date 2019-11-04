@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_flow' %}
+
+{% block title %}{{ 'Edit Data flow'|trans }}{% endblock %}
+
+{% block header %}{{ 'Edit Data flow'|trans }}{% endblock %}
+
+{% block content %}
+    {{ include('data_flow/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('data_flow_index') }}">{{ 'Back to list'|trans }}</a>
+
+    {{ include('data_flow/_delete_form.html.twig') }}
+{% endblock %}

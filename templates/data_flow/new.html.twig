@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'New data source'|trans }}{% endblock %}
+
+{% block header %}{{ 'Create new data source'|trans }}{% endblock %}
+
+{% block content %}
+    {{ include('data_source/_form.html.twig') }}
+{% endblock %}
