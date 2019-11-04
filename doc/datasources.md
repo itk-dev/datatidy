@@ -65,8 +65,10 @@ class XmlDataSourceType extends AbstractDataSourceType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // The AbstractDataSourceType class contains a default setup you can use:
-        $builder = parent::getBaseFormBuilder($builder, $options);
+        // Reuse the form already built in the parent:
+        parent::buildForm($builder, $options);
+
+        // Add your own elements:
         $builder->add(...);
     }
 
