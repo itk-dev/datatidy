@@ -18,7 +18,7 @@ class CsvDataSourceType extends AbstractDataSourceType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::getBaseFormBuilder($builder, $options);
+        parent::buildForm($builder, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver)

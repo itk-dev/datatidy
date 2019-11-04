@@ -18,7 +18,7 @@ class JsonDataSourceType extends AbstractDataSourceType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder = parent::getBaseFormBuilder($builder, $options);
+        parent::buildForm($builder, $options);
 
         $builder->add('root');
     }

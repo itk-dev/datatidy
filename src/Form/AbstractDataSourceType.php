@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 abstract class AbstractDataSourceType extends AbstractType
 {
-    protected function getBaseFormBuilder(FormBuilderInterface $builder, array $options): FormBuilderInterface
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
@@ -23,7 +23,5 @@ abstract class AbstractDataSourceType extends AbstractType
             ->add('url')
             ->add('ttl')
         ;
-
-        return $builder;
     }
 }
