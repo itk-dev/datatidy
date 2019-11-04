@@ -27,6 +27,8 @@ class TwigExtension extends AbstractExtension
         switch ($name) {
             case 'dashboard':
                 return 'fa-tachometer-alt';
+            case 'datasource':
+                return 'fa-database';
             default:
                 return '';
         }

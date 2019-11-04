@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_source' %}
+
+{% block title %}{{ 'Edit DataSource'|trans }}{% endblock %}
+
+{% block header %}{{ 'Edit DataSource'|trans }}{% endblock %}
+
+{% block content %}
+    {{ include('data_source/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('data_source_index') }}">{{ 'Back to list'|trans }}</a>
+
+    {{ include('data_source/_delete_form.html.twig') }}
+{% endblock %}
