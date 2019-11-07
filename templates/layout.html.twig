@@ -31,6 +31,7 @@
                                 {{ 'Data flows'|trans({}, 'data_flow') }}
                             </a>
                         </li>
+                        {% if app.user|default(false) %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -39,6 +40,7 @@
                                 <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">{{ 'Logout'|trans }}</a>
                             </div>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>

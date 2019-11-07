@@ -10,6 +10,7 @@
 
 namespace App\Entity;
 
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -17,44 +18,61 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AbstractDataTransformRepository")
- * @Gedmo\Loggable()
+ * @ORM\Entity(repositoryClass="App\Repository\DataTransformRepository")
+ * @Gedmo\Loggable
+ * @ AppAssert\ValidTransform
  */
-class AbstractDataTransform
+class DataTransform
 {
     use BlameableEntity;
     use TimestampableEntity;
 
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Gedmo\Versioned()
-     * @Assert\NotBlank()
+     * @Gedmo\Versioned
      */
     private $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Gedmo\Versioned()
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Gedmo\Versioned
      */
     private $description;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Gedmo\Versioned
+     */
+    private $transformer;
+
+    /**
+     * @ORM\Column(type="json")
+     * @Assert\NotBlank
+     * @Assert\Valid
+     * @Gedmo\Versioned
+     */
+    private $transformerOptions = [];
+
+    /**
      * @ORM\Column(type="integer")
-     * @Gedmo\Versioned()
-     * @Gedmo\SortablePosition()
+     * @Gedmo\SortablePosition
+     * @Gedmo\Versioned
      */
     private $position;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\DataFlow", inversedBy="transforms")
      * @ORM\JoinColumn(nullable=false)
+     * @Gedmo\SortableGroup
+     * @Gedmo\Versioned
      */
     private $dataFlow;
 
@@ -87,6 +105,30 @@ class AbstractDataTransform
         return $this;
     }
 
+    public function getTransformer(): ?string
+    {
+        return $this->transformer;
+    }
+
+    public function setTransformer(string $transformer): self
+    {
+        $this->transformer = $transformer;
+
+        return $this;
+    }
+
+    public function getTransformerOptions(): ?array
+    {
+        return $this->transformerOptions;
+    }
+
+    public function setTransformerOptions(array $transformerOptions): self
+    {
+        $this->transformerOptions = $transformerOptions;
+
+        return $this;
+    }
+
     public function getPosition(): ?int
     {
         return $this->position;
@@ -104,7 +146,7 @@ class AbstractDataTransform
         return $this->dataFlow;
     }
 
-    public function setDataFlow(?DataFlow $dataFlow): self
+    public function setDataFlow(DataFlow $dataFlow): self
     {
         $this->dataFlow = $dataFlow;
 

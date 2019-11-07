@@ -15,6 +15,7 @@
         <tr>
             <th>{{ 'Name'|trans }}</th>
             <th>{{ 'Data source'|trans }}</th>
+            <th>{{ 'Number of transforms'|trans }}</th>
             <th>{{ 'TTL'|trans }}</th>
             <th>{{ 'Last run at'|trans }}</th>
             <th>{{ 'Updated at'|trans }}</th>
@@ -26,6 +27,7 @@
         <tr>
             <td>{{ data_flow.name }}</td>
             <td>{{ data_flow.dataSource }}</td>
+            <td>{{ data_flow.transforms|length }}</td>
             <td>{{ data_flow.ttl }}</td>
             <td>{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : '' }}</td>
             <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }}</td>

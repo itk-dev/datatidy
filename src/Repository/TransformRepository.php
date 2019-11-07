@@ -20,7 +20,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method AbstractDataTransform[]    findAll()
  * @method AbstractDataTransform[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AbstractDataTransformRepository extends ServiceEntityRepository
+class TransformRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -52,7 +52,7 @@ class DataFlow
     private $dataSource;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AbstractDataTransform", mappedBy="dataFlow", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\DataTransform", mappedBy="dataFlow", orphanRemoval=true)
      */
     private $transforms;
 
@@ -130,14 +130,14 @@ class DataFlow
     }
 
     /**
-     * @return Collection|AbstractDataTransform[]
+     * @return Collection|DataTransform[]
      */
     public function getTransforms(): Collection
     {
         return $this->transforms;
     }
 
-    public function addTransform(AbstractDataTransform $transform): self
+    public function addTransform(DataTransform $transform): self
     {
         if (!$this->transforms->contains($transform)) {
             $this->transforms[] = $transform;
@@ -147,7 +147,7 @@ class DataFlow
         return $this;
     }
 
-    public function removeTransform(AbstractDataTransform $transform): self
+    public function removeTransform(DataTransform $transform): self
     {
         if ($this->transforms->contains($transform)) {
             $this->transforms->removeElement($transform);

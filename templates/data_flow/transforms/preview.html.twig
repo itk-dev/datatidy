@@ -1,0 +1,32 @@
+{% macro render_result(result) %}
+    <table class="table">
+        {% for row in result.rows %}
+            {% if loop.first %}
+                <tr>
+                    {% for column in result.columns %}
+                        <th>{{ column.name }}:{{ column.type }}</th>
+                    {%  endfor %}
+                </tr>
+            {% endif %}
+            <tr>
+                {% for value in row %}
+                    <td>
+                        {% if value is iterable %}
+                            {{ value|json_encode }}
+                        {% elseif value.timestamp is defined %}
+                            {{ value|date }}
+                        {% else %}
+                            {{ value }}
+                        {% endif %}
+                {%  endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% extends 'data_flow/transforms/layout.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'Step %step% of %total%'|trans({'%step%': step, '%total%': data_flow.transforms|length}) }}</h1>
+    {{ _self.render_result(results|last) }}
+{% endblock %}
