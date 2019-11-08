@@ -10,23 +10,22 @@
 
 namespace App\Form\Type;
 
+use App\Form\Type\ColumnTypeMapType\ColumnStringType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ColumnsType extends AbstractType
+class ColumnStringMapType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('columns', ChoiceType::class, [
-            'choices' => $this->getChoices($options),
-            'multiple' => true,
-            'expanded' => true,
+        $builder->add('map', CollectionType::class, [
+            'entry_type' => ColumnStringType::class,
+            'allow_add' => true,
+            'allow_delete' => true,
             'label' => false,
         ]);
-
-//        parent::buildForm($builder, $options);
     }
 
     private function getChoices(array $options)

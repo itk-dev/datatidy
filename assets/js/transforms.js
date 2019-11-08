@@ -22,7 +22,7 @@ $(() => {
             ajax: true
         }
 
-        $target = $('#data_transform_transformerOptions')
+        const $target = $('#data_transform_transformerOptions')
         $target.html('<span class="loader">Loading …</loader>')
         // Submit data via AJAX to the form's action path.
         $.ajax({

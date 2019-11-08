@@ -27,6 +27,11 @@ abstract class AbstractOption implements \JsonSerializable
     public $choices;
 
     /**
+     * @var string
+     */
+    public $formType;
+
+    /**
      * Name to use in stead of property name.
      *
      * @var string
@@ -64,6 +69,7 @@ abstract class AbstractOption implements \JsonSerializable
     {
         return [
             'type' => $this->type,
+            'formType' => $this->formType,
             'name' => $this->name,
             'description' => $this->description,
             'help' => $this->help,

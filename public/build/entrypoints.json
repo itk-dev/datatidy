@@ -2,33 +2,33 @@
   "entrypoints": {
     "base": {
       "js": [
-        "/build/runtime.d2591ff7.js",
-        "/build/0.eb880595.js",
-        "/build/2.e6cf0ec6.js",
-        "/build/base.346afbaf.js"
+        "/build/runtime.js",
+        "/build/vendors~base~transforms.js",
+        "/build/vendors~base.js",
+        "/build/base.js"
       ],
       "css": [
-        "/build/base.8491fa37.css"
+        "/build/base.css"
       ]
     },
     "layout": {
       "js": [
-        "/build/runtime.d2591ff7.js",
-        "/build/layout.627663c2.js"
+        "/build/runtime.js",
+        "/build/layout.js"
       ],
       "css": [
-        "/build/layout.8f35d8ae.css"
+        "/build/layout.css"
       ]
     },
     "transforms": {
       "js": [
-        "/build/runtime.d2591ff7.js",
-        "/build/0.eb880595.js",
-        "/build/1.4600a652.js",
-        "/build/transforms.a151b901.js"
+        "/build/runtime.js",
+        "/build/vendors~base~transforms.js",
+        "/build/vendors~transforms.js",
+        "/build/transforms.js"
       ],
       "css": [
-        "/build/transforms.f51501f4.css"
+        "/build/transforms.css"
       ]
     }
   }

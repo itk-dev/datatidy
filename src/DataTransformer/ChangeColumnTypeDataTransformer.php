@@ -14,6 +14,7 @@ use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
 use App\DataTransformer\Exception\InvalidColumnException;
+use App\Util\DataTypes;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\Column;
 
@@ -46,7 +47,7 @@ class ChangeColumnTypeDataTransformer extends AbstractDataTransformer
         // @TODO Check that type change makes sense without data loss.
         $newColumns = clone $columns;
 
-        $type = $this->getType($this->type);
+        $type = DataTypes::getType($this->type);
         foreach ($this->columns as $column) {
             if (!isset($newColumns[$column])) {
                 throw new InvalidColumnException($column);

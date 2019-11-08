@@ -24,13 +24,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 class RenameColumnsDataTransformer extends AbstractDataTransformer
 {
     /**
-     * @Option(type="map")
+     * @Option(type="map", formType="App\Form\Type\ColumnStringMapType")
      *
      * @var array
      */
     private $map;
-
-    private $entityManager;
 
     public function transform(DataSet $input): DataSet
     {

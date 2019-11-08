@@ -89,7 +89,8 @@
         ],
         "check-coding-standards": [
             "@check-coding-standards/php-cs-fixer",
-            "@check-coding-standards/phpcs"
+            "@check-coding-standards/phpcs",
+            "@check-coding-standards/twigcs"
         ],
         "apply-coding-standards/php-cs-fixer": [
             "php-cs-fixer --config=.php_cs.dist fix"

@@ -10,8 +10,10 @@
 
 namespace App\Util;
 
+use App\Form\Type\ColumnStringMapType;
 use App\Form\Type\ColumnsType;
 use App\Form\Type\MapType;
+use App\Form\Type\TypeType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -34,6 +36,10 @@ class OptionsFormHelper
 
     public function getFormType(array $option): string
     {
+        if (isset($option['formType'])) {
+            return $option['formType'];
+        }
+
         $type = $option['type'] ?? null;
 
         switch ($type) {
@@ -53,6 +59,8 @@ class OptionsFormHelper
                 return ColumnsType::class;
             case 'map':
                 return MapType::class;
+            case 'type':
+                return TypeType::class;
             default:
                 throw new \RuntimeException(sprintf('Invalid type: %s', $type));
         }
@@ -69,8 +77,14 @@ class OptionsFormHelper
         ];
 
         $type = $this->getFormType($option);
-        if (ChoiceType::class === $type) {
-            $options['choices'] = $option->choices;
+        switch ($type) {
+            case ChoiceType::class:
+                $options['choices'] = $option->choices;
+                break;
+            case ColumnsType::class:
+            case ColumnStringMapType::class:
+                $options['columns'] = ['a', 'b', 'c', __METHOD__];
+                break;
         }
 
         if (2 === \func_num_args()) {

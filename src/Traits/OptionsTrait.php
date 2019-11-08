@@ -13,6 +13,7 @@ namespace App\Traits;
 use App\Annotation\Exception\InvalidConfigurationException;
 use App\Annotation\Exception\InvalidOptionException;
 use App\Annotation\Exception\InvalidTypeException;
+use App\Util\DataTypes;
 use ReflectionProperty;
 
 trait OptionsTrait
@@ -117,7 +118,7 @@ trait OptionsTrait
 
     protected function isType($value): bool
     {
-        return $this->isString($value) && \array_key_exists($value, static::$types);
+        return $this->isString($value) && \array_key_exists($value, DataTypes::$types);
     }
 
     protected function isReadable($objectOrArray, $propertyPath): bool
@@ -145,18 +146,6 @@ trait OptionsTrait
         }
 
         return $value;
-    }
-
-    protected function getOptionType(string $name)
-    {
-        if (!\array_key_exists($name, static::$types)) {
-            throw new InvalidTypeException($name);
-        }
-        if ('int' === $name) {
-            $name = 'integer';
-        }
-
-        return Type::getType($name);
     }
 
     protected function requireOption(string $option): void
@@ -223,9 +212,13 @@ trait OptionsTrait
                 case 'string':
                 case 'text':
                 case 'column':
-                case 'type':
                     if (!$this->isString($value)) {
                         throw new InvalidTypeException(sprintf('Must be a string: %s', $name));
+                    }
+                    break;
+                case 'type':
+                    if (!$this->isType($value)) {
+                        throw new InvalidTypeException(sprintf('Must be a type: %s', $name));
                     }
                     break;
                 case 'choice':
