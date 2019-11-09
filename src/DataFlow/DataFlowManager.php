@@ -10,6 +10,7 @@
 
 namespace App\DataFlow;
 
+use App\DataSet\DataSet;
 use App\DataSet\DataSetManager;
 use App\DataSource\DataSourceManager;
 use App\DataTarget\DataTargetManager;
@@ -18,6 +19,7 @@ use App\Entity\DataFlow;
 use App\Entity\DataTransform;
 use App\Repository\DataFlowRepository;
 use App\Traits\LogTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -67,6 +69,32 @@ class DataFlowManager
     public function getDataSourceManager(): DataSourceManager
     {
         return $this->dataSourceManager;
+    }
+
+    /**
+     * @return ArrayCollection[]
+     */
+    public function runColumns(DataFlow $dataFlow, array $options = [])
+    {
+        $dataSet = $this->getDataSet($dataFlow);
+
+        $columns = $dataSet->getColumns();
+        $steps = $options['steps'] ?? PHP_INT_MAX;
+
+        /** @var DataTransform $transform */
+        foreach ($dataFlow->getTransforms() as $index => $transform) {
+            if ($index >= $steps) {
+                break;
+            }
+
+            $transformer = $this->transformerManager->getTransformer(
+                $transform->getTransformer(),
+                $transform->getTransformerOptions()
+            );
+            $columns = $transformer->transformColumns($columns);
+        }
+
+        return $columns;
     }
 
     /**
@@ -130,7 +158,7 @@ class DataFlowManager
     /**
      * Get dataSets indexed by id.
      *
-     * @return array
+     * @return DataSet
      */
     protected function getDataSet(DataFlow $dataFlow)
     {

@@ -10,22 +10,25 @@
 
     <div class="row">
         <div class="col-8">
-            <iframe id="data-flow-preview" data-src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id}) }}" src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id}) }}"></iframe>
+            <iframe id="data-flow-preview" data-src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id, id: '__id__'}) }}" src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id}) }}"></iframe>
         </div>
         <div class="col">
             <table class="transforms">
                 <tr class="transform">
                     <td/>
                     <td>
-                        <button data-run-flow-to-step="0" class="btn btn-secondary btn-sm">{{ 'First step'|trans }}</button>
+                        <button data-run-flow-transform-id class="btn btn-secondary btn-sm">{{ 'First step'|trans }}</button>
                     </td>
                 </tr>
                 {% for transform in data_flow.transforms %}
                     <tr class="transform">
                         <td class="name">{{ transform.name }}</td>
                         <td>
-                            <button data-run-flow-to-step="{{ transform.position + 1 }}" class="btn btn-secondary btn-sm">{{ 'Run to this step'|trans }}</button>
-                            <button class="btn btn-secondary btn-sm">{{ 'Edit transform'|trans }}</button>
+                            <button data-run-flow-transform-id="{{ transform.id }}" class="btn btn-secondary btn-sm">{{ 'Run to this step'|trans }}</button>
+                            <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: transform.id}) }}" class="btn btn-secondary btn-sm">{{ 'Edit transform'|trans }}</a>
+                            <form class="form-inline" method="post" action="{{ path('data_flow_transforms_delete', {data_flow: data_flow.id, id: transform.id}) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">{{ 'Delete transform'|trans }}</button>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}

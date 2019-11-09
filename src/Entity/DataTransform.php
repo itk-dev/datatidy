@@ -10,7 +10,6 @@
 
 namespace App\Entity;
 
-use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -48,14 +47,14 @@ class DataTransform
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="No transformer specified")
      * @Gedmo\Versioned
      */
     private $transformer;
 
     /**
      * @ORM\Column(type="json")
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="No transformer options specified")
      * @Assert\Valid
      * @Gedmo\Versioned
      */

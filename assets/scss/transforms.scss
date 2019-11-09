@@ -5,3 +5,14 @@ iframe {
     height: 800px;
     border: none;
 }
+
+label.required {
+    &::after {
+        color: red;
+        content: '•'; // \u2022 (bullet)
+    }
+}
+
+.form-inline {
+    display: inline-block;
+}

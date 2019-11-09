@@ -71,6 +71,6 @@ class ChangeColumnTypeDataTransformer extends AbstractDataTransformer
 
     public function transformColumns(ArrayCollection $columns): ArrayCollection
     {
-        // TODO: Implement transformColumns() method.
+        return $columns;
     }
 }

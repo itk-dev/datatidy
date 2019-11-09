@@ -11,6 +11,7 @@
 namespace App\Repository;
 
 use App\Entity\AbstractDataTransform;
+use App\Entity\DataTransform;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -20,11 +21,11 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method AbstractDataTransform[]    findAll()
  * @method AbstractDataTransform[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TransformRepository extends ServiceEntityRepository
+class DataTransformRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AbstractDataTransform::class);
+        parent::__construct($registry, DataTransform::class);
     }
 
     // /**

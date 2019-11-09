@@ -93,7 +93,17 @@ trait OptionsTrait
 
     protected function isMap($value): bool
     {
-        return !empty($value) && $this->isAssoc($value);
+        if (!$this->isArray($value)) {
+            return false;
+        }
+
+        foreach ($value as $item) {
+            if (!$this->isAssoc($item) || !isset($item['from'], $item['to'])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     protected function isArray($value): bool
@@ -226,6 +236,11 @@ trait OptionsTrait
                 case 'columns':
                     if (!$this->isArray($value)) {
                         throw new InvalidTypeException(sprintf('Must be an array: %s', $name));
+                    }
+                    break;
+                case 'map':
+                    if (!$this->isMap($value)) {
+                        throw new InvalidTypeException(sprintf('Must be a map: %s', $name));
                     }
                     break;
                 default:

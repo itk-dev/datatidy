@@ -10,28 +10,27 @@
 
 namespace App\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ColumnsType extends AbstractType
+class ColumnsType extends ChoiceType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('columns', ChoiceType::class, [
+        $options = array_replace($options, [
             'choices' => $this->getChoices($options),
-            'multiple' => true,
-            'expanded' => true,
-            'label' => false,
         ]);
 
-//        parent::buildForm($builder, $options);
+        parent::buildForm($builder, $options);
     }
 
     private function getChoices(array $options)
     {
-        $names = $options['columns'];
+        /** @var ArrayCollection $columns */
+        $columns = $options['data_set_columns'];
+        $names = $columns->getKeys();
 
         return array_combine($names, $names);
     }
@@ -39,6 +38,12 @@ class ColumnsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        $resolver->setRequired('columns');
+        $resolver
+            ->setRequired('data_set_columns')
+            ->setAllowedTypes('data_set_columns', ArrayCollection::class)
+            ->setDefaults([
+                'multiple' => true,
+                'expanded' => true,
+            ]);
     }
 }

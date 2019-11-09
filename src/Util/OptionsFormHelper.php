@@ -10,6 +10,7 @@
 
 namespace App\Util;
 
+use App\DataTransformer\DataTransformerManager;
 use App\Form\Type\ColumnStringMapType;
 use App\Form\Type\ColumnsType;
 use App\Form\Type\MapType;
@@ -17,6 +18,7 @@ use App\Form\Type\TypeType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,13 +27,35 @@ use Symfony\Component\Form\FormInterface;
 
 class OptionsFormHelper
 {
-    public function buildForm(FormInterface $form, array $options)
+    /** @var DataTransformerManager */
+    private $transformerManager;
+
+    /** @var array */
+    private $options;
+
+    public function __construct(DataTransformerManager $transformerManager)
     {
-        foreach ($options as $name => $option) {
+        $this->transformerManager = $transformerManager;
+    }
+
+    public function buildForm(FormInterface $form, string $transformer, array $options)
+    {
+        $transformerOptions = $this->transformerManager->getTransformerOptions($transformer);
+        $form->add('transformerOptions', FormType::class);
+
+        $optionsForm = $form->get('transformerOptions');
+        $this->options = $options;
+        foreach ($transformerOptions as $name => $option) {
             $type = $this->getFormType($option);
             $formOptions = $this->getFormOptions($option);
-            $form->add($name, $type, $formOptions);
+            $optionsForm->add($name, $type, $formOptions);
         }
+        $this->options = null;
+    }
+
+    private function getOption(string $key)
+    {
+        return $this->options[$key];
     }
 
     public function getFormType(array $option): string
@@ -83,7 +107,7 @@ class OptionsFormHelper
                 break;
             case ColumnsType::class:
             case ColumnStringMapType::class:
-                $options['columns'] = ['a', 'b', 'c', __METHOD__];
+                $options['data_set_columns'] = $this->getOption('data_set_columns');
                 break;
         }
 

@@ -13,7 +13,9 @@ namespace App\DataTransformer;
 use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
+use App\DataTransformer\Exception\InvalidColumnException;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Schema\Column;
 
 /**
  * @DataTransformer(
@@ -28,15 +30,51 @@ class RenameColumnsDataTransformer extends AbstractDataTransformer
      *
      * @var array
      */
-    private $map;
+    private $renames;
 
     public function transform(DataSet $input): DataSet
     {
-        throw new \RuntimeException(__METHOD__.' not implemented');
+        $columns = $this->transformColumns($input->getColumns());
+        $output = $input->copy($columns->toArray())
+            ->createTable();
+
+        $sql = sprintf(
+            'INSERT INTO %s(%s) SELECT %s FROM %s;',
+            $output->getQuotedTableName(),
+            implode(',', $output->getQuotedColumnNames()),
+            implode(',', $input->getQuotedColumnNames()),
+            $input->getQuotedTableName()
+        );
+
+        return $output->buildFromSQL($sql);
     }
 
     public function transformColumns(ArrayCollection $columns): ArrayCollection
     {
-        // TODO: Implement transformColumns() method.
+        $map = [];
+        foreach ($this->renames as $item) {
+            $map[$item['from']] = $item['to'];
+        }
+        foreach ($map as $from => $to) {
+            if (!$columns->containsKey($from)) {
+                throw new InvalidColumnException(sprintf('Column "%s" does not exist', $from));
+            }
+            if ($columns->containsKey($to)) {
+                throw new InvalidColumnException(sprintf('Column "%s" already exists', $to));
+            }
+        }
+
+        $newColumns = new ArrayCollection();
+        foreach ($columns as $name => $column) {
+            if (isset($map[$name])) {
+                $name = $map[$name];
+                $options = $column->toArray();
+                unset($options['name']);
+                $column = new Column($name, $column->getType(), $options);
+            }
+            $newColumns[$name] = $column;
+        }
+
+        return $newColumns;
     }
 }

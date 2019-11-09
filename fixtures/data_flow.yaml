@@ -1,25 +1,41 @@
 App\Entity\DataFlow:
-    data_flow_test:
+    data_flow_odaa:
         enabled: false
         name: Test
         dataSource: '@data_source_odaa'
         # dataSources:
         #     - '@data_source:test'
 
+    data_flow_test:
+        enabled: false
+        name: Test
+        dataSource: '@data_source_test'
+        # dataSources:
+        #     - '@data_source:test'
+
 App\Entity\DataTransform:
-    data_flow_test_0:
-        data_flow: '@data_flow_test'
-        position: 0
+    data_flow_odaa_0:
+        data_flow: '@data_flow_odaa'
         name: Select columns
         transformer: App\DataTransformer\SelectColumnsDataTransformer
         transformerOptions:
             columns: [name,birthday]
 
-    data_flow_test_1:
-        data_flow: '@data_flow_test'
-        position: 1
+    data_flow_odaa_1:
+        data_flow: '@data_flow_odaa'
         name: Change column type
         transformer: App\DataTransformer\ChangeColumnTypeDataTransformer
         transformerOptions:
             columns: [birthday]
             type: date
+
+    data_flow_odaa_2:
+        data_flow: '@data_flow_odaa'
+        name: Translate to Danish
+        transformer: App\DataTransformer\RenameColumnsDataTransformer
+        transformerOptions:
+            renames:
+                - from: name
+                  to: navn
+                - from: birthday
+                  to: fødselsdag

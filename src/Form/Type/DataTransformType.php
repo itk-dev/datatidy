@@ -15,7 +15,6 @@ use App\Entity\DataTransform;
 use App\Util\OptionsFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -53,15 +52,10 @@ class DataTransformType extends AbstractType
             ]);
 
         // @see https://symfony.com/doc/current/form/dynamic_form_modification.html
-        $formModifier = function (FormInterface $form, $transform = null) {
-            $options = null !== $transform
-                ? $this->transformerManager->getTransformerOptions($transform)
-                : [];
-
-            $form->add('transformerOptions', FormType::class, [
-                'mapped' => false,
+        $formModifier = function (FormInterface $form, string $transformer) use ($options) {
+            $this->helper->buildForm($form, $transformer, [
+                'data_set_columns' => $options['data_set_columns'],
             ]);
-            $this->helper->buildForm($form->get('transformerOptions'), $options);
         };
 
         $builder->addEventListener(
@@ -93,5 +87,6 @@ class DataTransformType extends AbstractType
         $resolver->setDefaults([
             'data_class' => DataTransform::class,
         ]);
+        $resolver->setRequired('data_set_columns');
     }
 }

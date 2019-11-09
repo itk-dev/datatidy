@@ -14,10 +14,6 @@ use App\Annotation\DataTransformer;
 use App\Calculator\Manager;
 use App\DataTransformer\AbstractDataTransformer;
 use App\DataTransformer\DataTransformerManager;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\CachedReader;
-use Doctrine\Common\Cache\ArrayCache;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,11 +22,7 @@ class AppCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        AnnotationRegistry::registerLoader('class_exists');
-        $reader = new CachedReader(
-            new AnnotationReader(),
-            new ArrayCache()
-        );
+        $annotationReader = $container->get('annotation_reader');
 
         $services = $container->findTaggedServiceIds('datatidy.data_Transformer');
         $transformers = array_filter($services, static function ($class) {
@@ -42,12 +34,12 @@ class AppCompilerPass implements CompilerPassInterface
             $container->getDefinition($class)->setPublic(true);
             $reflectionClass = new ReflectionClass($class);
             /** @var DataTransformer $annotation */
-            $annotation = $reader->getClassAnnotation($reflectionClass, DataTransformer::class);
+            $annotation = $annotationReader->getClassAnnotation($reflectionClass, DataTransformer::class);
             if (null !== $annotation) {
                 $annotation->class = $class;
                 $properties = $reflectionClass->getProperties();
                 foreach ($properties as $property) {
-                    $option = $reader->getPropertyAnnotation($property, DataTransformer\Option::class);
+                    $option = $annotationReader->getPropertyAnnotation($property, DataTransformer\Option::class);
                     if (null !== $option) {
                         $annotation->options[$property->getName()] = $option;
                     }

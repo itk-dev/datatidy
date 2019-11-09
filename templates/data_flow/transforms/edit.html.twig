@@ -7,5 +7,9 @@
 {% block header %}{{ title }}{% endblock %}
 
 {% block content %}
-    {{ include('data_flow/transforms/_form.html.twig') }}
+    {{ include('data_flow/_form.html.twig', {
+        button_label: 'Save transform'|trans,
+        cancel_url: path('data_flow_transforms_index', {data_flow: data_flow.id}),
+        cancel_label: 'Back to data flow'|trans
+        }) }}
 {% endblock %}

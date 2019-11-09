@@ -20,9 +20,11 @@ class TypeType extends ChoiceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = $this->getChoices();
-        $options['choice_loader'] = new CallbackChoiceLoader(static function () use ($choices) {
-            return $choices;
-        });
+        $options = array_replace($options, [
+            'choice_loader' => new CallbackChoiceLoader(static function () use ($choices) {
+                return $choices;
+            }),
+        ]);
 
         parent::buildForm($builder, $options);
     }

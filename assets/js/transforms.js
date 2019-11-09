@@ -6,12 +6,25 @@ import 'select2'
 // @see https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
 $(() => {
     const $preview = $('#data-flow-preview')
-    $('[data-run-flow-to-step]').on('click', function() {
-        const step = parseInt($(this).data('run-flow-to-step'))
-        $preview.attr('src', $preview.data('src')+'?steps='+step)
+    $('[data-run-flow-transform-id]').on('click', function() {
+        const id = parseInt($(this).data('run-flow-transform-id'))
+        $preview.attr('src', $preview.data('src').replace('__id__', id))
     })
 
     $('#new-tranform-transformer').select2()
+
+    const buildCollectionTypes = () => {
+        // Collection types
+        // @see https://symfony.com/doc/current/reference/forms/types/collection.html#adding-and-removing-items
+        $('[data-collection-add-new-widget-selector]').on('click', function() {
+            const $container = $($(this).data('collection-add-new-widget-selector'))
+            let counter = $container.data('widget-counter') || $container.children().length
+            let template = $container.attr('data-prototype').replace(/__name__/g, counter)
+            counter++
+            $container.data('widget-counter', counter)
+            $container.append($(template))
+        })
+    }
 
     const $transformer = $('#data_transform_transformer')
     $transformer.on('change', function() {
@@ -35,6 +48,7 @@ $(() => {
                     // ... with the returned one from the AJAX response.
                     $(html).find('#data_transform_transformerOptions')
                 )
+                buildCollectionTypes()
             },
             error: (error) => {
                 $target.replaceWith($('<div/>').html('xxx'))
@@ -42,4 +56,6 @@ $(() => {
             }
         })
     })
+
+    buildCollectionTypes()
 })

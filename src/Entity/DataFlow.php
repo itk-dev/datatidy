@@ -52,7 +52,7 @@ class DataFlow
     private $dataSource;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DataTransform", mappedBy="dataFlow", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\DataTransform", mappedBy="dataFlow", cascade={"persist"}, orphanRemoval=true)
      */
     private $transforms;
 

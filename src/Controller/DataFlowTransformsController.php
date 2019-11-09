@@ -13,7 +13,6 @@ namespace App\Controller;
 use App\DataFlow\DataFlowManager;
 use App\DataTransformer\DataTransformerManager;
 use App\DataTransformer\Exception\InvalidTransformerException;
-use App\Entity\AbstractDataTransform;
 use App\Entity\DataFlow;
 use App\Entity\DataTransform;
 use App\Form\Type\DataTransformType;
@@ -22,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/data/flow/{data_flow}/transforms", name="data_flow_transforms_")
@@ -30,39 +30,44 @@ use Symfony\Component\Routing\Annotation\Route;
 class DataFlowTransformsController extends AbstractController
 {
     /** @var DataFlowManager */
-    private $manager;
+    private $dataFlowManager;
 
-    public function __construct(DataFlowManager $manager)
-    {
-        $this->manager = $manager;
+    /** @var DataTransformerManager */
+    private $dataTransformerManager;
+
+    /** @var TranslatorInterface */
+    private $translator;
+
+    public function __construct(
+        DataFlowManager $dataFlowManager,
+        DataTransformerManager $dataTransformerManager,
+        TranslatorInterface $translator
+    ) {
+        $this->dataFlowManager = $dataFlowManager;
+        $this->dataTransformerManager = $dataTransformerManager;
+        $this->translator = $translator;
     }
 
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(DataFlow $dataFlow, DataTransformerManager $transformerManager): Response
+    public function index(DataFlow $dataFlow): Response
     {
-//        $transform = new AbstractDataTransform();
-//        $form = $this->createForm(DataTransformType::class, $transform);
-
         return $this->render('data_flow/transforms/index.html.twig', [
             'data_flow' => $dataFlow,
-//            'transform_form' => $form->createView(),
-            'transformers' => $transformerManager->getTransformers(),
+            'transformers' => $this->dataTransformerManager->getTransformers(),
         ]);
     }
 
     /**
-     * @Route("/preview", name="preview", methods={"GET"})
+     * @Route("/preview/{id}", name="preview", methods={"GET"}, defaults={"id": null})
      */
-    public function preview(Request $request, DataFlow $dataFlow)
+    public function preview(Request $request, DataFlow $dataFlow, DataTransform $transform = null)
     {
         $totalNumberOfSteps = $dataFlow->getTransforms()->count();
-        $steps = $request->get('steps');
-        if (null === $steps) {
-            $steps = $totalNumberOfSteps;
-        }
-        $results = $this->manager->run($dataFlow, [
+        $steps = null !== $transform ? $transform->getPosition() + 1 : 0;
+
+        $results = $this->dataFlowManager->run($dataFlow, [
             'steps' => $steps,
             'return_exceptions' => true,
         ]);
@@ -78,30 +83,58 @@ class DataFlowTransformsController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
      */
-    public function new(Request $request, DataFlow $dataFlow, DataTransformerManager $transformerManager)
+    public function new(Request $request, DataFlow $dataFlow)
     {
         $transformer = $request->get('transformer');
         $transform = new DataTransform();
         if (null !== $transformer) {
             try {
-                $transformerManager->getTransformer($transformer);
+                $this->dataTransformerManager->getTransformer($transformer);
                 $transform->setTransformer($transformer);
             } catch (InvalidTransformerException $invalidTransformerException) {
-                $this->addFlash('danger', 'Invalid transformer');
+                $this->addFlash('danger', $this->translator->trans('Invalid transformer'));
 
                 return $this->redirectToRoute('data_flow_transforms_index', ['data_flow' => $dataFlow->getId()]);
             }
         }
 
-        $form = $this->createForm(DataTransformType::class, $transform);
+        return $this->edit($request, $dataFlow, $transform);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+     */
+    public function edit(Request $request, DataFlow $dataFlow, DataTransform $transform)
+    {
+        $totalNumberOfSteps = $dataFlow->getTransforms()->count();
+        $steps = null !== $transform ? $transform->getPosition() : 0;
+
+        $columns = $this->dataFlowManager->runColumns($dataFlow, [
+            'steps' => $steps,
+            'return_exceptions' => true,
+        ]);
+
+        $form = $this->createForm(DataTransformType::class, $transform, [
+            'data_set_columns' => $columns,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $isNew = false;
             $entityManager = $this->getDoctrine()->getManager();
+            if (null === $transform->getId()) {
+                $dataFlow->addTransform($transform);
+                $isNew = true;
+            }
             $entityManager->persist($dataFlow);
             $entityManager->flush();
 
-//            return $this->redirectToRoute('data_flow_transforms_index', ['data_flow' => $dataFlow->getId()]);
+            $this->addFlash(
+                'success',
+                $isNew ? $this->translator->trans('New transform added') : $this->translator->trans('transform updated')
+            );
+
+            return $this->redirectToRoute('data_flow_transforms_index', ['data_flow' => $dataFlow->getId()]);
         }
 
         return $this->render('data_flow/transforms/edit.html.twig', [
@@ -109,5 +142,19 @@ class DataFlowTransformsController extends AbstractController
             'transform' => $transform,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/delete", name="delete", methods={"POST"})
+     */
+    public function delete(Request $request, DataFlow $dataFlow, DataTransform $transform)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($transform);
+        $entityManager->flush();
+
+        $this->addFlash('success', $this->translator->trans('Transform deleted'));
+
+        return $this->index($dataFlow);
     }
 }
