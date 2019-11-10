@@ -8,14 +8,15 @@
  * This source file is subject to the MIT license.
  */
 
-namespace App\Form\Type;
+namespace App\Form\Type\Option;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ColumnStringMapType extends CollectionType
+class ColumnStringMapType extends CollectionType implements DataTransformerInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -32,7 +33,23 @@ class ColumnStringMapType extends CollectionType
             ],
         ]);
 
+        $builder->addModelTransformer($this);
         parent::buildForm($builder, $options);
+    }
+
+    public function transform($value)
+    {
+        return $value;
+    }
+
+    public function reverseTransform($value)
+    {
+        // Re-index array from 0.
+        if (\is_array($value)) {
+            $value = array_values($value);
+        }
+
+        return $value;
     }
 
     public function configureOptions(OptionsResolver $resolver)

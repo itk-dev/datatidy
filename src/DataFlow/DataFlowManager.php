@@ -61,6 +61,14 @@ class DataFlowManager
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @return DataFlow[]
+     */
+    public function getDataFlows(): array
+    {
+        return $this->repository->findAll();
+    }
+
     public function getDataFlow(int $id): ?DataFlow
     {
         return $this->repository->find($id);
@@ -72,7 +80,7 @@ class DataFlowManager
     }
 
     /**
-     * @return ArrayCollection[]
+     * @return ArrayCollection
      */
     public function runColumns(DataFlow $dataFlow, array $options = [])
     {

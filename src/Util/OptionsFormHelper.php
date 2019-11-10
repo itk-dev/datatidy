@@ -11,10 +11,11 @@
 namespace App\Util;
 
 use App\DataTransformer\DataTransformerManager;
-use App\Form\Type\ColumnStringMapType;
-use App\Form\Type\ColumnsType;
-use App\Form\Type\MapType;
-use App\Form\Type\TypeType;
+use App\Form\Type\Option\ColumnStringMapType;
+use App\Form\Type\Option\ColumnsType;
+use App\Form\Type\Option\FlowType;
+use App\Form\Type\Option\MapType;
+use App\Form\Type\Option\TypeType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -85,6 +86,8 @@ class OptionsFormHelper
                 return MapType::class;
             case 'type':
                 return TypeType::class;
+            case 'data_flow':
+                return FlowType::class;
             default:
                 throw new \RuntimeException(sprintf('Invalid type: %s', $type));
         }
@@ -97,13 +100,22 @@ class OptionsFormHelper
         $options = [
             'label' => $option['name'],
             'required' => $option['required'],
-            'help' => $option['help'],
+            'help' => $option['help'] ?? $option['description'],
         ];
+
+        if (null !== $option['default']) {
+            // @TODO: This does not work as expected.
+            // $options['data'] = $option['default'];
+        }
 
         $type = $this->getFormType($option);
         switch ($type) {
             case ChoiceType::class:
-                $options['choices'] = $option->choices;
+                $choices = $option['choices'] ?? [];
+                if (Helper::isArray($choices)) {
+                    $choices = array_combine($choices, $choices);
+                }
+                $options['choices'] = $choices;
                 break;
             case ColumnsType::class:
             case ColumnStringMapType::class:

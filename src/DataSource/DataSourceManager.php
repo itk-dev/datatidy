@@ -22,6 +22,11 @@ class DataSourceManager
                 'name' => 'Mikkel',
                 'birthday' => '1975-05-23',
             ],
+            [
+                'id' => 42,
+                'name' => 'James',
+                'birthday' => '1963-08-03',
+            ],
         ];
 
         return $data;

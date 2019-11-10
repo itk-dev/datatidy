@@ -15,7 +15,6 @@ use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
 use App\DataTransformer\Exception\InvalidColumnException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Schema\Column;
 
 /**
  * @DataTransformer(
@@ -26,7 +25,7 @@ use Doctrine\DBAL\Schema\Column;
 class RenameColumnsDataTransformer extends AbstractDataTransformer
 {
     /**
-     * @Option(type="map", formType="App\Form\Type\ColumnStringMapType")
+     * @Option(type="map", formType="App\Form\Type\Option\ColumnStringMapType")
      *
      * @var array
      */
@@ -68,9 +67,7 @@ class RenameColumnsDataTransformer extends AbstractDataTransformer
         foreach ($columns as $name => $column) {
             if (isset($map[$name])) {
                 $name = $map[$name];
-                $options = $column->toArray();
-                unset($options['name']);
-                $column = new Column($name, $column->getType(), $options);
+                $column = $this->renameColumn($column, $name);
             }
             $newColumns[$name] = $column;
         }

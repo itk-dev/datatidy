@@ -8,7 +8,7 @@
  * This source file is subject to the MIT license.
  */
 
-namespace App\Form\Type;
+namespace App\Form\Type\Option;
 
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 

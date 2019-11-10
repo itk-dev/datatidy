@@ -1,7 +1,7 @@
 App\Entity\DataFlow:
     data_flow_odaa:
         enabled: false
-        name: Test
+        name: ODAA
         dataSource: '@data_source_odaa'
         # dataSources:
         #     - '@data_source:test'
@@ -39,3 +39,12 @@ App\Entity\DataTransform:
                   to: navn
                 - from: birthday
                   to: fødselsdag
+
+    data_flow_odaa_3:
+        data_flow: '@data_flow_odaa'
+        name: Merge in stuff
+        transformer: App\DataTransformer\MergeFlowsDataTransformer
+        transformerOptions:
+            dataFlow: 2 # @TODO @FIXME: How to get actual id of @data_flow_test?
+            joinType: 'cross'
+            joinColumns: []

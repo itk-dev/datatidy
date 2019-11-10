@@ -15,7 +15,7 @@ abstract class AbstractOption implements \JsonSerializable
     /**
      * @Required
      *
-     * @Enum({"column", "columns", "string", "map", "bool", "int", "type", "choice"})
+     * @Enum({"column", "columns", "string", "map", "bool", "int", "type", "choice", "data_flow"})
      *
      * @var string
      */
@@ -75,6 +75,7 @@ abstract class AbstractOption implements \JsonSerializable
             'help' => $this->help,
             'required' => $this->required,
             'default' => $this->default,
+            'choices' => $this->choices,
         ];
     }
 }

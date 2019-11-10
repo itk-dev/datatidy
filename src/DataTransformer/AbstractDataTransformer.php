@@ -13,6 +13,7 @@ namespace App\DataTransformer;
 use App\DataSet\DataSet;
 use App\Traits\OptionsTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Schema\Column;
 
 abstract class AbstractDataTransformer
 {
@@ -27,4 +28,15 @@ abstract class AbstractDataTransformer
      * Transform columns.
      */
     abstract public function transformColumns(ArrayCollection $columns): ArrayCollection;
+
+    /**
+     * Rename a column.
+     */
+    protected function renameColumn(Column $column, string $name): Column
+    {
+        $options = $column->toArray();
+        unset($options['name']);
+
+        return new Column($name, $column->getType(), $options);
+    }
 }

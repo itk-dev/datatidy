@@ -195,4 +195,9 @@ class DataFlow
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return sprintf('%s (#%s)', $this->name ?? static::class, $this->id);
+    }
 }

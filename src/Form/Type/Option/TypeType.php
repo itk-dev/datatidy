@@ -8,7 +8,7 @@
  * This source file is subject to the MIT license.
  */
 
-namespace App\Form\Type;
+namespace App\Form\Type\Option;
 
 use App\Util\DataTypes;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
@@ -33,12 +33,11 @@ class TypeType extends ChoiceType
     {
         $names = DataTypes::getTypeNames();
 
-        return ['' => '']
-            + array_combine(
-                array_map(static function ($name) {
-                    return 'data_type.'.$name;
-                }, $names),
-                $names
-            );
+        return array_combine(
+            array_map(static function ($name) {
+                return 'data_type.'.$name;
+            }, $names),
+            $names
+        );
     }
 }

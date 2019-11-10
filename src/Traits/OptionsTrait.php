@@ -231,8 +231,6 @@ trait OptionsTrait
                         throw new InvalidTypeException(sprintf('Must be a type: %s', $name));
                     }
                     break;
-                case 'choice':
-                    break;
                 case 'columns':
                     if (!$this->isArray($value)) {
                         throw new InvalidTypeException(sprintf('Must be an array: %s', $name));
@@ -242,6 +240,9 @@ trait OptionsTrait
                     if (!$this->isMap($value)) {
                         throw new InvalidTypeException(sprintf('Must be a map: %s', $name));
                     }
+                    break;
+                case 'data_flow':
+                case 'choice':
                     break;
                 default:
                     throw new InvalidTypeException(sprintf('Unknown type: %s', $typeName));

@@ -10,8 +10,8 @@
 
 namespace App\DataSet;
 
-use App\Data\Exception\InvalidColumnException;
 use App\Data\Exception\InvalidTableNameException;
+use App\DataTransformer\Exception\InvalidColumnException;
 use App\Entity\DataTransform;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
@@ -189,9 +189,9 @@ class DataSet
         return array_combine($names, array_map([$this, 'quoteName'], $names));
     }
 
-    public function getQuotedColumnName(string $name)
+    public function getQuotedColumnName(string $name, bool $requireValidColumn = true)
     {
-        if (!$this->getColumns()->containsKey($name)) {
+        if ($requireValidColumn && !$this->getColumns()->containsKey($name)) {
             throw new InvalidColumnException($name);
         }
 
