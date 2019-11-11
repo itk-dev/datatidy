@@ -39,14 +39,13 @@ class OptionsFormHelper
         $this->transformerManager = $transformerManager;
     }
 
-    public function buildForm(FormInterface $form, string $transformer, array $options)
+    public function buildForm(FormInterface $form, array $serviceOptions, string $serviceOptionsName, array $options = [])
     {
-        $transformerOptions = $this->transformerManager->getTransformerOptions($transformer);
-        $form->add('transformerOptions', FormType::class);
+        $form->add($serviceOptionsName, FormType::class);
 
-        $optionsForm = $form->get('transformerOptions');
+        $optionsForm = $form->get($serviceOptionsName);
         $this->options = $options;
-        foreach ($transformerOptions as $name => $option) {
+        foreach ($serviceOptions as $name => $option) {
             $type = $this->getFormType($option);
             $formOptions = $this->getFormOptions($option);
             $optionsForm->add($name, $type, $formOptions);
@@ -78,6 +77,8 @@ class OptionsFormHelper
                 return TimeType::class;
             case 'int':
                 return IntegerType::class;
+            case 'string':
+                return TextType::class;
             case 'text':
                 return TextareaType::class;
             case 'columns':

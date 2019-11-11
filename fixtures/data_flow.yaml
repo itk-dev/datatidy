@@ -3,15 +3,11 @@ App\Entity\DataFlow:
         enabled: false
         name: ODAA
         dataSource: '@data_source_odaa'
-        # dataSources:
-        #     - '@data_source:test'
 
     data_flow_test:
         enabled: false
         name: Test
         dataSource: '@data_source_test'
-        # dataSources:
-        #     - '@data_source:test'
 
 App\Entity\DataTransform:
     data_flow_odaa_0:
@@ -20,6 +16,7 @@ App\Entity\DataTransform:
         transformer: App\DataTransformer\SelectColumnsDataTransformer
         transformerOptions:
             columns: [name,birthday]
+            include: true
 
     data_flow_odaa_1:
         data_flow: '@data_flow_odaa'
@@ -48,3 +45,45 @@ App\Entity\DataTransform:
             dataFlow: 2 # @TODO @FIXME: How to get actual id of @data_flow_test?
             joinType: 'cross'
             joinColumns: []
+
+App\Entity\DataTarget:
+    data_flow_odaa_target_file_csv:
+        data_flow: '@data_flow_odaa'
+        description: Send result to file
+        dataTarget: App\DataTarget\DataTargetFile
+        dataTargetOptions:
+            filename: /tmp/output.csv
+            format: csv
+
+    data_flow_odaa_target_file_json:
+        data_flow: '@data_flow_odaa'
+        description: Send result to file
+        dataTarget: App\DataTarget\DataTargetFile
+        dataTargetOptions:
+            filename: /tmp/output.json
+            format: json
+
+    # data_flow_odaa_target_sql:
+    #     data_flow: '@data_flow_odaa'
+    #     description: Send result to SQL
+    #     dataTarget: App\DataTarget\DataTargetSQL
+    #     dataTargetOptions:
+    #         url: mysql://db:db@localhost:3306/datamakeup87_output
+    #         tableName: b3eeb0ff-c8a8-4824-99d6-e0a3747c8b0d
+    #         append: false
+
+    #         # CREATE TABLE `b3eeb0ff-c8a8-4824-99d6-e0a3747c8b0d` (
+    #         #   `t` DATETIME,
+    #         #   `count` INT
+    #         # ) ENGINE = InnoDB;
+
+    # data_flow_odaa_target_ckan:
+    #     data_flow: '@data_flow_odaa'
+    #     description: Send result to CKAN
+    #     dataTarget: App\DataTarget\DataTargetCKAN
+    #     dataTargetOptions:
+    #         name: 'Result from datatidy'
+    #         url: '%CKAN_URL'
+    #         apiKey: '%CKAN_API_KEY%'
+    #         dataSetId: '%CKAN_DATA_SET_ID%'
+    #         append: true

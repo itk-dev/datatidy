@@ -10,36 +10,83 @@
 
 namespace App\DependencyInjection\Compiler;
 
+use App\Annotation\AbstractAnnotation;
+use App\Annotation\DataTarget;
 use App\Annotation\DataTransformer;
-use App\Calculator\Manager;
+use App\DataTarget\AbstractDataTarget;
+use App\DataTarget\DataTargetManager;
 use App\DataTransformer\AbstractDataTransformer;
 use App\DataTransformer\DataTransformerManager;
 use ReflectionClass;
+use ReflectionProperty;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AppCompilerPass implements CompilerPassInterface
 {
+    /** @var ContainerBuilder */
+    private $container;
+
     public function process(ContainerBuilder $container)
     {
-        $annotationReader = $container->get('annotation_reader');
+        $this->container = $container;
 
-        $services = $container->findTaggedServiceIds('datatidy.data_Transformer');
-        $transformers = array_filter($services, static function ($class) {
-            return is_a($class, AbstractDataTransformer::class, true);
+        $this->collectServices(
+            'datatidy.data_transformer',
+            AbstractDataTransformer::class,
+            DataTransformer::class,
+            DataTransformerManager::class,
+            '$transformers'
+        );
+
+        $this->collectServices(
+            'datatidy.data_target',
+            AbstractDataTarget::class,
+            DataTarget::class,
+            DataTargetManager::class,
+            '$dataTargets'
+        );
+    }
+
+    /**
+     * Collection tagged services, extract metadata and options, and inject into service manager.
+     */
+    private function collectServices(
+        string $tag,
+        string $serviceClass,
+        string $serviceAnnotationClass,
+        string $managerClass,
+        string $managerArgumentName
+    ) {
+        if (!is_a($serviceAnnotationClass, AbstractAnnotation::class, true)) {
+            throw new \RuntimeException(sprintf('%s must be an instance of %s', $serviceAnnotationClass, AbstractAnnotation::class));
+        }
+        // Get value of static property AbstractAnnotation::$optionClass.
+        $property = new ReflectionProperty($serviceAnnotationClass, 'optionClass');
+        $property->setAccessible(true);
+        $optionAnnotationClass = $property->getValue();
+        if (!is_a($optionAnnotationClass, AbstractAnnotation\AbstractOption::class, true)) {
+            throw new \RuntimeException(sprintf('%s must be an instance of %s', $optionAnnotationClass, AbstractAnnotation\AbstractOption::class));
+        }
+
+        $services = $this->container->findTaggedServiceIds($tag);
+        $services = array_filter($services, static function ($class) use ($serviceClass) {
+            return is_a($class, $serviceClass, true);
         }, ARRAY_FILTER_USE_KEY);
 
-        foreach ($transformers as $class => &$metadata) {
-            // Make the transformer service public so the manager can load it dynamically.
-            $container->getDefinition($class)->setPublic(true);
+        $annotationReader = $this->container->get('annotation_reader');
+
+        foreach ($services as $class => &$metadata) {
+            // Make the service public so the manager can load it dynamically.
+            $this->container->getDefinition($class)->setPublic(true);
             $reflectionClass = new ReflectionClass($class);
-            /** @var DataTransformer $annotation */
-            $annotation = $annotationReader->getClassAnnotation($reflectionClass, DataTransformer::class);
+            /** @var AbstractAnnotation $annotation */
+            $annotation = $annotationReader->getClassAnnotation($reflectionClass, $serviceAnnotationClass);
             if (null !== $annotation) {
                 $annotation->class = $class;
                 $properties = $reflectionClass->getProperties();
                 foreach ($properties as $property) {
-                    $option = $annotationReader->getPropertyAnnotation($property, DataTransformer\Option::class);
+                    $option = $annotationReader->getPropertyAnnotation($property, $optionAnnotationClass);
                     if (null !== $option) {
                         $annotation->options[$property->getName()] = $option;
                     }
@@ -49,7 +96,9 @@ class AppCompilerPass implements CompilerPassInterface
         }
         unset($metadata);
 
-        $definition = $container->getDefinition(DataTransformerManager::class);
-        $definition->setArgument('$transformers', $transformers);
+        $definition = $this->container->getDefinition($managerClass);
+        $definition->setArgument($managerArgumentName, $services);
+
+        return $services;
     }
 }

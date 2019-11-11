@@ -33,6 +33,10 @@ services:
         resource: '../src/DataTransformer'
         tags: ['datatidy.data_transformer']
 
+    App\DataTarget\:
+        resource: '../src/DataTarget'
+        tags: ['datatidy.data_target']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     data_source_type_converter:

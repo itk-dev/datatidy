@@ -10,13 +10,13 @@
 
 namespace App\Annotation;
 
-use App\Annotation\DataTransformer\Option;
+use App\Annotation\DataTarget\Option;
 
 /**
  * @Annotation
  * @Target({"CLASS"})
  */
-class DataTransformer extends AbstractAnnotation
+class DataTarget extends AbstractAnnotation
 {
     protected static $optionClass = Option::class;
 }

@@ -14,7 +14,7 @@ use App\Annotation\AbstractAnnotation\AbstractOption;
 
 abstract class AbstractAnnotation implements \JsonSerializable
 {
-    protected $optionClass = null;
+    protected static $optionClass = null;
 
     /**
      * The class this annotation is used on.

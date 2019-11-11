@@ -73,11 +73,17 @@ class DataFlow
      */
     private $lastRunAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DataTarget", mappedBy="dataFlow", orphanRemoval=true)
+     */
+    private $dataTargets;
+
     public function __construct()
     {
         $this->transforms = new ArrayCollection();
         $this->enabled = false;
         $this->ttl = 60 * 60;
+        $this->dataTargets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -199,5 +205,36 @@ class DataFlow
     public function __toString()
     {
         return sprintf('%s (#%s)', $this->name ?? static::class, $this->id);
+    }
+
+    /**
+     * @return Collection|DataTarget[]
+     */
+    public function getDataTargets(): Collection
+    {
+        return $this->dataTargets;
+    }
+
+    public function addDataTarget(DataTarget $dataTarget): self
+    {
+        if (!$this->dataTargets->contains($dataTarget)) {
+            $this->dataTargets[] = $dataTarget;
+            $dataTarget->setDataFlow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDataTarget(DataTarget $dataTarget): self
+    {
+        if ($this->dataTargets->contains($dataTarget)) {
+            $this->dataTargets->removeElement($dataTarget);
+            // set the owning side to null (unless already changed)
+            if ($dataTarget->getDataFlow() === $this) {
+                $dataTarget->setDataFlow(null);
+            }
+        }
+
+        return $this;
     }
 }

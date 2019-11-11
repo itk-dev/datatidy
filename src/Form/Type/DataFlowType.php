@@ -14,6 +14,7 @@ use App\Entity\AbstractDataSource;
 use App\Entity\DataFlow;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,8 +28,13 @@ class DataFlowType extends AbstractType
             ->add('name', TextType::class)
             ->add('ttl', IntegerType::class)
             ->add('dataSource', EntityType::class, [
-              'class' => AbstractDataSource::class,
+                'class' => AbstractDataSource::class,
                 'placeholder' => '',
+            ])
+            ->add('dataTargets', CollectionType::class, [
+                'entry_type' => DataTargetType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
             ])
         ;
     }
