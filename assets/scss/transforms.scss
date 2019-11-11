@@ -8,7 +8,7 @@ iframe {
 
 label.required {
   &::after {
-    color: red;
+    color: #f00;
     content: "•"; // \u2022 (bullet)
   }
 }

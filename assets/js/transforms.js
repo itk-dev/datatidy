@@ -56,8 +56,7 @@ $(() => {
         buildCollectionTypes()
       },
       error: (error) => {
-        $target.replaceWith($('<div/>').html('xxx'))
-        console.log(arguments)
+        $target.replaceWith($('<div class="alert alert-danger"/>').html(error))
       }
     })
   })
