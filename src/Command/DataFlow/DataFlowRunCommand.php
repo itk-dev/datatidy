@@ -8,7 +8,7 @@
  * This source file is subject to the MIT license.
  */
 
-namespace App\Command\Flow;
+namespace App\Command\DataFlow;
 
 use App\DataFlow\DataFlowManager;
 use Symfony\Component\Console\Command\Command;
@@ -20,9 +20,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RunFlowCommand extends Command
+class DataFlowRunCommand extends Command
 {
-    protected static $defaultName = 'datatidy:flow:run';
+    protected static $defaultName = 'datatidy:data-flow:run';
 
     /** @var DataFlowManager */
     private $manager;

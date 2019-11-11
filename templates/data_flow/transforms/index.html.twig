@@ -6,13 +6,26 @@
 {% block header %}{{ 'Data flow transforms'|trans }}{% endblock %}
 
 {% block content %}
-    <h1>{{ data_flow.name }}</h1>
+    <div class="row">
+        <div class="col">
+            <h1>{{ data_flow.name }}</h1>
+        </div>
+        <div class="col text-right">
+            <a href="{{ path('data_flow_edit', {id: data_flow.id}) }}" class="btn btn-secondary">{{ 'Edit data flow'|trans }}</a>
+            <a href="{{ path('data_flow_index') }}" class="btn btn-link">{{ 'Back to data flow list'|trans }}</a>
+        </div>
+    </div>
+
 
     <div class="row">
         <div class="col-8">
+            <h2>{{ 'Data'|trans }}</h2>
+
             <iframe id="data-flow-preview" data-src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id, id: '__id__'}) }}" src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id}) }}"></iframe>
         </div>
         <div class="col">
+            <h2>{{ 'Transforms'|trans }}</h2>
+
             <table class="transforms">
                 <tr class="transform">
                     <td/>

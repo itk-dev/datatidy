@@ -32,8 +32,8 @@
             <td>{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : '' }}</td>
             <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             <td>
-                <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit properties'|trans }}</a>
-                <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}">{{ 'Edit transforms'|trans }}</a>
+                <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit'|trans }}</a>
+                <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}">{{ 'Transforms'|trans }}</a>
             </td>
         </tr>
     {% else %}

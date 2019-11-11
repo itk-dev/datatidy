@@ -31,7 +31,7 @@ services:
 
     App\DataTransformer\:
         resource: '../src/DataTransformer'
-        tags: ['datatidy.data_Transformer']
+        tags: ['datatidy.data_transformer']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
