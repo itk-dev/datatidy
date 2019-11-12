@@ -13,6 +13,9 @@ namespace App\Traits;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerTrait;
 
+/**
+ * A simple trait that implements the log method.
+ */
 trait LogTrait
 {
     use LoggerAwareTrait;

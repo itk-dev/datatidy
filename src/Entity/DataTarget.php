@@ -46,6 +46,8 @@ class DataTarget
     private $dataFlow;
 
     /**
+     * Data used/set by data flow runner.
+     *
      * @ORM\Column(type="json", nullable=true)
      */
     private $data = [];
