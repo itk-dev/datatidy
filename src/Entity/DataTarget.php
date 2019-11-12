@@ -18,9 +18,9 @@ use Doctrine\ORM\Mapping as ORM;
 class DataTarget
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     private $id;
 
@@ -50,7 +50,7 @@ class DataTarget
      */
     private $data = [];
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
