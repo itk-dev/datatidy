@@ -11,7 +11,7 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * @DataSource(name="JSON", alias="json", description="PULL JSON")
+ * @DataSource(name="JSON", description="Pulls from a JSON data source")
  */
 class JsonDataSource extends AbstractDataSource implements DataSourceInterface
 {

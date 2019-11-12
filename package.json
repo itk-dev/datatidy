@@ -40,5 +40,8 @@
         "apply-coding-standards/eslint": "eslint --config .eslintrc.js 'assets/**/*.js' --fix",
         "apply-coding-standards/js": "yarn run apply-coding-standards/eslint",
         "apply-coding-standards": "yarn run apply-coding-standards/scss; yarn run apply-coding-standards/js"
+    },
+    "dependencies": {
+        "select2": "^4.0.12"
     }
 }

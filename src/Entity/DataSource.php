@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -56,12 +58,22 @@ class DataSource
     private $dataSource;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DataFlow", mappedBy="dataSource")
+     */
+    private $dataFlows;
+
+    /**
      * @ORM\Column(type="json")
      * @Assert\NotBlank
      *
      * @var array
      */
     private $dataSourceOptions;
+
+    public function __construct()
+    {
+        $this->dataFlows = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,5 +162,41 @@ class DataSource
         $this->lastReadAt = $lastReadAt;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|DataFlow[]
+     */
+    public function getDataFlows(): Collection
+    {
+        return $this->dataFlows;
+    }
+
+    public function addDataFlow(DataFlow $dataFlow): self
+    {
+        if (!$this->dataFlows->contains($dataFlow)) {
+            $this->dataFlows[] = $dataFlow;
+            $dataFlow->setDataSource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDataFlow(DataFlow $dataFlow): self
+    {
+        if ($this->dataFlows->contains($dataFlow)) {
+            $this->dataFlows->removeElement($dataFlow);
+            // set the owning side to null (unless already changed)
+            if ($dataFlow->getDataSource() === $this) {
+                $dataFlow->setDataSource(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name ?? static::class;
     }
 }

@@ -1,83 +1,115 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\DependencyInjection\Compiler;
 
-
+use App\Annotation\AbstractAnnotation;
 use App\Annotation\DataSource;
-use App\Annotation\Option;
-use App\DataSource\DataSourceInterface;
+use App\Annotation\DataTarget;
+use App\Annotation\DataTransformer;
+use App\DataSource\AbstractDataSource;
 use App\DataSource\DataSourceManager;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\CachedReader;
-use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Cache\ArrayCache;
+use App\DataTarget\AbstractDataTarget;
+use App\DataTarget\DataTargetManager;
+use App\DataTransformer\AbstractDataTransformer;
+use App\DataTransformer\DataTransformerManager;
+use ReflectionClass;
+use ReflectionProperty;
+
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AppCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritDoc}
-     */
+    /** @var ContainerBuilder */
+    private $container;
+
     public function process(ContainerBuilder $container)
     {
-        AnnotationRegistry::registerLoader('class_exists');
-        $reader = new CachedReader(
-            new AnnotationReader(),
-            new ArrayCache()
+        $this->container = $container;
+
+        $this->collectServices(
+            'datatidy.data_transformer',
+            AbstractDataTransformer::class,
+            DataTransformer::class,
+            DataTransformerManager::class,
+            '$transformers'
         );
 
-        $dataSources = $this->getDataSources($container);
-        $dataSources = $this->loadAnnotations(
-            $container,
-            $reader,
-            $dataSources,
-            DataSource::class,
-            Option::class)
-        ;
+        $this->collectServices(
+            'datatidy.data_target',
+            AbstractDataTarget::class,
+            DataTarget::class,
+            DataTargetManager::class,
+            '$dataTargets'
+        );
 
-        $container->getDefinition(DataSourceManager::class)
-            ->setArgument('$dataSources', $dataSources);
+        $this->collectServices(
+            'datatidy.data_source',
+            AbstractDataSource::class,
+            DataSource::class,
+            DataSourceManager::class,
+            '$dataSources'
+        );
     }
 
-    private function getDataSources(ContainerBuilder $container): array
-    {
-        $services = $container->findTaggedServiceIds('datatidy.data_source');
-        $dataSources = array_filter($services, static function ($class) {
-            return is_a($class, DataSourceInterface::class, true);
+    /**
+     * Collection tagged services, extract metadata and options, and inject into service manager.
+     */
+    private function collectServices(
+        string $tag,
+        string $serviceClass,
+        string $serviceAnnotationClass,
+        string $managerClass,
+        string $managerArgumentName
+    ) {
+        if (!is_a($serviceAnnotationClass, AbstractAnnotation::class, true)) {
+            throw new \RuntimeException(sprintf('%s must be an instance of %s', $serviceAnnotationClass, AbstractAnnotation::class));
+        }
+        // Get value of static property AbstractAnnotation::$optionClass.
+        $property = new ReflectionProperty($serviceAnnotationClass, 'optionClass');
+        $property->setAccessible(true);
+        $optionAnnotationClass = $property->getValue();
+        if (!is_a($optionAnnotationClass, AbstractAnnotation\AbstractOption::class, true)) {
+            throw new \RuntimeException(sprintf('%s must be an instance of %s', $optionAnnotationClass, AbstractAnnotation\AbstractOption::class));
+        }
+
+        $services = $this->container->findTaggedServiceIds($tag);
+        $services = array_filter($services, static function ($class) use ($serviceClass) {
+            return is_a($class, $serviceClass, true);
         }, ARRAY_FILTER_USE_KEY);
 
-        return $dataSources;
-    }
+        $annotationReader = $this->container->get('annotation_reader');
 
-    private function loadAnnotations(ContainerBuilder $container, Reader $reader, array $services, string $annotationClass, string $optionClass): array
-    {
-        foreach ($services as $class => &$metaData) {
-
-            // Make the service public so it can be loaded dynamically
-            $container->getDefinition($class)->setPublic(true);
-
-            $reflectionClass = new \ReflectionClass($class);
-
-            $annotation = $reader->getClassAnnotation($reflectionClass, $annotationClass);
-            if (!is_null($annotation)) {
+        foreach ($services as $class => &$metadata) {
+            // Make the service public so the manager can load it dynamically.
+            $this->container->getDefinition($class)->setPublic(true);
+            $reflectionClass = new ReflectionClass($class);
+            /** @var AbstractAnnotation $annotation */
+            $annotation = $annotationReader->getClassAnnotation($reflectionClass, $serviceAnnotationClass);
+            if (null !== $annotation) {
                 $annotation->class = $class;
                 $properties = $reflectionClass->getProperties();
-
                 foreach ($properties as $property) {
-                    $option = $reader->getPropertyAnnotation($property, $optionClass);
-                    if (!is_null($option)) {
+                    $option = $annotationReader->getPropertyAnnotation($property, $optionAnnotationClass);
+                    if (null !== $option) {
                         $annotation->options[$property->getName()] = $option;
                     }
                 }
-
-                $metaData = $annotation->toArray();
+                $metadata = $annotation->toArray();
             }
         }
+        unset($metadata);
 
-        unset($metaData);
+        $definition = $this->container->getDefinition($managerClass);
+        $definition->setArgument($managerArgumentName, $services);
 
         return $services;
     }

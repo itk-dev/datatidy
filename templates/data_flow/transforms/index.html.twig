@@ -1,0 +1,63 @@
+{% extends 'data_flow/transforms/layout.html.twig' %}
+{% trans_default_domain 'data_flow' %}
+
+{% block title %}{{ 'Data flow transforms'|trans }}{% endblock %}
+
+{% block header %}{{ 'Data flow transforms'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h1>{{ data_flow.name }}</h1>
+        </div>
+        <div class="col text-right">
+            <a href="{{ path('data_flow_edit', {id: data_flow.id}) }}" class="btn btn-secondary">{{ 'Edit data flow'|trans }}</a>
+            <a href="{{ path('data_flow_index') }}" class="btn btn-link">{{ 'Back to data flow list'|trans }}</a>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-8">
+            <h2>{{ 'Data'|trans }}</h2>
+
+            <iframe id="data-flow-preview" data-src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id, id: '__id__'}) }}" src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id}) }}"></iframe>
+        </div>
+        <div class="col">
+            <h2>{{ 'Transforms'|trans }}</h2>
+
+            <table class="transforms">
+                <tr class="transform">
+                    <td/>
+                    <td>
+                        <button data-run-flow-transform-id class="btn btn-secondary btn-sm">{{ 'First step'|trans }}</button>
+                    </td>
+                </tr>
+                {% for transform in data_flow.transforms %}
+                    <tr class="transform">
+                        <td class="name">{{ transform.name }}</td>
+                        <td>
+                            <button data-run-flow-transform-id="{{ transform.id }}" class="btn btn-secondary btn-sm">{{ 'Run to this step'|trans }}</button>
+                            <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: transform.id}) }}" class="btn btn-secondary btn-sm">{{ 'Edit transform'|trans }}</a>
+                            <form class="form-inline" method="post" action="{{ path('data_flow_transforms_delete', {data_flow: data_flow.id, id: transform.id}) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">{{ 'Delete transform'|trans }}</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <div class="btn-group" role="group">
+                <form method="get" action="{{ path('data_flow_transforms_new', {data_flow: data_flow.id}) }}">
+                    <select id="new-tranform-transformer" name="transformer" required>
+                        <option></option>
+                        {% for transformer in transformers %}
+                            <option value="{{ transformer.class }}">{{ transformer.name|trans }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">{{ 'Add transform'|trans }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

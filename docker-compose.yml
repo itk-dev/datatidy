@@ -39,8 +39,8 @@ services:
     volumes:
       - .:/app:delegated
     tmpfs:
-        - /app/var:size=1G
-        - /tmp:size=1G
+      - /app/var:size=1G
+      - /tmp:size=1G
 
   nginx:
     image: nginx:latest

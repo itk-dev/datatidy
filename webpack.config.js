@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('base', './assets/js/base.js')
     .addEntry('layout', './assets/js/layout.js')
+    .addEntry('transforms', './assets/js/transforms.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

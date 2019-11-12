@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\DataSource;
-
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -11,12 +9,10 @@ class DataSourceManager
 {
     use ContainerAwareTrait;
 
-    private $container;
     private $dataSources;
 
-    public function __construct(ContainerInterface $container, array $dataSources)
+    public function __construct(array $dataSources)
     {
-        $this->container = $container;
         $this->dataSources = $dataSources;
     }
 
@@ -38,6 +34,24 @@ class DataSourceManager
 
     public function getDataSourceOptions($dataSource): array
     {
+        return [];
+    }
 
+    public function getData(AbstractDataSource $dataSource)
+    {
+        $data = [
+            [
+                'id' => 87,
+                'name' => 'Mikkel',
+                'birthday' => '1975-05-23',
+            ],
+            [
+                'id' => 42,
+                'name' => 'James',
+                'birthday' => '1963-08-03',
+            ],
+        ];
+
+        return $data;
     }
 }
