@@ -1,0 +1,55 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_source' %}
+
+{% block title %}{{ 'DataSource'|trans }}{% endblock %}
+
+{% block header %}{{ 'DataSource'|trans }}{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{{ 'Name'|trans }}</th>
+                <td>{{ data_source.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Description'|trans }}</th>
+                <td>{{ data_source.description }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Url'|trans }}</th>
+                <td>{{ data_source.url }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'TTL'|trans }}</th>
+                <td>{{ data_source.ttl }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Last read at'|trans }}</th>
+                <td>{{ data_source.lastReadAt ? data_source.lastReadAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Created by'|trans }}</th>
+                <td>{{ data_source.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Updated by'|trans }}</th>
+                <td>{{ data_source.updatedBy }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Created at'|trans }}</th>
+                <td>{{ data_source.createdAt ? data_source.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Updated at'|trans }}</th>
+                <td>{{ data_source.updatedAt ? data_source.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('data_source_index') }}">back to list</a>
+
+    <a href="{{ path('data_source_edit', {'id': data_source.id}) }}">edit</a>
+
+    {{ include('data_source/_delete_form.html.twig') }}
+{% endblock %}

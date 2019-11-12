@@ -1,0 +1,33 @@
+{#
+Templates for custom form types.
+
+@see https://symfony.com/doc/current/form/create_custom_field_type.html#creating-the-form-type-template
+#}
+
+{% block column_string_map_widget %}
+    <div class="column-string-map-widget">
+        {{- block('collection_widget') -}}
+
+        <button type="button"
+            data-collection-add-new-widget-selector="#{{ form.vars.id }}"
+            class="btn btn-secondary">{{ 'Add another mapping'|trans }}</button>
+    </div>
+{% endblock %}
+
+{% block column_string_map_item_row %}
+    <div class="row column-string-map-item" id="{{ id }}">
+        {% for child in form.children if not child.rendered %}
+            <div class="col-5 col-{{ child.vars.name }}">
+                <div class="form-group">
+                    {{ form_label(child) }}
+                    {{ form_widget(child) }}
+                    {{ form_help(child) }}
+                    {{ form_errors(child) }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="col-2">
+            <button type="button" class="btn btn-danger" data-collection-remove-widget-selector="#{{ id }}">{{ 'Remove item'|trans }}</button>
+        </div>
+    </div>
+{% endblock %}
