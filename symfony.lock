@@ -135,6 +135,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "league/csv": {
+        "version": "9.4.1"
+    },
     "microsoft/tolerant-php-parser": {
         "version": "v0.0.18"
     },

@@ -39,3 +39,11 @@ services:
         class: App\Request\ParamConverter\DataSourceToFormParamConverter
         tags:
             - { name: request.param_converter, converter: data_source_to_form }
+
+    App\DataSource\:
+        resource: '../src/DataSource'
+        tags: ['datatidy.data_source']
+
+    App\Service\CsvReaderInterface:
+        public: true
+        class: 'App\Service\LeagueCsvReader'

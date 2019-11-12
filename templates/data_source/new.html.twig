@@ -1,4 +1,5 @@
 {% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_source' %}
 
 {% block title %}{{ 'New data source'|trans }}{% endblock %}
 
@@ -6,4 +7,31 @@
 
 {% block content %}
     {{ include('data_source/_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+<script>
+    $(document).ready(function () {
+        let $dataSourceSelect = $('#data_source_dataSource');
+
+        $dataSourceSelect.change(function() {
+
+            let $form = $(this).closest('form');
+
+            let data = {};
+            data[$dataSourceSelect.attr('name')] = $dataSourceSelect.val();
+            // Submit data via AJAX to the form's action path.
+            $.ajax({
+                url: $form.attr('action'),
+                type: $form.attr('method'),
+                data: data,
+                success: function (html) {
+
+                    console.log(html);
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

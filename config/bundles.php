@@ -17,4 +17,5 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
     ItkDev\UserBundle\ItkDevUserBundle::class => ['all' => true],
+    App\AppBundle::class => ['all' => true],
 ];

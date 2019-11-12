@@ -1,5 +1,5 @@
-// Uncomment this when we need to use jquery
-// const $ = require('jquery')
+const $ = require('jquery')
+global.$ = global.jQuery = $;
 
 // Add fontawesome
 import { library, dom } from '@fortawesome/fontawesome-svg-core'
