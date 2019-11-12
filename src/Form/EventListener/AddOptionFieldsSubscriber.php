@@ -1,8 +1,14 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\Form\EventListener;
-
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -11,9 +17,8 @@ use Symfony\Component\Form\FormEvents;
 
 class AddOptionFieldsSubscriber implements EventSubscriberInterface
 {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

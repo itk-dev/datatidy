@@ -1,10 +1,17 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Form\Type;
 
 use App\DataSource\DataSourceManager;
 use App\Entity\DataSource;
-use App\Form\EventListener\AddOptionFieldsSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -43,10 +50,8 @@ class DataSourceType extends AbstractType
             ]);
 
         $formModifier = function (FormInterface $form, $dataSource = null) {
-
             $options = [];
-            if (is_null($dataSource)) {
-
+            if (null === $dataSource) {
                 $this->dataSourceManager->getDataSourceOptions($dataSource);
             }
 
@@ -56,7 +61,6 @@ class DataSourceType extends AbstractType
         $builder->get('dataSource')->addEventListener(
             FormEvents::PRE_SUBMIT,
             function (FormEvent $event) use ($formModifier) {
-
                 $formModifier(
                     $event->getForm(),
                     $event->getData()->getDataSource()
@@ -67,7 +71,6 @@ class DataSourceType extends AbstractType
         $builder->get('dataSource')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($formModifier) {
-
                 $formModifier(
                     $event->getForm()->getParent(),
                     $event->getForm()->getData()

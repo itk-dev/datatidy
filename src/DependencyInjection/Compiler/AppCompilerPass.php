@@ -22,7 +22,6 @@ use App\DataTransformer\AbstractDataTransformer;
 use App\DataTransformer\DataTransformerManager;
 use ReflectionClass;
 use ReflectionProperty;
-
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

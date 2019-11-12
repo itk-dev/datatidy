@@ -8,40 +8,37 @@
  * This source file is subject to the MIT license.
  */
 
-namespace App\DataSource;
+namespace App\Data\DataSource;
 
-use App\Annotation\DataSource;
-use App\Annotation\Option;
+use App\Entity\JsonDataSource;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPathBuilder;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * @DataSource(name="JSON", description="Pulls from a JSON data source")
- */
-class JsonDataSource extends AbstractDataSource implements DataSourceInterface
+class JsonDataSourceHandler implements DataSourceHandlerInterface
 {
-    /**
-     * @Option(name="root", description="Root node", type="string")
-     */
-    private $root;
-
+    private $client;
+    private $dataSource;
     private $propertyAccessor;
 
-    public function __construct(HttpClientInterface $httpClient, PropertyAccessorInterface $propertyAccessor)
+    public function __construct(JsonDataSource $dataSource, HttpClientInterface $client, PropertyAccessorInterface $propertyAccessor)
     {
-        parent::__construct($httpClient);
+        $this->client = $client;
+        $this->dataSource = $dataSource;
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    public function pull()
+    public function getData()
     {
-        $response = $this->httpClient->request('GET', $this->url);
+        $response = $this->client->request('GET', $this->dataSource->getUrl());
+
         $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        if (!empty($this->root)) {
-            $propertyPath = $this->buildPropertyPath($this->root);
+        $root = $this->dataSource->getRoot();
+        if (!empty($root)) {
+            $propertyPath = $this->buildPropertyPath($root);
+
             $data = $this->propertyAccessor->getValue($data, $propertyPath);
         }
 
@@ -51,10 +48,10 @@ class JsonDataSource extends AbstractDataSource implements DataSourceInterface
     private function buildPropertyPath(string $root): PropertyPathInterface
     {
         $propertyPathBuilder = new PropertyPathBuilder();
-        $paths = explode('/', $root);
+        $rootAsArray = explode('/', $root);
 
-        foreach ($paths as $path) {
-            $propertyPathBuilder->appendIndex($path);
+        foreach ($rootAsArray as $subPath) {
+            $propertyPathBuilder->appendIndex($subPath);
         }
 
         return $propertyPathBuilder->getPropertyPath();

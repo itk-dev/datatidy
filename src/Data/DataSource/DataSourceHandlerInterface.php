@@ -8,9 +8,9 @@
  * This source file is subject to the MIT license.
  */
 
-namespace App\Service;
+namespace App\Data\DataSource;
 
-interface CsvReaderInterface
+interface DataSourceHandlerInterface
 {
-    public function read(string $csv): array;
+    public function getData();
 }
