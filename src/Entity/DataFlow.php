@@ -46,7 +46,7 @@ class DataFlow
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\AbstractDataSource", inversedBy="dataFlows")
+     * @ORM\ManyToOne(targetEntity="App\Entity\DataSource", inversedBy="dataFlows")
      * @ORM\JoinColumn(nullable=false)
      */
     private $dataSource;
@@ -123,12 +123,12 @@ class DataFlow
         return $this;
     }
 
-    public function getDataSource(): ?AbstractDataSource
+    public function getDataSource(): ?DataSource
     {
         return $this->dataSource;
     }
 
-    public function setDataSource(?AbstractDataSource $dataSource): self
+    public function setDataSource(?DataSource $dataSource): self
     {
         $this->dataSource = $dataSource;
 
