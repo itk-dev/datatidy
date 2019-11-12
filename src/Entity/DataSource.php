@@ -19,13 +19,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DataSourceRepository")
- * @ORM\Table(name="data_source")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"json" = "JsonDataSource", "csv" = "CsvDataSource"})
  */
-abstract class AbstractDataSource
+class DataSource
 {
+    use BlameableEntity;
+    use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
@@ -35,7 +34,6 @@ abstract class AbstractDataSource
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
      */
     private $name;
 
@@ -62,33 +60,32 @@ abstract class AbstractDataSource
     private $lastReadAt;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     */
+    private $dataSource;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\DataFlow", mappedBy="dataSource")
      */
     private $dataFlows;
+
+    /**
+     * @ORM\Column(type="json")
+     * @Assert\NotBlank
+     *
+     * @var array
+     */
+    private $dataSourceOptions;
 
     public function __construct()
     {
         $this->dataFlows = new ArrayCollection();
     }
 
-    use BlameableEntity;
-    use TimestampableEntity;
-
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -99,6 +96,42 @@ abstract class AbstractDataSource
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDataSource(): ?string
+    {
+        return $this->dataSource;
+    }
+
+    public function setDataSource(string $dataSource): self
+    {
+        $this->dataSource = $dataSource;
+
+        return $this;
+    }
+
+    public function getDataSourceOptions(): ?array
+    {
+        return $this->dataSourceOptions;
+    }
+
+    public function setDataSourceOptions(array $dataSourceOptions): self
+    {
+        $this->dataSourceOptions = $dataSourceOptions;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

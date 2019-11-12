@@ -8,13 +8,9 @@
  * This source file is subject to the MIT license.
  */
 
-namespace App\Entity;
+namespace App\Service;
 
-use Doctrine\ORM\Mapping as ORM;
-
-/**
- * @ORM\Entity
- */
-class CsvDataSource extends AbstractDataSource
+interface CsvReaderInterface
 {
+    public function read(string $csv): array;
 }

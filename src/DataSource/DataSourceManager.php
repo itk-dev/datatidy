@@ -10,10 +10,40 @@
 
 namespace App\DataSource;
 
-use App\Entity\AbstractDataSource;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class DataSourceManager
 {
+    use ContainerAwareTrait;
+
+    private $dataSources;
+
+    public function __construct(array $dataSources)
+    {
+        $this->dataSources = $dataSources;
+    }
+
+    public function getDataSources(): array
+    {
+        return $this->dataSources;
+    }
+
+    public function getDataSource(string $name, array $options = null)
+    {
+        $dataSources = $this->getDataSources();
+        if (!\array_key_exists($name, $dataSources)) {
+            throw new \Exception('DataSource not found!');
+        }
+
+        /** @var AbstractDataSource $dataSource */
+        $dataSource = $this->container->get($name);
+    }
+
+    public function getDataSourceOptions($dataSource): array
+    {
+        return [];
+    }
+
     public function getData(AbstractDataSource $dataSource)
     {
         $data = [

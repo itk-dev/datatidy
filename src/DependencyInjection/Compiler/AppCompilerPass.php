@@ -11,8 +11,11 @@
 namespace App\DependencyInjection\Compiler;
 
 use App\Annotation\AbstractAnnotation;
+use App\Annotation\DataSource;
 use App\Annotation\DataTarget;
 use App\Annotation\DataTransformer;
+use App\DataSource\AbstractDataSource;
+use App\DataSource\DataSourceManager;
 use App\DataTarget\AbstractDataTarget;
 use App\DataTarget\DataTargetManager;
 use App\DataTransformer\AbstractDataTransformer;
@@ -45,6 +48,14 @@ class AppCompilerPass implements CompilerPassInterface
             DataTarget::class,
             DataTargetManager::class,
             '$dataTargets'
+        );
+
+        $this->collectServices(
+            'datatidy.data_source',
+            AbstractDataSource::class,
+            DataSource::class,
+            DataSourceManager::class,
+            '$dataSources'
         );
     }
 

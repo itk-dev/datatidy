@@ -7,14 +7,7 @@
 
 {% block toolbar %}
     <div class="btn-group" role="group">
-        <button id="newDataSourceDropdown" type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ 'Import data'|trans }}
-        </button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="newDataSourceDropdown">
-            {% for format in availableFormats %}
-                <a class="dropdown-item" href="{{ path('data_source_new', {'format': format}) }}">{{ 'From a %format% source'|trans({'%format%': format}) }}</a>
-            {% endfor %}
-        </div>
+        <a href="{{ path('data_source_new') }}" class="btn btn-success">{{ 'Import data'|trans }}</a>
     </div>
 {% endblock %}
 
