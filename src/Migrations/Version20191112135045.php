@@ -2,6 +2,14 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -12,15 +20,15 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20191112135045 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE data_flow (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', data_source_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, enabled TINYINT(1) NOT NULL, ttl INT NOT NULL, last_run_at DATETIME DEFAULT NULL, created_by VARCHAR(255) DEFAULT NULL, updated_by VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, INDEX IDX_E98F1D921A935C57 (data_source_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE data_source (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, url VARCHAR(255) NOT NULL, ttl INT NOT NULL, last_read_at DATETIME DEFAULT NULL, data_source VARCHAR(255) NOT NULL, data_source_options LONGTEXT NOT NULL COMMENT \'(DC2Type:json)\', created_by VARCHAR(255) DEFAULT NULL, updated_by VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -33,10 +41,10 @@ final class Version20191112135045 extends AbstractMigration
         $this->addSql('ALTER TABLE data_target ADD CONSTRAINT FK_26911EE51ABD5BEA FOREIGN KEY (data_flow_id) REFERENCES data_flow (id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE data_transform DROP FOREIGN KEY FK_F81DC19B1ABD5BEA');
         $this->addSql('ALTER TABLE data_target DROP FOREIGN KEY FK_26911EE51ABD5BEA');
