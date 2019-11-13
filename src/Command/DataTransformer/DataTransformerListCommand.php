@@ -13,7 +13,9 @@ namespace App\Command\DataTransformer;
 use App\Command\AbstractCommand;
 use App\DataTarget\AbstractDataTarget;
 use App\DataTransformer\DataTransformerManager;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,14 +36,26 @@ class DataTransformerListCommand extends AbstractCommand
 
     protected function configure()
     {
-        $this->addOption('show-options', null, InputOption::VALUE_NONE, 'Show transformer options');
+        $this
+            ->addArgument('name', InputArgument::OPTIONAL, 'Name of transformer to show')
+            ->addOption('show-options', null, InputOption::VALUE_NONE, 'Show transformer options');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $name = $input->getArgument('name');
         $showOptions = $input->getOption('show-options');
 
         $transformers = $this->manager->getTransformers();
+
+        if (null !== $name) {
+            $transformers = array_filter($transformers, function ($transformer) use ($name) {
+                return $name === $transformer['name'] || $name === $transformer['class'];
+            });
+            if (empty($transformers)) {
+                throw new InvalidArgumentException(sprintf('No such transformer: %s', $name));
+            }
+        }
 
         $table = new Table($output);
 
