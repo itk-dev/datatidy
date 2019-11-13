@@ -34,7 +34,7 @@ class DataSourceListCommand extends AbstractCommand
 
     protected function configure()
     {
-        $this->addOption('show-options', null, InputOption::VALUE_NONE, 'Show transformer options');
+        $this->addOption('show-options', null, InputOption::VALUE_NONE, 'Show data source options');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
