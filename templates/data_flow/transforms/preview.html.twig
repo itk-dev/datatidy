@@ -27,6 +27,14 @@
 {% extends 'data_flow/transforms/layout.html.twig' %}
 
 {% block body %}
-    <h1>{{ 'Step %step% of %total%'|trans({'%step%': step, '%total%': data_flow.transforms|length}) }}</h1>
-    {{ _self.render_result(results|last) }}
+    <h1>{{ 'Step %step% of %total%'|trans({'%step%': step, '%total%': run.dataFlow.transforms|length}) }}</h1>
+
+    {% if run.exception %}
+        <div class="alert alert-danger">
+            <h1>{{ run.exception.message }}</h1>
+            <pre>{{ run.exception }}</pre>
+        </div>
+    {% else %}
+        {{ _self.render_result(run.lastDataSet) }}
+    {% endif %}
 {% endblock %}
