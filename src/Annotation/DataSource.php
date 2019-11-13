@@ -10,7 +10,7 @@
 
 namespace App\Annotation;
 
-use App\Annotation\DataTransformer\Option;
+use App\Annotation\DataSource\Option;
 use Doctrine\Common\Annotations\Annotation;
 
 /**

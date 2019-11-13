@@ -102,6 +102,10 @@ class AppCompilerPass implements CompilerPassInterface
                         $annotation->options[$property->getName()] = $option;
                     }
                 }
+                uasort($annotation->options, function (AbstractAnnotation\AbstractOption $a, AbstractAnnotation\AbstractOption $b) {
+                    return $a->order <=> $b->order;
+                });
+
                 $metadata = $annotation->toArray();
             }
         }

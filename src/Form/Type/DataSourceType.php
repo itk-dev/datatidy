@@ -12,9 +12,9 @@ namespace App\Form\Type;
 
 use App\DataSource\DataSourceManager;
 use App\Entity\DataSource;
+use App\Util\OptionsFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -25,56 +25,56 @@ class DataSourceType extends AbstractType
 {
     private $dataSourceManager;
 
-    public function __construct(DataSourceManager $dataSourceManager)
+    /** @var OptionsFormHelper */
+    private $helper;
+
+    public function __construct(DataSourceManager $dataSourceManager, OptionsFormHelper $helper)
     {
         $this->dataSourceManager = $dataSourceManager;
+        $this->helper = $helper;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('name')
-            ->add('description')
-        ;
-
-        $dataSourceChoices = [];
         $dataSources = $this->dataSourceManager->getDataSources();
+        $dataSourceChoices = [];
         foreach ($dataSources as $dataSource) {
             $dataSourceChoices[$dataSource['name']] = $dataSource['class'];
         }
 
         $builder
+            ->add('name')
+            ->add('description')
             ->add('dataSource', ChoiceType::class, [
                 'choices' => $dataSourceChoices,
-                'placeholder' => 'Choose an option',
             ]);
 
-        $formModifier = function (FormInterface $form, $dataSource = null) {
-            $options = [];
-            if (null === $dataSource) {
-                $this->dataSourceManager->getDataSourceOptions($dataSource);
-            }
-
-            $form->add('dataSourceOptions', TextType::class);
+        // @see https://symfony.com/doc/current/form/dynamic_form_modification.html
+        $formModifier = function (FormInterface $form, string $dataSource) {
+            $this->helper->buildForm(
+                $form,
+                $this->dataSourceManager->getDataSourceOptions($dataSource),
+                'dataSourceOptions'
+            );
         };
 
-        $builder->get('dataSource')->addEventListener(
-            FormEvents::PRE_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                $formModifier(
-                    $event->getForm(),
-                    $event->getData()->getDataSource()
-                );
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            static function (FormEvent $event) use ($formModifier) {
+                $form = $event->getForm();
+                $dataSource = $event->getData();
+
+                $formModifier($form, $dataSource->getDataSource());
             }
         );
 
         $builder->get('dataSource')->addEventListener(
             FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                $formModifier(
-                    $event->getForm()->getParent(),
-                    $event->getForm()->getData()
-                );
+            static function (FormEvent $event) use ($formModifier) {
+                $form = $event->getForm()->getParent();
+                $dataSource = $event->getForm()->getData();
+
+                $formModifier($form, $dataSource);
             }
         );
     }

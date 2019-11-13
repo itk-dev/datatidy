@@ -43,12 +43,6 @@ class DataSource
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Url
-     */
-    private $url;
-
-    /**
      * @ORM\Column(type="integer")
      * @Assert\PositiveOrZero
      */
@@ -132,18 +126,6 @@ class DataSource
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(string $url): self
-    {
-        $this->url = $url;
 
         return $this;
     }
