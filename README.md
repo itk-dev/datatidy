@@ -131,3 +131,19 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Testing
+
+### Loading fixtures
+
+```sh
+docker-compose exec phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
+```
+
+### Running a flow
+
+The `datatidy:data-flow:run` console command can run a data flow by name or id:
+
+```sh
+docker-compose exec phpfpm bin/console datatidy:data-flow:run --help
+```
