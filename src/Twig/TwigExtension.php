@@ -29,6 +29,8 @@ class TwigExtension extends AbstractExtension
                 return 'fa-tachometer-alt';
             case 'datasource':
                 return 'fa-database';
+            case 'users':
+                return 'fa-users';
             default:
                 return '';
         }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8edcc67579025ba51d0e86a062647a72",
+    "content-hash": "bc4b4d8d7873a52a506a0039bbe422d5",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1543,16 +1543,16 @@
         },
         {
             "name": "itk-dev/user-bundle",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itk-dev/user-bundle.git",
-                "reference": "441ff6aea719b57f2cffced9f0d308931b9e339d"
+                "reference": "7611d9ae959670775a3db06a848461fbb03cf27d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itk-dev/user-bundle/zipball/441ff6aea719b57f2cffced9f0d308931b9e339d",
-                "reference": "441ff6aea719b57f2cffced9f0d308931b9e339d",
+                "url": "https://api.github.com/repos/itk-dev/user-bundle/zipball/7611d9ae959670775a3db06a848461fbb03cf27d",
+                "reference": "7611d9ae959670775a3db06a848461fbb03cf27d",
                 "shasum": ""
             },
             "require": {
@@ -1584,7 +1584,7 @@
                     "email": "rimi@aarhus.dk"
                 }
             ],
-            "time": "2019-10-29T12:16:25+00:00"
+            "time": "2019-11-14T15:33:49+00:00"
         },
         {
             "name": "jdorn/sql-formatter",

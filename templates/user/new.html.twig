@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block title 'New User'|trans %}
+
+{% block header 'Add User'|trans %}
+
+{% block content %}
+    {{ include('user/_form.html.twig') }}
+
+    <a href="{{ path('user_index') }}">{{ 'Back to list'|trans }}</a>
+{% endblock %}

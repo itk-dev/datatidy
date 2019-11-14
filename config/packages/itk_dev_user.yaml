@@ -29,4 +29,4 @@ itk_dev_user:
     # Set to true to automatically notify users on creation.
     # Otherwise, use the `itk-dev:user-management:notify-users-created` console
     # command or call `UserManager::notifyUserCreated` to notify new users.
-    notify_user_on_create: false
+    notify_user_on_create: true

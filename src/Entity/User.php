@@ -12,10 +12,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository");
  * @ORM\Table(name="fos_user")
+ * @UniqueEntity("email")
  */
 class User extends BaseUser
 {
