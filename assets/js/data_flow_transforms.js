@@ -1,5 +1,5 @@
 import 'select2'
-require('../scss/transforms.scss')
+require('../scss/data_flow_transforms.scss')
 
 const $ = require('jquery')
 
@@ -7,7 +7,7 @@ const $ = require('jquery')
 $(() => {
   const $preview = $('#data-flow-preview')
   $('[data-run-flow-transform-id]').on('click', function () {
-    const id = parseInt($(this).data('run-flow-transform-id'))
+    const id = $(this).data('run-flow-transform-id')
     $preview.attr('src', $preview.data('src').replace('__id__', id))
   })
 

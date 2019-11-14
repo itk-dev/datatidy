@@ -518,4 +518,9 @@ class DataSet
 
         return $maxLength > 255 ? Type::TEXT : Type::STRING;
     }
+
+    public function __toString()
+    {
+        return $this->name ?? static::class;
+    }
 }

@@ -67,14 +67,13 @@ class DataFlowTransformsController extends AbstractController
         $totalNumberOfSteps = $dataFlow->getTransforms()->count();
         $steps = null !== $transform ? $transform->getPosition() + 1 : 0;
 
-        $results = $this->dataFlowManager->run($dataFlow, [
+        $result = $this->dataFlowManager->run($dataFlow, [
             'steps' => $steps,
-            'return_exceptions' => true,
         ]);
 
         return $this->render('data_flow/transforms/preview.html.twig', [
             'data_flow' => $dataFlow,
-            'results' => $results,
+            'result' => $result,
             'step' => $steps,
             'total_steps' => $totalNumberOfSteps,
         ]);

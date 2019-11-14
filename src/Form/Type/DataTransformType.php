@@ -39,15 +39,15 @@ class DataTransformType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformers = $this->transformerManager->getTransformers();
-        $transformerOptions = [];
+        $transformerChoices = [];
         foreach ($transformers as $class => $transformer) {
-            $transformerOptions[$transformer['name']] = $class;
+            $transformerChoices[$transformer['name']] = $class;
         }
 
         $builder
             ->add('name', TextType::class)
             ->add('transformer', ChoiceType::class, [
-                'choices' => $transformerOptions,
+                'choices' => $transformerChoices,
                 'placeholder' => '',
             ]);
 

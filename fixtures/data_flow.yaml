@@ -15,36 +15,43 @@ App\Entity\DataTransform:
         name: Select columns
         transformer: App\DataTransformer\SelectColumnsDataTransformer
         transformerOptions:
-            columns: [name,birthday]
-            include: true
+            columns: ['_id', 'REPORT_ID']
+            include: false
 
     data_flow_odaa_1:
         data_flow: '@data_flow_odaa'
-        name: Change column type
-        transformer: App\DataTransformer\ChangeColumnTypeDataTransformer
+        name: Select columns
+        transformer: App\DataTransformer\SelectColumnsDataTransformer
         transformerOptions:
-            columns: [birthday]
-            type: date
+            columns: ['TIMESTAMP', 'vehicleCount']
 
-    data_flow_odaa_2:
-        data_flow: '@data_flow_odaa'
-        name: Translate to Danish
-        transformer: App\DataTransformer\RenameColumnsDataTransformer
-        transformerOptions:
-            renames:
-                - from: name
-                  to: navn
-                - from: birthday
-                  to: fødselsdag
+    # data_flow_odaa_2:
+    #     data_flow: '@data_flow_odaa'
+    #     name: Filter out non-zero values
+    #     transformer: App\DataTransformer\FilterDataTransformer
+    #     transformerOptions:
+    #         column: vehicleCount
+    #         match: '0'
+    #         include: false
 
     data_flow_odaa_3:
         data_flow: '@data_flow_odaa'
-        name: Merge in stuff
-        transformer: App\DataTransformer\MergeFlowsDataTransformer
+        name: Convert
+        transformer: App\DataTransformer\ChangeColumnTypeDataTransformer
         transformerOptions:
-            dataFlow: 2 # @TODO @FIXME: How to get actual id of @data_flow_test?
-            joinType: 'cross'
-            joinColumns: []
+            columns: ['TIMESTAMP']
+            type: 'datetime'
+
+    data_flow_odaa_4:
+        data_flow: '@data_flow_odaa'
+        name: Rename
+        transformer: App\DataTransformer\RenameColumnsDataTransformer
+        transformerOptions:
+            renames:
+                - from: 'TIMESTAMP'
+                  to: 't'
+                - from: 'vehicleCount'
+                  to: 'count'
 
 App\Entity\DataTarget:
     data_flow_odaa_target_file_csv:
@@ -68,11 +75,11 @@ App\Entity\DataTarget:
     #     description: Send result to SQL
     #     dataTarget: App\DataTarget\DataTargetSQL
     #     dataTargetOptions:
-    #         url: mysql://db:db@localhost:3306/datamakeup87_output
-    #         tableName: b3eeb0ff-c8a8-4824-99d6-e0a3747c8b0d
+    #         url: mysql://db:db@data_target_sql_server:3306/db
+    #         tableName: data_flow_odaa
     #         append: false
 
-    #         # CREATE TABLE `b3eeb0ff-c8a8-4824-99d6-e0a3747c8b0d` (
+    #         # CREATE TABLE `data_flow_odaa` (
     #         #   `t` DATETIME,
     #         #   `count` INT
     #         # ) ENGINE = InnoDB;
