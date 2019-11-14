@@ -8,6 +8,10 @@ App\Entity\DataFlow:
         enabled: false
         name: Test
         dataSource: '@data_source_test'
+        createdBy: '@user-1'
+        collaborators:
+            - '@user-3'
+            - '@user-5'
 
 App\Entity\DataTransform:
     data_flow_odaa_0:

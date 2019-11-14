@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+{% set show_user_info = is_granted('ROLE_ADMIN') %}
 <table class="table">
     <thead>
         <tr>
@@ -19,6 +20,10 @@
             <th>{{ 'TTL'|trans }}</th>
             <th>{{ 'Last run at'|trans }}</th>
             <th>{{ 'Updated at'|trans }}</th>
+            {% if show_user_info %}
+                <th>{{ 'Created by'|trans }}</th>
+                <th>{{ 'Number of collaborators'|trans }}</th>
+            {% endif %}
             <th>{{ 'Actions'|trans }}</th>
         </tr>
     </thead>
@@ -31,9 +36,16 @@
             <td>{{ data_flow.ttl }}</td>
             <td>{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : '' }}</td>
             <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            {% if show_user_info %}
+                <td>{{ data_flow.createdBy }}</td>
+                <td>{{ data_flow.collaborators|length }}</td>
+            {% endif %}
+
             <td>
-                <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit'|trans }}</a>
-                <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}">{{ 'Transforms'|trans }}</a>
+                {% if is_granted('edit', data_flow) %}
+                    <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit'|trans }}</a>
+                    <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}">{{ 'Transforms'|trans }}</a>
+                {% endif %}
             </td>
         </tr>
     {% else %}
