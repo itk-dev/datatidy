@@ -21,12 +21,12 @@ class User extends BaseUser
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     protected $id;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
