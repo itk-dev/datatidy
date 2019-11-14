@@ -10,6 +10,8 @@
 
 namespace App\DataSource;
 
+use App\Entity\DataSource;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class DataSourceManager
@@ -18,8 +20,9 @@ class DataSourceManager
 
     private $dataSources;
 
-    public function __construct(array $dataSources)
+    public function __construct(ContainerInterface $container, array $dataSources)
     {
+        $this->setContainer($container);
         $this->dataSources = $dataSources;
     }
 
@@ -28,6 +31,11 @@ class DataSourceManager
         return $this->dataSources;
     }
 
+    /**
+     * @return AbstractDataSource
+     *
+     * @throws \Exception
+     */
     public function getDataSource(string $name, array $options = null)
     {
         $dataSources = $this->getDataSources();
@@ -36,29 +44,28 @@ class DataSourceManager
         }
 
         /** @var AbstractDataSource $dataSource */
-        $dataSource = $this->container->get($name);
+        $dataSource = $this->container->get($name)
+            ->setMetadata($dataSources[$name]);
+        if (null !== $options) {
+            $dataSource->setOptions($options);
+        }
+
+        return $dataSource;
     }
 
-    public function getDataSourceOptions($dataSource): array
+    public function getDataSourceOptions($name): array
     {
-        return [];
+        if (null === $name) {
+            return [];
+        }
+
+        return $this->getDataSource($name)->getMetadata()['options'] ?? [];
     }
 
-    public function getData(AbstractDataSource $dataSource)
+    public function getData(DataSource $dataSource)
     {
-        $data = [
-            [
-                'id' => 87,
-                'name' => 'Mikkel',
-                'birthday' => '1975-05-23',
-            ],
-            [
-                'id' => 42,
-                'name' => 'James',
-                'birthday' => '1963-08-03',
-            ],
-        ];
+        $source = $this->getDataSource($dataSource->getDataSource(), $dataSource->getDataSourceOptions());
 
-        return $data;
+        return $source->pull();
     }
 }

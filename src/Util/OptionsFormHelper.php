@@ -43,14 +43,16 @@ class OptionsFormHelper
     {
         $form->add($serviceOptionsName, FormType::class);
 
-        $optionsForm = $form->get($serviceOptionsName);
-        $this->options = $options;
-        foreach ($serviceOptions as $name => $option) {
-            $type = $this->getFormType($option);
-            $formOptions = $this->getFormOptions($option);
-            $optionsForm->add($name, $type, $formOptions);
+        if (!empty($serviceOptions)) {
+            $optionsForm = $form->get($serviceOptionsName);
+            $this->options = $options;
+            foreach ($serviceOptions as $name => $option) {
+                $type = $this->getFormType($option);
+                $formOptions = $this->getFormOptions($option);
+                $optionsForm->add($name, $type, $formOptions);
+            }
+            $this->options = null;
         }
-        $this->options = null;
     }
 
     private function getOption(string $key)

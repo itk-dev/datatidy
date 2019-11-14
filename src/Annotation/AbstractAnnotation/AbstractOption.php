@@ -13,6 +13,11 @@ namespace App\Annotation\AbstractAnnotation;
 abstract class AbstractOption implements \JsonSerializable
 {
     /**
+     * @var int
+     */
+    public $order = 0;
+
+    /**
      * @Required
      *
      * @Enum({"column", "columns", "string", "map", "bool", "int", "type", "choice", "data_flow"})

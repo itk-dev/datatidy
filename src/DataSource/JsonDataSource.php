@@ -11,7 +11,7 @@
 namespace App\DataSource;
 
 use App\Annotation\DataSource;
-use App\Annotation\Option;
+use App\Annotation\DataSource\Option;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPathBuilder;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
@@ -20,10 +20,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  * @DataSource(name="JSON", description="Pulls from a JSON data source")
  */
-class JsonDataSource extends AbstractDataSource implements DataSourceInterface
+class JsonDataSource extends AbstractHttpDataSource implements DataSourceInterface
 {
     /**
-     * @Option(name="root", description="Root node", type="string")
+     * @Option(name="root", description="Root node, e.g. “data.results”", type="string")
      */
     private $root;
 
@@ -37,11 +37,13 @@ class JsonDataSource extends AbstractDataSource implements DataSourceInterface
 
     public function pull()
     {
-        $response = $this->httpClient->request('GET', $this->url);
+        $response = $this->getResponse();
+
         $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         if (!empty($this->root)) {
             $propertyPath = $this->buildPropertyPath($this->root);
+
             $data = $this->propertyAccessor->getValue($data, $propertyPath);
         }
 
@@ -51,7 +53,7 @@ class JsonDataSource extends AbstractDataSource implements DataSourceInterface
     private function buildPropertyPath(string $root): PropertyPathInterface
     {
         $propertyPathBuilder = new PropertyPathBuilder();
-        $paths = explode('/', $root);
+        $paths = explode('.', $root);
 
         foreach ($paths as $path) {
             $propertyPathBuilder->appendIndex($path);

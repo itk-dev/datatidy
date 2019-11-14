@@ -69,9 +69,25 @@ class DataFlowManager
         return $this->repository->findAll();
     }
 
-    public function getDataFlow(int $id): ?DataFlow
+    /**
+     * Get a flow by id or name.
+     *
+     * If a name is specified
+     */
+    public function getDataFlow(string $id): ?DataFlow
     {
-        return $this->repository->find($id);
+        $flow = $this->repository->find($id);
+
+        if (null !== $flow) {
+            return $flow;
+        }
+
+        $flows = $this->repository->findByName($id);
+        if (1 < \count($flows)) {
+            throw new \RuntimeException(sprintf('Ambiguous flow name: %s', $id));
+        }
+
+        return reset($flows) ?: null;
     }
 
     public function getDataSourceManager(): DataSourceManager
@@ -105,14 +121,13 @@ class DataFlowManager
         return $columns;
     }
 
-    /**
-     * @return DataSet[]
-     */
-    public function run(DataFlow $dataFlow, array $options = [])
+    public function run(DataFlow $dataFlow, array $options = []): DataFlowRunResult
     {
+        $run = new DataFlowRunResult($dataFlow, $options);
+
         $dataSet = $this->getDataSet($dataFlow);
 
-        $results = [$dataSet];
+        $run->addDataSet($dataSet);
         $steps = $options['steps'] ?? PHP_INT_MAX;
         /** @var DataTransform $transform */
         foreach ($dataFlow->getTransforms() as $index => $transform) {
@@ -125,26 +140,21 @@ class DataFlowManager
                     $transform->getTransformerOptions()
                 );
                 $dataSet = $transformer->transform($dataSet)->setTransform($transform);
-                $results[] = $dataSet;
-            } catch (AbstractTransformerException $exception) {
-                if ($options['return_exceptions'] ?? false) {
-                    $results[] = (new TransformRuntimeException('Data wrangler run failed', $exception->getCode(), $exception))
-                        ->setTransform($transform);
-                    break;
-                } else {
-                    throw $exception;
-                }
+                $run->addDataSet($dataSet);
+            } catch (\Exception $exception) {
+                $run->addException($exception);
+                // It does not make sense to continue after an exception.
+                break;
             }
         }
 
-        // Publish result only if running all transforms.
-        if ((!isset($options['steps']) || $dataFlow->getTransforms()->count() === $options['steps'])
-            && ($options['publish'] ?? false)) {
-            $result = end($results);
+        // Publish result only if all transforms ran successfully.
+        if (($options['publish'] ?? false) && $run->isComplete()) {
+            $result = $run->getLastDataSet();
             $this->publish($result, $dataFlow->getDataTargets());
         }
 
-        return $results;
+        return $run;
     }
 
     private function publish(DataSet $result, Collection $dataTargets)

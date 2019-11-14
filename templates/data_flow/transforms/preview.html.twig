@@ -1,9 +1,9 @@
-{% macro render_result(result) %}
+{% macro render_data_set(data_set) %}
     <table class="table">
-        {% for row in result.rows %}
+        {% for row in data_set.rows %}
             {% if loop.first %}
                 <tr>
-                    {% for column in result.columns %}
+                    {% for column in data_set.columns %}
                         <th>{{ column.name }}:{{ column.type }}</th>
                     {% endfor %}
                 </tr>
@@ -27,6 +27,14 @@
 {% extends 'data_flow/transforms/layout.html.twig' %}
 
 {% block body %}
-    <h1>{{ 'Step %step% of %total%'|trans({'%step%': step, '%total%': data_flow.transforms|length}) }}</h1>
-    {{ _self.render_result(results|last) }}
+    <h1>{{ 'Step %step% of %total%'|trans({'%step%': step, '%total%': result.dataFlow.transforms|length}) }}</h1>
+
+    {% if result.exception %}
+        <div class="alert alert-danger">
+            <h1>{{ result.exception.message }}</h1>
+            <pre>{{ result.exception }}</pre>
+        </div>
+    {% else %}
+        {{ _self.render_data_set(result.lastDataSet) }}
+    {% endif %}
 {% endblock %}
