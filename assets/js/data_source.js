@@ -5,7 +5,7 @@ $(() => {
   $dataSource.change(function () {
     // ... retrieve the corresponding form.
     const $form = $(this).closest('form')
-    // Simulate form data, but only include the selected sport value.
+    // Simulate form data, but only include the selected data source value.
     const data = {
       'data_source[name]': 'ajax',
       [$dataSource.attr('name')]: $dataSource.val()
