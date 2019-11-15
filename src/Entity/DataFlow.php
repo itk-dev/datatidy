@@ -84,12 +84,18 @@ class DataFlow
      */
     private $frequency;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DataFlowJob", mappedBy="dataFlow", orphanRemoval=true)
+     */
+    private $jobs;
+
     public function __construct()
     {
         $this->transforms = new ArrayCollection();
         $this->enabled = false;
         $this->ttl = 60 * 60;
         $this->dataTargets = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -252,6 +258,37 @@ class DataFlow
     public function setFrequency(int $frequency): self
     {
         $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DataFlowJob[]
+     */
+    public function getJobs(): Collection
+    {
+        return $this->jobs;
+    }
+
+    public function addJob(DataFlowJob $job): self
+    {
+        if (!$this->jobs->contains($job)) {
+            $this->jobs[] = $job;
+            $job->setDataFlow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJob(DataFlowJob $job): self
+    {
+        if ($this->jobs->contains($job)) {
+            $this->jobs->removeElement($job);
+            // set the owning side to null (unless already changed)
+            if ($job->getDataFlow() === $this) {
+                $job->setDataFlow(null);
+            }
+        }
 
         return $this;
     }

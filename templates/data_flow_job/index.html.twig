@@ -1,0 +1,37 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_flow_job' %}
+
+{% block title %}{{ 'Jobs'|trans }}{% endblock %}
+
+{% block header %}{{ 'Jobs'|trans }}{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ 'Id'|trans }}</th>
+                <th>{{ 'Data flow'|trans }}</th>
+                <th>{{ 'Status'|trans }}</th>
+                <th>{{ 'Started'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for data_flow_job in data_flow_jobs %}
+            <tr>
+                <td>{{ data_flow_job.id }}</td>
+                <td>{{ data_flow_job.dataFlow.name }}</td>
+                <td>{{ data_flow_job.status }}</td>
+                <td>{{ data_flow_job.startedAt ? data_flow_job.startedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('data_flow_job_show', {'id': data_flow_job.id}) }}">{{ 'show'|trans }}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">{{ 'no records found'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

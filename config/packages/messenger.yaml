@@ -12,4 +12,4 @@ framework:
         routing:
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
-            'App\Message\RunDataFlowMessage': async
+            'App\Message\RunDataFlowJobMessage': async
