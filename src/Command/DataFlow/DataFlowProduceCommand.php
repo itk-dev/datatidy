@@ -1,8 +1,14 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\Command\DataFlow;
-
 
 use App\Entity\DataFlow;
 use App\Entity\DataFlowJob;
@@ -14,8 +20,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class DataFlowProduceCommand extends Command
 {
@@ -30,8 +36,8 @@ class DataFlowProduceCommand extends Command
         DataFlowRepository $dataFlowRepository,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
-        MessageBusInterface $messageBus)
-    {
+        MessageBusInterface $messageBus
+    ) {
         parent::__construct();
         $this->dataFlowRepository = $dataFlowRepository;
         $this->entityManager = $entityManager;
@@ -54,7 +60,6 @@ class DataFlowProduceCommand extends Command
 
         /** @var DataFlow $dataFlow */
         foreach ($dataFlowsToRun as $dataFlow) {
-
             $job = new DataFlowJob();
             $job->setStatus(DataFlowJob::STATUS_CREATED);
             $job->setDataFlow($dataFlow);
@@ -77,8 +82,7 @@ class DataFlowProduceCommand extends Command
 
     private function getDataFlowsToRun(array $dataFlowCandidates): array
     {
-        return array_filter($dataFlowCandidates, function($dataFlow) {
-
+        return array_filter($dataFlowCandidates, function ($dataFlow) {
             /** @var DataFlow $dataFlow */
 
             // If data flow hasn't run yet at all is should do it now

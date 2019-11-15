@@ -1,8 +1,14 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\MessageHandler;
-
 
 use App\DataFlow\DataFlowManager;
 use App\DataFlow\DataFlowRunResult;
@@ -26,9 +32,9 @@ class RunDataFlowJobMessageHandler implements MessageHandlerInterface
     public function __construct(
         DataFlowManager $dataFlowManager,
         DataFlowJobRepository $dataFlowJobRepository,
-        EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher
-    )
-    {
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->dataFlowManager = $dataFlowManager;
         $this->dataFlowJobRepository = $dataFlowJobRepository;
         $this->entityManager = $entityManager;

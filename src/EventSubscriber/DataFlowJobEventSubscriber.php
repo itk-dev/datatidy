@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\EventSubscriber;
 
@@ -7,7 +14,6 @@ use App\Entity\DataFlowJob;
 use App\Entity\DataFlowJobLogEntry;
 use App\Event\DataFlowJobCompletedEvent;
 use App\Event\DataFlowJobCreatedEvent;
-use App\Event\DataFlowJobEvent;
 use App\Event\DataFlowJobFailedEvent;
 use App\Event\DataFlowJobQueuedEvent;
 use App\Event\DataFlowJobRunningEvent;
@@ -27,7 +33,7 @@ class DataFlowJobEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

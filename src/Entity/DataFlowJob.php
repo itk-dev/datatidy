@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -86,7 +94,7 @@ class DataFlowJob
         ];
 
         if (!\in_array($status, $statuses)) {
-            throw new \InvalidArgumentException('Invalid status: ' . $status);
+            throw new \InvalidArgumentException('Invalid status: '.$status);
         }
 
         $this->status = $status;
