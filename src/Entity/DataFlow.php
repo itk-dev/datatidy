@@ -78,6 +78,12 @@ class DataFlow
      */
     private $dataTargets;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Gedmo\Versioned()
+     */
+    private $frequency;
+
     public function __construct()
     {
         $this->transforms = new ArrayCollection();
@@ -234,6 +240,18 @@ class DataFlow
                 $dataTarget->setDataFlow(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFrequency(): ?int
+    {
+        return $this->frequency;
+    }
+
+    public function setFrequency(int $frequency): self
+    {
+        $this->frequency = $frequency;
 
         return $this;
     }
