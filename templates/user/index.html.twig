@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'user' %}
+
+{% block title 'Users'|trans %}
+
+{% block header 'Users'|trans %}
+
+{% block toolbar %}
+    <a class="btn btn-success btn-sm" href="{{ path('user_new') }}">{{ 'New user'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ 'Email'|trans }}</th>
+                <th>{{ 'Enabled'|trans }}</th>
+                <th>{{ 'LastLogin'|trans }}</th>
+                <th>{{ 'Roles'|trans }}</th>
+                <th>{{ 'Actions'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.enabled ? 'Yes'|trans : 'No'|trans }}</td>
+                <td>{{ user.lastLogin ? user.lastLogin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
+                <td>
+                    <a href="{{ path('user_show', {'id': user.id}) }}">{{ 'Show'|trans }}</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}">{{ 'Edit'|trans }}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">{{ 'No users found'|trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
