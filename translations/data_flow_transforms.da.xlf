@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="da" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="LmBb.g5" resname="Edit transform">
+        <source>Edit transform</source>
+        <target state="translated">Rediger transformation</target>
+      </trans-unit>
+      <trans-unit id=".jXX1rT" resname="Add transform">
+        <source>Add transform</source>
+        <target state="translated">Tilføj transformation</target>
+      </trans-unit>
+      <trans-unit id="G06B315" resname="Save transform">
+        <source>Save transform</source>
+        <target state="translated">Get transformation</target>
+      </trans-unit>
+      <trans-unit id="3QL4jFg" resname="Back to data flow">
+        <source>Back to data flow</source>
+        <target state="translated">Tilbage til data-flow</target>
+      </trans-unit>
+      <trans-unit id="vT2NFVz" resname="New transform">
+        <source>New transform</source>
+        <target state="translated">Ny transformation</target>
+      </trans-unit>
+      <trans-unit id="jMp4j5X" resname="Data flow transforms">
+        <source>Data flow transforms</source>
+        <target state="translated">Data-flow-transformationer</target>
+      </trans-unit>
+      <trans-unit id="C7ltHdC" resname="Edit data flow">
+        <source>Edit data flow</source>
+        <target state="translated">Rediger data-flow</target>
+      </trans-unit>
+      <trans-unit id="lNqwQP0" resname="Back to data flow list">
+        <source>Back to data flow list</source>
+        <target state="translated">Tilbage til data-flow-listen</target>
+      </trans-unit>
+      <trans-unit id="zsOpuJs" resname="Data">
+        <source>Data</source>
+        <target state="translated">Data</target>
+      </trans-unit>
+      <trans-unit id="LVtDGxZ" resname="Transforms">
+        <source>Transforms</source>
+        <target state="translated">Transformationer</target>
+      </trans-unit>
+      <trans-unit id="qnP4aCJ" resname="First step">
+        <source>First step</source>
+        <target state="translated">Først skridt</target>
+      </trans-unit>
+      <trans-unit id="_DlWXXI" resname="Run to this step">
+        <source>Run to this step</source>
+        <target state="translated">Kør til dette skridt</target>
+      </trans-unit>
+      <trans-unit id="p5GDEj9" resname="Delete transform">
+        <source>Delete transform</source>
+        <target state="translated">Slet transformation</target>
+      </trans-unit>
+      <trans-unit id="A.DIHka" resname="Step %step% of %total%">
+        <source>Step %step% of %total%</source>
+        <target state="translated">Skridt %step% af %total%</target>
+      </trans-unit>
+      <trans-unit id="LOk_KF8" resname="Change type">
+        <source>Change type</source>
+        <target state="translated">Skift type</target>
+      </trans-unit>
+      <trans-unit id="LF3W9UE" resname="Merge flows">
+        <source>Merge flows</source>
+        <target state="translated">Flet flow</target>
+      </trans-unit>
+      <trans-unit id="t_.mYQp" resname="Rename columns">
+        <source>Rename columns</source>
+        <target state="translated">Omdøb kolonner</target>
+      </trans-unit>
+      <trans-unit id="zHct9Mf" resname="Select columns">
+        <source>Select columns</source>
+        <target state="translated">Vælg kolonner</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
