@@ -37,6 +37,16 @@
                                 {{ 'Jobs'|trans({}, 'data_flow_job') }}
                             </a>
                         </li>
+
+                        {% if is_granted('ROLE_USER_ADMIN') %}
+                            <li class="nav-item">
+                                <a href="{{ path('user_index') }}" class="nav-link {% if app.request.get('_route') == 'user_index' %}active{% endif %}">
+                                    <i class="fas {{ iconClass('users') }} mr-2"></i>
+                                    {{ 'Users'|trans({}, 'user') }}
+                                </a>
+                            </li>
+                        {% endif %}
+
                         {% if app.user|default(false) %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>

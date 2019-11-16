@@ -1,6 +1,19 @@
 App\Entity\User:
-    super-admin:
+    user-super-admin:
         username: super-admin@example.com
         email: super-admin@example.com
         plain_password: password
+        enabled: true
+        roles: [ROLE_SUPER_ADMIN]
+
+    user-test:
+        username: test@example.com
+        email: test@example.com
+        plain_password: test-password
+        enabled: true
+
+    user-{1..8}:
+        username: 'user<current()>\@example.com'
+        email: 'user<current()>\@example.com'
+        plain_password: 'user<current()>-password'
         enabled: true

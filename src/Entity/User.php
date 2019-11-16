@@ -12,21 +12,23 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository");
  * @ORM\Table(name="fos_user")
+ * @UniqueEntity("email")
  */
 class User extends BaseUser
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     protected $id;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

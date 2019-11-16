@@ -18,7 +18,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191113093420 extends AbstractMigration
+final class Version20191114114931 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -30,7 +30,9 @@ final class Version20191113093420 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE data_source DROP url');
+        $this->addSql('CREATE TABLE data_flow_collaborator (data_flow_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', user_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', INDEX IDX_F35E17A31ABD5BEA (data_flow_id), INDEX IDX_F35E17A3A76ED395 (user_id), PRIMARY KEY(data_flow_id, user_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE data_flow_collaborator ADD CONSTRAINT FK_F35E17A31ABD5BEA FOREIGN KEY (data_flow_id) REFERENCES data_flow (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE data_flow_collaborator ADD CONSTRAINT FK_F35E17A3A76ED395 FOREIGN KEY (user_id) REFERENCES fos_user (id) ON DELETE CASCADE');
     }
 
     public function down(Schema $schema): void
@@ -38,6 +40,6 @@ final class Version20191113093420 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE data_source ADD url VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('DROP TABLE data_flow_collaborator');
     }
 }

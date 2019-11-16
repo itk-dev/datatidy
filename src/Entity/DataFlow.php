@@ -10,10 +10,10 @@
 
 namespace App\Entity;
 
+use App\Traits\BlameableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -89,6 +89,12 @@ class DataFlow
      */
     private $jobs;
 
+    /*
+     * @ORM\ManyToMany(targetEntity="App\Entity\User")
+     * @ORM\JoinTable(name="data_flow_collaborator")
+     */
+    private $collaborators;
+
     public function __construct()
     {
         $this->transforms = new ArrayCollection();
@@ -96,6 +102,7 @@ class DataFlow
         $this->ttl = 60 * 60;
         $this->dataTargets = new ArrayCollection();
         $this->jobs = new ArrayCollection();
+        $this->collaborators = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -280,6 +287,23 @@ class DataFlow
         return $this;
     }
 
+    /**
+     * @return Collection|User[]
+     */
+    public function getCollaborators(): Collection
+    {
+        return $this->collaborators;
+    }
+
+    public function addCollaborator(User $collaborator): self
+    {
+        if (!$this->collaborators->contains($collaborator)) {
+            $this->collaborators[] = $collaborator;
+        }
+
+        return $this;
+    }
+
     public function removeJob(DataFlowJob $job): self
     {
         if ($this->jobs->contains($job)) {
@@ -288,6 +312,15 @@ class DataFlow
             if ($job->getDataFlow() === $this) {
                 $job->setDataFlow(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function removeCollaborator(User $collaborator): self
+    {
+        if ($this->collaborators->contains($collaborator)) {
+            $this->collaborators->removeElement($collaborator);
         }
 
         return $this;
