@@ -12,6 +12,7 @@ namespace App\Form\Type;
 
 use App\Entity\DataFlow;
 use App\Entity\DataSource;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -26,6 +27,12 @@ class DataFlowType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
+            // @TODO: Use AJAX to load the list of users.
+            ->add('collaborators', EntityType::class, [
+                'class' => User::class,
+                'multiple' => true,
+                'expanded' => true,
+            ])
             ->add('ttl', IntegerType::class)
             ->add('dataSource', EntityType::class, [
                 'class' => DataSource::class,
