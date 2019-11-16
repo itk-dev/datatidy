@@ -1,8 +1,9 @@
 {% extends 'layout.html.twig' %}
+{% trans_default_domain 'user' %}
 
-{% block title 'New User'|trans %}
+{% block title 'New user'|trans %}
 
-{% block header 'Add User'|trans %}
+{% block header 'Add user'|trans %}
 
 {% block content %}
     {{ include('user/_form.html.twig') }}
