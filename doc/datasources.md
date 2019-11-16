@@ -1,84 +1,60 @@
 # Data Sources
 
-When adding a new Data Source entity, there are a few rules you should follow:
+A *Data Source* is a service that a data flow uses to pull data from.
 
-- The new class should be placed in the src/Entity folder.
-- The name of the class should end in DataSource e.g. JsonDataSource.
-- The class should extend the AbstractDataSource class.
-- The new class should be added to the discriminator map in the AbstractDataSource class.
-- A new form type should be created in the src/Form folder
-  - The name of the new form type should be the entity class name followed by type e.g. JsonDataSourceType
+## Implementing a data source
 
-## Step by step - XmlDataSource example
+When adding a new Data Source, there are a few rules you should follow:
 
-Create the entity:
+- The new Data Source class should implement the [`DataSourceInterface`](../src/DataSource/DataSourceInterface.php).
+- The new Data Source class should be annotated with the [`DataSource`](../src/Annotation/DataSource.php) annotation.
+- The new Data Source should be added as a service and tagged with datatidy.data_source.
 
-```bash
-docker-compose exec phpfpm bin/console make:entity XmlDataSource
-```
+### Step by step - CsvDataSource example
 
-Make sure it extends the AbstractDataSource class:
+Implement the DataSourceInterface:
 
 ```php
 <?php
 
-namespace App\Entity;
+namespace Examples\DataSource;
 
-class XmlDataSource extends AbstractDataSource
+use App\DataSource\AbstractHttpDataSource;
+use League\Csv\Reader;
+
+class CsvDataSource extends AbstractHttpDataSource implements DataSourceInterface
 {
-    ...
+    public function pull()
+    {
+        $response = $this->getResponse();
+        $reader = Reader::createFromString($response);
+
+        return $reader->getRecords();
+    }
 }
 ```
-
-Add the new DataSource class to the discriminator map in the AbstractDataSource class:
+Then add a `DataSource` annotation:
 
 ```php
-<?php 
+<?php
 
-namespace App\Entity;
+...
+use App\Annotation\DataSource;
 
- ...
- * @ORM\DiscriminatorMap({"json" = "JsonDataSource", "csv" = "CsvDataSource", "xml" = "XmlDataSource"})
+/**
+ * @DataSource(name="CSV", description="Pulls from a CSV data source")
  */
-abstract class AbstractDataSource
+class CsvDataSource extends AbstractHttpDataSource implements DataSourceInterface
 {
     ...
 }
-
 ```
 
-Create and run the migrations:
+Tag the new Data Source with datatidy.date_source:
 
-```bash
-docker-compose exec phpfpm bin/console make:migration
-docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
+```yaml
+# config/services.yaml
+services:
+    Examples\DataSource\CsvDataSource:
+      tags: ['datatidy.data_source']
 ```
-
-Create the form type for the new DataSource entity:
-
-```php
-<?php
-
-namespace App\Form;
-
-class XmlDataSourceType extends AbstractDataSourceType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        // Reuse the form already built in the parent:
-        parent::buildForm($builder, $options);
-
-        // Add your own elements:
-        $builder->add(...);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => XmlDataSource::class,
-        ]);
-    }
-}
-```
-
-You are all done.
