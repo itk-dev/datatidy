@@ -37,7 +37,6 @@ class DataFlowVoter extends Voter
             return false;
         }
 
-        // only vote on Post objects inside this voter
         if (!$subject instanceof DataFlow) {
             return false;
         }
@@ -59,7 +58,6 @@ class DataFlowVoter extends Voter
             return true;
         }
 
-        // you know $subject is a Post object, thanks to supports
         /** @var DataFlow $dataFlow */
         $dataFlow = $subject;
 
