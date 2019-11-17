@@ -37,17 +37,6 @@ services:
         resource: '../src/DataTarget'
         tags: ['datatidy.data_target']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-    data_source_type_converter:
-        class: App\Request\ParamConverter\FormatToFormParamConverter
-        tags:
-            - { name: request.param_converter, converter: format_to_form }
-    data_source_to_form:
-        class: App\Request\ParamConverter\DataSourceToFormParamConverter
-        tags:
-            - { name: request.param_converter, converter: data_source_to_form }
-
     App\DataSource\:
         resource: '../src/DataSource'
         tags: ['datatidy.data_source']
