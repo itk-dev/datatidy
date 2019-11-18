@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class DataFlowProduceCommand extends Command
+class DataFlowProduceJobsCommand extends Command
 {
     protected static $defaultName = 'datatidy:data-flow:produce-jobs';
 
