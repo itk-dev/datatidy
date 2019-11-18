@@ -58,7 +58,6 @@ class DataFlowProduceJobsCommand extends Command
 
         $dataFlowsToRun = $this->getDataFlowsToRun($dataFlowCandidates);
 
-        /** @var DataFlow $dataFlow */
         foreach ($dataFlowsToRun as $dataFlow) {
             $job = new DataFlowJob();
             $job->setStatus(DataFlowJob::STATUS_CREATED);
@@ -80,6 +79,10 @@ class DataFlowProduceJobsCommand extends Command
         }
     }
 
+    /**
+     * @param array $dataFlowCandidates
+     * @return DataFlow[]
+     */
     private function getDataFlowsToRun(array $dataFlowCandidates): array
     {
         return array_filter($dataFlowCandidates, function ($dataFlow) {
