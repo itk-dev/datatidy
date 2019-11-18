@@ -89,7 +89,7 @@ class DataFlow
      */
     private $jobs;
 
-    /*
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User")
      * @ORM\JoinTable(name="data_flow_collaborator")
      */
