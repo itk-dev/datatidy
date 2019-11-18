@@ -11,13 +11,14 @@
 namespace App\Controller;
 
 use App\Entity\DataFlowJob;
+use App\Entity\User;
 use App\Repository\DataFlowJobRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/data/flow2/job", name="data_flow_job_")
+ * @Route("/job", name="data_flow_job_")
  */
 class DataFlowJobController extends AbstractController
 {
@@ -26,8 +27,11 @@ class DataFlowJobController extends AbstractController
      */
     public function index(DataFlowJobRepository $dataFlowJobRepository): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         return $this->render('data_flow_job/index.html.twig', [
-            'data_flow_jobs' => $dataFlowJobRepository->findAll(),
+            'data_flow_jobs' => $dataFlowJobRepository->findByUser($user),
         ]);
     }
 

@@ -11,6 +11,7 @@
 namespace App\Repository;
 
 use App\Entity\DataFlowJob;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -27,8 +28,24 @@ class DataFlowJobRepository extends ServiceEntityRepository
         parent::__construct($registry, DataFlowJob::class);
     }
 
-    public function findAll(): array
+    /**
+     * Fetches all data flow jobs that the user is either the creator or collaborator of.
+     *
+     * @param User $user
+     * @param string $order
+     * @return DataFlowJob[]
+     */
+    public function findByUser(User $user, string $order = 'DESC'): array
     {
-        return $this->findBy([], ['startedAt' => 'desc']);
+        return $this->createQueryBuilder('dataFlowJob')
+            ->leftJoin('dataFlowJob.dataFlow', 'dataFlow')
+            ->andWhere('dataFlow.createdBy = :user')
+            ->leftJoin('dataFlow.collaborators', 'data_flow_collaborators')
+            ->orWhere(':user MEMBER OF dataFlow.collaborators')
+            ->setParameter(':user', $user)
+            ->orderBy('dataFlowJob.startedAt', ':order')
+            ->setParameter(':order', $order)
+            ->getQuery()
+            ->execute();
     }
 }
