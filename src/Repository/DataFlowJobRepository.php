@@ -42,8 +42,7 @@ class DataFlowJobRepository extends ServiceEntityRepository
             ->leftJoin('dataFlow.collaborators', 'data_flow_collaborators')
             ->orWhere(':user MEMBER OF dataFlow.collaborators')
             ->setParameter(':user', $user)
-            ->orderBy('dataFlowJob.startedAt', ':order')
-            ->setParameter(':order', $order)
+            ->orderBy('dataFlowJob.startedAt', $order)
             ->getQuery()
             ->execute();
     }
