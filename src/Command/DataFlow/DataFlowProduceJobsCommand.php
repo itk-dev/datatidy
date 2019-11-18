@@ -85,8 +85,7 @@ class DataFlowProduceJobsCommand extends Command
      */
     private function getDataFlowsToRun(array $dataFlowCandidates): array
     {
-        return array_filter($dataFlowCandidates, function ($dataFlow) {
-            /** @var DataFlow $dataFlow */
+        return array_filter($dataFlowCandidates, function (DataFlow $dataFlow) {
 
             // If data flow hasn't run yet at all is should do it now
             if (empty($dataFlow->getLastRunAt())) {
