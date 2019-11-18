@@ -11,7 +11,6 @@
 namespace App\Command\DataFlow;
 
 use App\DataFlow\DataFlowManager;
-use App\DataSet\DataSet;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Helper\Table;
@@ -63,6 +62,16 @@ class DataFlowRunCommand extends Command
 
         $run = $this->manager->run($flow, $options);
 
+        // @TOOO: https://symfony.com/blog/new-in-symfony-4-4-horizontal-tables-and-definition-lists-in-console-commands
+        $table = new Table($output);
+        $table->addRows([
+            ['Data flow', $flow->getName()],
+            ['Complete?', $run->isComplete() ? 'yes' : 'no'],
+            ['Exception?', $run->hasException() ? 'yes' : 'no'],
+            ['Published?', $run->isPublished() ? 'yes' : 'no'],
+        ]);
+        $table->render();
+
         if ($output->isVerbose()) {
             $table = new Table($output);
             $headers = [
@@ -74,25 +83,22 @@ class DataFlowRunCommand extends Command
                 $headers[] = 'transformer options';
             }
             $table->setHeaders($headers);
-            foreach ($run->getResults() as $index => $result) {
+            foreach ($run->getDataSets() as $index => $dataSet) {
                 $row = [
                     $index,
-                    \get_class($result),
+                    \get_class($dataSet),
                 ];
 
-                if ($result instanceof \Exception) {
-                    $row[] = $result->getMessage();
-                } elseif ($result instanceof DataSet) {
-                    if ($result->getTransform()) {
-                        $row[] = $result->getTransform()->getTransformer();
-                        if ($showOptions) {
-                            $row[] = Yaml::dump($result->getTransform()->getTransformerOptions());
-                        }
+                if ($dataSet->getTransform()) {
+                    $row[] = $dataSet->getTransform()->getTransformer();
+                    if ($showOptions) {
+                        $row[] = Yaml::dump($dataSet->getTransform()->getTransformerOptions());
                     }
                 }
 
                 $table->addRow($row);
             }
+
             $table->render();
         }
 

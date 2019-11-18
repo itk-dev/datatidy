@@ -37,13 +37,23 @@ class DataFlowRunResult
     /** @var \Exception */
     private $lookaheadException;
 
+    /** @var bool */
+    private $published = false;
+
+    /** @var ArrayCollection */
+    private $publishResults;
+
+    /** @var \Exception */
+    private $publishExceptions;
+
     public function __construct(DataFlow $dataFlow, array $options)
     {
         $this->dataFlow = $dataFlow;
         $this->options = $options;
         $this->dataSets = new ArrayCollection();
         $this->exceptions = new ArrayCollection();
-        $this->results = new ArrayCollection();
+        $this->publishResults = new ArrayCollection();
+        $this->publishExceptions = new ArrayCollection();
     }
 
     public function getDataFlow(): DataFlow
@@ -59,7 +69,6 @@ class DataFlowRunResult
     public function addDataSet(DataSet $dataSet): self
     {
         $this->dataSets[] = $dataSet;
-        $this->results[] = $dataSet;
 
         return $this;
     }
@@ -101,7 +110,6 @@ class DataFlowRunResult
     public function addException(\Exception $exception): self
     {
         $this->exceptions[] = $exception;
-        $this->results[] = $exception;
 
         return $this;
     }
@@ -134,8 +142,34 @@ class DataFlowRunResult
         return $this->dataFlow->getTransforms()->count() + 1 === $this->dataSets->count();
     }
 
-    public function getResults(): ArrayCollection
+    public function isPublished(): bool
     {
-        return $this->results;
+        return $this->published && $this->isComplete() && 0 === $this->getPublishExceptions()->count();
+    }
+
+    public function setPublished(bool $published): self
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    public function addPublishResult($result): self
+    {
+        $this->publishResults[] = $result;
+
+        return $this;
+    }
+
+    public function addPublishException(\Exception $exception): self
+    {
+        $this->publishExceptions[] = $exception;
+
+        return $this;
+    }
+
+    public function getPublishExceptions(): ArrayCollection
+    {
+        return $this->publishExceptions;
     }
 }

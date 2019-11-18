@@ -165,7 +165,12 @@ class DataFlowManager
         // Publish result only if all transforms ran successfully.
         if ($options['publish'] && $run->isComplete()) {
             $result = $run->getLastDataSet();
-            $this->publish($result, $dataFlow->getDataTargets());
+            $this->publish($run, $result, $dataFlow->getDataTargets());
+            if ($run->isPublished()) {
+                $dataFlow->setLastRunAt(new \DateTime());
+                $this->entityManager->persist($dataFlow);
+                $this->entityManager->flush($dataFlow);
+            }
         }
 
         return $run;
@@ -174,20 +179,29 @@ class DataFlowManager
     /**
      * Publish final result to all data targets defined on the data flow.
      */
-    private function publish(DataSet $result, Collection $dataTargets)
+    private function publish(DataFlowRunResult $run, DataSet $result, Collection $dataTargets)
     {
         $rows = $result->getRows();
         $this->dataTargetManager->setLogger($this->logger);
         foreach ($dataTargets as $dataTarget) {
-            $this->debug(sprintf('publish: %s', $dataTarget));
-            $target = $this->dataTargetManager->getDataTarget($dataTarget->getDataTarget(), $dataTarget->getDataTargetOptions());
-            $target->setLogger($this->logger);
-            $data = $dataTarget->getData() ?? [];
-            $target->publish($rows, $result->getColumns(), $data);
-            $dataTarget->setData($data);
-            $this->entityManager->persist($dataTarget);
-            $this->entityManager->flush();
+            try {
+                $this->debug(sprintf('publish: %s', $dataTarget));
+                $target = $this->dataTargetManager->getDataTarget(
+                    $dataTarget->getDataTarget(),
+                    $dataTarget->getDataTargetOptions()
+                );
+                $target->setLogger($this->logger);
+                $data = $dataTarget->getData() ?? [];
+                $target->publish($rows, $result->getColumns(), $data);
+                $dataTarget->setData($data);
+                $this->entityManager->persist($dataTarget);
+                $run->addPublishResult(true);
+            } catch (\Exception $exception) {
+                $run->addPublishException($exception);
+            }
         }
+        $run->setPublished(true);
+        $this->entityManager->flush();
     }
 
     /**
