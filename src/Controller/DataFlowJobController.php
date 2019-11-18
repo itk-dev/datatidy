@@ -17,12 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/data/flow2/job")
+ * @Route("/data/flow2/job", name="data_flow_job_")
  */
 class DataFlowJobController extends AbstractController
 {
     /**
-     * @Route("/", name="data_flow_job_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      */
     public function index(DataFlowJobRepository $dataFlowJobRepository): Response
     {
@@ -32,7 +32,7 @@ class DataFlowJobController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="data_flow_job_show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET"})
      */
     public function show(DataFlowJob $dataFlowJob): Response
     {
