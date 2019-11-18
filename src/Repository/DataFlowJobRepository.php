@@ -10,6 +10,7 @@
 
 namespace App\Repository;
 
+use App\Entity\DataFlow;
 use App\Entity\DataFlowJob;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -45,6 +46,34 @@ class DataFlowJobRepository extends ServiceEntityRepository
             ->setParameter(':user', $user)
             ->orderBy('dataFlowJob.startedAt', ':order')
             ->setParameter(':order', $order)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @return DataFlowJob[]
+     */
+    public function findAllNonComplete(): array
+    {
+        return $this->createQueryBuilder('dataFlowJob')
+            ->andWhere('status != :status')
+            ->setParameter(':status', DataFlowJob::STATUS_COMPLETED)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @param DataFlow $dataFlow
+     * @return DataFlow[]
+     */
+    public function findActiveJobsByDataFlow(DataFlow $dataFlow): array
+    {
+        return $this->createQueryBuilder('dataFlowJob')
+            ->leftJoin('dataFlowJob.dataFlow', 'dataFlow')
+            ->where('dataFlowJob.dataFlow = :dataFlow')
+            ->setParameter(':dataFlow', $dataFlow)
+            ->andWhere('dataFlowJob.status NOT IN (:statuses)')
+            ->setParameter(':statuses', [DataFlowJob::STATUS_COMPLETED, DataFlowJob::STATUS_FAILED])
             ->getQuery()
             ->execute();
     }

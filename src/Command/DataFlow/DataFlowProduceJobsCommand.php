@@ -15,6 +15,7 @@ use App\Entity\DataFlowJob;
 use App\Event\DataFlowJobCreatedEvent;
 use App\Event\DataFlowJobQueuedEvent;
 use App\Message\RunDataFlowJobMessage;
+use App\Repository\DataFlowJobRepository;
 use App\Repository\DataFlowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -28,18 +29,21 @@ class DataFlowProduceJobsCommand extends Command
     protected static $defaultName = 'datatidy:data-flow:produce-jobs';
 
     private $dataFlowRepository;
+    private $dataFlowJobRepository;
     private $entityManager;
     private $eventDispatcher;
     private $messageBus;
 
     public function __construct(
         DataFlowRepository $dataFlowRepository,
+        DataFlowJobRepository $dataFlowJobRepository,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
         MessageBusInterface $messageBus
     ) {
         parent::__construct();
         $this->dataFlowRepository = $dataFlowRepository;
+        $this->dataFlowJobRepository = $dataFlowJobRepository;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->messageBus = $messageBus;
@@ -59,10 +63,14 @@ class DataFlowProduceJobsCommand extends Command
         $dataFlowsToRun = $this->getDataFlowsToRun($dataFlowCandidates);
 
         foreach ($dataFlowsToRun as $dataFlow) {
+
             $job = new DataFlowJob();
             $job->setStatus(DataFlowJob::STATUS_CREATED);
             $job->setDataFlow($dataFlow);
 
+            $dataFlow->setLastRunAt(new \DateTime());
+
+            $this->entityManager->persist($dataFlow);
             $this->entityManager->persist($job);
             $this->entityManager->flush();
 
@@ -93,6 +101,12 @@ class DataFlowProduceJobsCommand extends Command
             // If data flow hasn't run yet at all is should do it now
             if (empty($dataFlow->getLastRunAt())) {
                 return true;
+            }
+
+            // If there already is an active job (not completed or failed jobs), if so we should not schedule a new job
+            $activeJobs = $this->dataFlowJobRepository->findActiveJobsByDataFlow($dataFlow);
+            if (!empty($activeJobs)) {
+                return false;
             }
 
             // Difference in seconds between now and last time the data flow ran

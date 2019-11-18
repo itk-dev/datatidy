@@ -52,8 +52,9 @@ class RunDataFlowJobMessageHandler implements MessageHandlerInterface
 
         $job->setStartedAt(new \DateTime());
         $job->setStatus(DataFlowJob::STATUS_RUNNING);
+
         $this->entityManager->persist($job);
-        $this->entityManager->flush($job);
+        $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
             new DataFlowJobRunningEvent($job)
@@ -74,9 +75,6 @@ class RunDataFlowJobMessageHandler implements MessageHandlerInterface
         }
 
         $this->entityManager->persist($job);
-
-        $dataFlow->setLastRunAt(new \DateTime());
-        $this->entityManager->persist($dataFlow);
         $this->entityManager->flush();
     }
 }
