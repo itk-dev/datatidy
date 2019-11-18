@@ -32,8 +32,6 @@ class DataFlowJobRepository extends ServiceEntityRepository
     /**
      * Fetches all data flow jobs that the user is either the creator or collaborator of.
      *
-     * @param User $user
-     * @param string $order
      * @return DataFlowJob[]
      */
     public function findByUser(User $user, string $order = 'DESC'): array
@@ -63,7 +61,6 @@ class DataFlowJobRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param DataFlow $dataFlow
      * @return DataFlow[]
      */
     public function findActiveJobsByDataFlow(DataFlow $dataFlow): array

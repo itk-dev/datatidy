@@ -63,7 +63,6 @@ class DataFlowProduceJobsCommand extends Command
         $dataFlowsToRun = $this->getDataFlowsToRun($dataFlowCandidates);
 
         foreach ($dataFlowsToRun as $dataFlow) {
-
             $job = new DataFlowJob();
             $job->setStatus(DataFlowJob::STATUS_CREATED);
             $job->setDataFlow($dataFlow);
@@ -88,8 +87,8 @@ class DataFlowProduceJobsCommand extends Command
     }
 
     /**
-     * @param array $dataFlowCandidates
      * @return DataFlow[]
+     *
      * @throws \Exception
      */
     private function getDataFlowsToRun(array $dataFlowCandidates): array
@@ -97,7 +96,6 @@ class DataFlowProduceJobsCommand extends Command
         $now = new \DateTime();
 
         return array_filter($dataFlowCandidates, function (DataFlow $dataFlow) use ($now) {
-
             // If data flow hasn't run yet at all is should do it now
             if (empty($dataFlow->getLastRunAt())) {
                 return true;
