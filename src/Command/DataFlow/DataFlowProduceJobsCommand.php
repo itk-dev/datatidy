@@ -82,10 +82,13 @@ class DataFlowProduceJobsCommand extends Command
     /**
      * @param array $dataFlowCandidates
      * @return DataFlow[]
+     * @throws \Exception
      */
     private function getDataFlowsToRun(array $dataFlowCandidates): array
     {
-        return array_filter($dataFlowCandidates, function (DataFlow $dataFlow) {
+        $now = new \DateTime();
+
+        return array_filter($dataFlowCandidates, function (DataFlow $dataFlow) use ($now) {
 
             // If data flow hasn't run yet at all is should do it now
             if (empty($dataFlow->getLastRunAt())) {
@@ -93,7 +96,7 @@ class DataFlowProduceJobsCommand extends Command
             }
 
             // Difference in seconds between now and last time the data flow ran
-            $seconds = (new \DateTime())->getTimestamp() - $dataFlow->getLastRunAt()->getTimestamp();
+            $seconds = $now->getTimestamp() - $dataFlow->getLastRunAt()->getTimestamp();
 
             if ($dataFlow->getFrequency() < $seconds) {
                 return true;
