@@ -31,6 +31,12 @@ class DataFlowRunResult
     /** @var ArrayCollection */
     private $results;
 
+    /** @var DataSet */
+    private $lookahead;
+
+    /** @var \Exception */
+    private $lookaheadException;
+
     public function __construct(DataFlow $dataFlow, array $options)
     {
         $this->dataFlow = $dataFlow;
@@ -66,6 +72,30 @@ class DataFlowRunResult
     public function getLastDataSet(): ?DataSet
     {
         return $this->isSuccess() ? $this->dataSets->last() : null;
+    }
+
+    public function getLookahead(): ?DataSet
+    {
+        return $this->lookahead;
+    }
+
+    public function setLookahead(DataSet $lookahead): self
+    {
+        $this->lookahead = $lookahead;
+
+        return $this;
+    }
+
+    public function getLookaheadException(): ?\Exception
+    {
+        return $this->lookaheadException;
+    }
+
+    public function setLookaheadException(\Exception $lookaheadException): self
+    {
+        $this->lookaheadException = $lookaheadException;
+
+        return $this;
     }
 
     public function addException(\Exception $exception): self

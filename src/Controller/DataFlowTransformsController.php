@@ -65,16 +65,16 @@ class DataFlowTransformsController extends AbstractController
     public function preview(Request $request, DataFlow $dataFlow, DataTransform $transform = null)
     {
         $totalNumberOfSteps = $dataFlow->getTransforms()->count();
-        $steps = null !== $transform ? $transform->getPosition() + 1 : 0;
+        $numberOfSteps = null !== $transform ? $transform->getPosition() + 1 : 0;
 
         $result = $this->dataFlowManager->run($dataFlow, [
-            'steps' => $steps,
+            'number_of_steps' => $numberOfSteps,
         ]);
 
         return $this->render('data_flow/transforms/preview.html.twig', [
             'data_flow' => $dataFlow,
             'result' => $result,
-            'step' => $steps,
+            'number_of_steps' => $numberOfSteps,
             'total_steps' => $totalNumberOfSteps,
         ]);
     }
@@ -106,10 +106,10 @@ class DataFlowTransformsController extends AbstractController
     public function edit(Request $request, DataFlow $dataFlow, DataTransform $transform)
     {
         $totalNumberOfSteps = $dataFlow->getTransforms()->count();
-        $steps = null !== $transform ? $transform->getPosition() : 0;
+        $numberOfSteps = null !== $transform ? $transform->getPosition() : 0;
 
         $columns = $this->dataFlowManager->runColumns($dataFlow, [
-            'steps' => $steps,
+            'number_of_steps' => $numberOfSteps,
             'return_exceptions' => true,
         ]);
 

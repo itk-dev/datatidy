@@ -22,6 +22,7 @@ use App\Traits\LogTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DataFlowManager
 {
@@ -95,19 +96,17 @@ class DataFlowManager
         return $this->dataSourceManager;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function runColumns(DataFlow $dataFlow, array $options = [])
+    public function runColumns(DataFlow $dataFlow, array $options = []): ArrayCollection
     {
+        $options = $this->resolveRunOptions($options);
         $dataSet = $this->getDataSet($dataFlow);
 
         $columns = $dataSet->getColumns();
-        $steps = $options['steps'] ?? PHP_INT_MAX;
+        $numberOfSteps = $options['number_of_steps'] ?? PHP_INT_MAX;
 
         /** @var DataTransform $transform */
         foreach ($dataFlow->getTransforms() as $index => $transform) {
-            if ($index >= $steps) {
+            if ($index >= $numberOfSteps) {
                 break;
             }
 
@@ -123,15 +122,16 @@ class DataFlowManager
 
     public function run(DataFlow $dataFlow, array $options = []): DataFlowRunResult
     {
+        $options = $this->resolveRunOptions($options);
         $run = new DataFlowRunResult($dataFlow, $options);
 
         $dataSet = $this->getDataSet($dataFlow);
 
         $run->addDataSet($dataSet);
-        $steps = $options['steps'] ?? PHP_INT_MAX;
-        /** @var DataTransform $transform */
-        foreach ($dataFlow->getTransforms() as $index => $transform) {
-            if ($index >= $steps) {
+        $numberOfSteps = $options['number_of_steps'] ?? PHP_INT_MAX;
+        $transforms = $dataFlow->getTransforms();
+        foreach ($transforms as $index => $transform) {
+            if ($index >= $numberOfSteps) {
                 break;
             }
             try {
@@ -148,8 +148,22 @@ class DataFlowManager
             }
         }
 
+        if ($run->isSuccess() && $numberOfSteps < \count($transforms) + 1) {
+            $transform = $transforms[$numberOfSteps];
+            try {
+                $transformer = $this->transformerManager->getTransformer(
+                    $transform->getTransformer(),
+                    $transform->getTransformerOptions()
+                );
+                $dataSet = $transformer->transform($dataSet)->setTransform($transform);
+                $run->setLookahead($dataSet);
+            } catch (\Exception $exception) {
+                $run->setLookaheadException($exception);
+            }
+        }
+
         // Publish result only if all transforms ran successfully.
-        if (($options['publish'] ?? false) && $run->isComplete()) {
+        if ($options['publish'] && $run->isComplete()) {
             $result = $run->getLastDataSet();
             $this->publish($result, $dataFlow->getDataTargets());
         }
@@ -157,6 +171,9 @@ class DataFlowManager
         return $run;
     }
 
+    /**
+     * Publish final result to all data targets defined on the data flow.
+     */
     private function publish(DataSet $result, Collection $dataTargets)
     {
         $rows = $result->getRows();
@@ -184,5 +201,21 @@ class DataFlowManager
         $dataSet = $this->dataSetManager->createDataSetFromData($dataFlow->getId(), $data);
 
         return $dataSet;
+    }
+
+    private function resolveRunOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $this->configureRunOptions($resolver);
+
+        return $resolver->resolve($options);
+    }
+
+    private function configureRunOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'number_of_steps' => null,
+            'publish' => false,
+        ]);
     }
 }
