@@ -90,6 +90,8 @@ MAILER_FROM_EMAIL=info@example.com
 MAILER_FROM_NAME=Info
 
 MESSENGER_TRANSPORT_DSN=redis://url:port/messages
+# In minutes how long time a non-complete job should timeout
+JOB_TIMEOUT_THRESHOLD=15
 ```
 
 Install the dependencies and build the assets:
@@ -132,6 +134,16 @@ You'll need to run the producer every minute to create jobs the consumer can pro
 
 ```crontab
 * * * * * /usr/bin/env php path/to/datatidy/bin/console datatidy:data-flow:produce-jobs > path/to/output.file
+```
+
+#### Handling long running jobs
+
+Sometimes and for different reasons a job may run for a long time. And because jobs only can be created if there is no other active jobs for a DataFlow, you need to set those jobs in a non-active state.
+To help you doing this there is a command available for doing this. It uses the JOB_TIMEOUT_THRESHOLD environment variable to cancel all jobs that have been running without finishing after the threshold is reached.
+This command should be run regularly and you could use cron with the following settings to run the command every 15 minutes:
+
+```crontab
+*/15 * * * * /usr/bin/env php /path/to/datatidy/bin/console datatidy:data-flow:timeout-jobs > path/to/output.file
 ```
 
 ## Documentation
