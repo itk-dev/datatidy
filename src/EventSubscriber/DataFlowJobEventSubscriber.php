@@ -12,12 +12,12 @@ namespace App\EventSubscriber;
 
 use App\Entity\DataFlowJob;
 use App\Entity\DataFlowJobLogEntry;
-use App\Event\DataFlowJobTimeOutEvent;
 use App\Event\DataFlowJobCompletedEvent;
 use App\Event\DataFlowJobCreatedEvent;
 use App\Event\DataFlowJobFailedEvent;
 use App\Event\DataFlowJobQueuedEvent;
 use App\Event\DataFlowJobRunningEvent;
+use App\Event\DataFlowJobTimeOutEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

@@ -1,8 +1,14 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\Command\DataFlow;
-
 
 use App\Entity\DataFlowJob;
 use App\Event\DataFlowJobTimeOutEvent;
@@ -35,16 +41,14 @@ class DataFlowTimeoutJobsCommand extends Command
 
         $activeJobs = $this->dataFlowJobRepository->findBy(
             [
-                'status' => [DataFlowJob::STATUS_RUNNING, DataFlowJob::STATUS_CREATED, DataFlowJob::STATUS_QUEUED]
+                'status' => [DataFlowJob::STATUS_RUNNING, DataFlowJob::STATUS_CREATED, DataFlowJob::STATUS_QUEUED],
             ]
         );
 
         foreach ($activeJobs as $job) {
-
             $seconds = $now->getTimestamp() - $job->getCreatedAt()->getTimestamp();
 
             if ($seconds >= $threshold) {
-
                 $job->setStatus(DataFlowJob::STATUS_CANCELLED);
                 $this->eventDispatcher->dispatch(new DataFlowJobTimeOutEvent($job));
             }
