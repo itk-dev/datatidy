@@ -10,12 +10,15 @@ parameters:
     mailer_from_email: '%env(MAILER_FROM_EMAIL)%'
     mailer_from_name: '%env(MAILER_FROM_NAME)%'
     locale: '%env(DEFAULT_LOCALE)%'
+    job_timeout_threshold: '%env(JOB_TIMEOUT_THRESHOLD)%'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $jobTimeoutThreshold: '%job_timeout_threshold%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
