@@ -42,7 +42,7 @@ class DataFlowJobRepository extends ServiceEntityRepository
             ->leftJoin('dataFlow.collaborators', 'data_flow_collaborators')
             ->orWhere(':user MEMBER OF dataFlow.collaborators')
             ->setParameter(':user', $user)
-            ->orderBy('dataFlowJob.startedAt', $order)
+            ->orderBy('dataFlowJob.createdAt', $order)
             ->getQuery()
             ->execute();
     }
@@ -69,7 +69,7 @@ class DataFlowJobRepository extends ServiceEntityRepository
             ->where('dataFlowJob.dataFlow = :dataFlow')
             ->setParameter(':dataFlow', $dataFlow)
             ->andWhere('dataFlowJob.status NOT IN (:statuses)')
-            ->setParameter(':statuses', [DataFlowJob::STATUS_COMPLETED, DataFlowJob::STATUS_FAILED])
+            ->setParameter(':statuses', [DataFlowJob::STATUS_COMPLETED, DataFlowJob::STATUS_FAILED, DataFlowJob::STATUS_CANCELLED])
             ->getQuery()
             ->execute();
     }

@@ -27,6 +27,7 @@ class DataFlowJob
     const STATUS_QUEUED = 'queued';
     const STATUS_COMPLETED = 'completed';
     const STATUS_FAILED = 'failed';
+    const STATUS_CANCELLED = 'cancelled';
 
     /**
      * @ORM\Id
@@ -53,6 +54,7 @@ class DataFlowJob
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\DataFlowJobLogEntry", mappedBy="job")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $logEntries;
 
@@ -91,6 +93,7 @@ class DataFlowJob
             self::STATUS_QUEUED,
             self::STATUS_COMPLETED,
             self::STATUS_FAILED,
+            self::STATUS_CANCELLED,
         ];
 
         if (!\in_array($status, $statuses)) {

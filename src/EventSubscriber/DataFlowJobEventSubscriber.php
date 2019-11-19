@@ -12,6 +12,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\DataFlowJob;
 use App\Entity\DataFlowJobLogEntry;
+use App\Event\DataFlowJobTimeOutEvent;
 use App\Event\DataFlowJobCompletedEvent;
 use App\Event\DataFlowJobCreatedEvent;
 use App\Event\DataFlowJobFailedEvent;
@@ -25,11 +26,13 @@ class DataFlowJobEventSubscriber implements EventSubscriberInterface
 {
     private $entityManager;
     private $translator;
+    private $jobTimeoutThreshold;
 
-    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator)
+    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator, $jobTimeoutThreshold)
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
+        $this->jobTimeoutThreshold = $jobTimeoutThreshold;
     }
 
     /**
@@ -43,6 +46,7 @@ class DataFlowJobEventSubscriber implements EventSubscriberInterface
             DataFlowJobFailedEvent::class => 'onFailed',
             DataFlowJobCompletedEvent::class => 'onCompleted',
             DataFlowJobRunningEvent::class => 'onRunning',
+            DataFlowJobTimeOutEvent::class => 'onTimeOut',
         ];
     }
 
@@ -90,6 +94,15 @@ class DataFlowJobEventSubscriber implements EventSubscriberInterface
             $event->getJob(),
             DataFlowJobLogEntry::LEVEL_INFO,
             $this->translate('Job running')
+        );
+    }
+
+    public function onTimeOut(DataFlowJobTimeOutEvent $event)
+    {
+        $this->log(
+            $event->getJob(),
+            DataFlowJobLogEntry::LEVEL_INFO,
+            $this->translate('Job cancelled as the job has been running in more than %threshold% minutes without completing', ['threshold' => $this->jobTimeoutThreshold])
         );
     }
 
