@@ -1,5 +1,5 @@
 {% extends 'data_flow/transforms/layout.html.twig' %}
-{% trans_default_domain 'data_flow' %}
+{% trans_default_domain 'data_flow_transforms' %}
 
 {% block title %}{{ 'Data flow transforms'|trans }}{% endblock %}
 
@@ -60,4 +60,11 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block translations %}
+    {{ 'Change type'|trans }}
+    {{ 'Merge flows'|trans }}
+    {{ 'Rename columns'|trans }}
+    {{ 'Select columns'|trans }}
 {% endblock %}
