@@ -12,7 +12,7 @@
                 <th>{{ 'Id'|trans }}</th>
                 <th>{{ 'Data flow'|trans }}</th>
                 <th>{{ 'Status'|trans }}</th>
-                <th>{{ 'Started'|trans }}</th>
+                <th>{{ 'Created'|trans }}</th>
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
         </thead>
@@ -22,7 +22,7 @@
                 <td>{{ data_flow_job.id }}</td>
                 <td>{{ data_flow_job.dataFlow.name }}</td>
                 <td>{{ data_flow_job.status }}</td>
-                <td>{{ data_flow_job.startedAt ? data_flow_job.startedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ data_flow_job.createdAt ? data_flow_job.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('data_flow_job_show', {'id': data_flow_job.id}) }}">{{ 'show'|trans }}</a>
                 </td>
