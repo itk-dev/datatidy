@@ -31,6 +31,8 @@ class TwigExtension extends AbstractExtension
                 return 'fa-database';
             case 'users':
                 return 'fa-users';
+            case 'search':
+                return 'fa-search';
             default:
                 return '';
         }
