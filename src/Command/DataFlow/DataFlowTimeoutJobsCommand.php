@@ -15,6 +15,7 @@ use App\Event\DataFlowJobTimeOutEvent;
 use App\Repository\DataFlowJobRepository;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -26,18 +27,27 @@ class DataFlowTimeoutJobsCommand extends Command
     private $dataFlowJobRepository;
     private $jobTimeoutThreshold;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, DataFlowJobRepository $dataFlowJobRepository, $jobTimeoutThreshold)
+    public function __construct(EventDispatcherInterface $eventDispatcher, DataFlowJobRepository $dataFlowJobRepository)
     {
         parent::__construct();
         $this->eventDispatcher = $eventDispatcher;
         $this->dataFlowJobRepository = $dataFlowJobRepository;
-        $this->jobTimeoutThreshold = $jobTimeoutThreshold;
+    }
+
+    public function configure()
+    {
+        $this->addOption('timeout-threshold', 'tt', InputOption::VALUE_OPTIONAL,'In minutes how long to wait before a non-complete job should timeout', 30);
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $timeoutThreshold = $input->getOption('timeout-threshold');
+        if (!\is_int(\intval($timeoutThreshold))) {
+            throw new \InvalidArgumentException('timeout-threshold can only be an integer value.');
+        }
+
         $now = new \DateTime();
-        $threshold = $this->jobTimeoutThreshold * 60;
+        $threshold = $timeoutThreshold * 60;
 
         $activeJobs = $this->dataFlowJobRepository->findBy(
             [
@@ -50,7 +60,7 @@ class DataFlowTimeoutJobsCommand extends Command
 
             if ($seconds >= $threshold) {
                 $job->setStatus(DataFlowJob::STATUS_CANCELLED);
-                $this->eventDispatcher->dispatch(new DataFlowJobTimeOutEvent($job));
+                $this->eventDispatcher->dispatch(new DataFlowJobTimeOutEvent($job, $timeoutThreshold));
             }
         }
     }

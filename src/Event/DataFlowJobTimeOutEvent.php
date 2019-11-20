@@ -10,6 +10,20 @@
 
 namespace App\Event;
 
+use App\Entity\DataFlowJob;
+
 class DataFlowJobTimeOutEvent extends DataFlowJobEvent
 {
+    private $timeoutThreshold;
+
+    public function __construct(DataFlowJob $job, int $timeoutThreshold)
+    {
+        parent::__construct($job);
+        $this->timeoutThreshold = $timeoutThreshold;
+    }
+
+    public function getTimeoutThreshold(): int
+    {
+        return $this->timeoutThreshold;
+    }
 }

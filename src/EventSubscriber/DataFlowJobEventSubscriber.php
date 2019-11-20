@@ -28,11 +28,10 @@ class DataFlowJobEventSubscriber implements EventSubscriberInterface
     private $translator;
     private $jobTimeoutThreshold;
 
-    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator, $jobTimeoutThreshold)
+    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator)
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
-        $this->jobTimeoutThreshold = $jobTimeoutThreshold;
     }
 
     /**
@@ -102,7 +101,7 @@ class DataFlowJobEventSubscriber implements EventSubscriberInterface
         $this->log(
             $event->getJob(),
             DataFlowJobLogEntry::LEVEL_INFO,
-            $this->translate('Job cancelled as the job has been running in more than %threshold% minutes without completing', ['threshold' => $this->jobTimeoutThreshold])
+            $this->translate('Job cancelled as the job has been running in more than %threshold% minutes without completing', ['threshold' => $event->getTimeoutThreshold()])
         );
     }
 
