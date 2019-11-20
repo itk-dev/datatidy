@@ -1,8 +1,9 @@
 {% extends 'data_flow/transforms/layout.html.twig' %}
+{% trans_default_domain 'data_flow_transforms' %}
 
-{% block title 'New tranform'|trans %}
+{% block title 'New transform'|trans %}
 
-{% block header 'Add new tranform'|trans %}
+{% block header 'New transform'|trans %}
 
 {% block content %}
     {{ include('data_flow/transforms/_form.html.twig') }}

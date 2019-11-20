@@ -1,3 +1,6 @@
+{% extends 'data_flow/transforms/layout.html.twig' %}
+{% trans_default_domain 'data_flow_transforms' %}
+
 {% macro render_data_set(data_set) %}
     <table class="table">
         {% for row in data_set.rows %}
@@ -24,10 +27,8 @@
     </table>
 {% endmacro %}
 
-{% extends 'data_flow/transforms/layout.html.twig' %}
-
 {% block body %}
-    <h1>{{ 'Step %step% of %total%'|trans({'%step%': step, '%total%': result.dataFlow.transforms|length}) }}</h1>
+    <h1>{{ 'Step %step% of %total%'|trans({'%step%': number_of_steps, '%total%': result.dataFlow.transforms|length}) }}</h1>
 
     {% if result.exception %}
         <div class="alert alert-danger">
