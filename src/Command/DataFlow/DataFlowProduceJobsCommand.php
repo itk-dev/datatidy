@@ -63,7 +63,6 @@ class DataFlowProduceJobsCommand extends Command
         $dataFlowsToRun = $this->getDataFlowsToRun($dataFlowCandidates);
 
         foreach ($dataFlowsToRun as $dataFlow) {
-
             // Job creation
             $job = new DataFlowJob();
             $job->setStatus(DataFlowJob::STATUS_CREATED);
