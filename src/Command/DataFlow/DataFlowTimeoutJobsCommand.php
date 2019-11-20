@@ -36,13 +36,13 @@ class DataFlowTimeoutJobsCommand extends Command
 
     public function configure()
     {
-        $this->addOption('timeout-threshold', 'tt', InputOption::VALUE_OPTIONAL,'In minutes how long to wait before a non-complete job should timeout', 30);
+        $this->addOption('timeout-threshold', 'tt', InputOption::VALUE_OPTIONAL, 'In minutes how long to wait before a non-complete job should timeout', 30);
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $timeoutThreshold = $input->getOption('timeout-threshold');
-        if (!\is_int(\intval($timeoutThreshold))) {
+        if (!\is_int((int) $timeoutThreshold)) {
             throw new \InvalidArgumentException('timeout-threshold can only be an integer value.');
         }
 
