@@ -63,21 +63,24 @@ class DataFlowProduceJobsCommand extends Command
         $dataFlowsToRun = $this->getDataFlowsToRun($dataFlowCandidates);
 
         foreach ($dataFlowsToRun as $dataFlow) {
+
+            // Job creation
             $job = new DataFlowJob();
             $job->setStatus(DataFlowJob::STATUS_CREATED);
             $job->setDataFlow($dataFlow);
+            $this->entityManager->persist($dataFlow);
 
             $dataFlow->setLastRunAt(new \DateTime());
-
-            $this->entityManager->persist($dataFlow);
             $this->entityManager->persist($job);
-            $this->entityManager->flush();
 
+            $this->entityManager->flush();
             $this->eventDispatcher->dispatch(new DataFlowJobCreatedEvent($job));
+
+            // Delivery of job to queue.
+            // This is a different from the job creation and could be helpful in error handling.
             $this->messageBus->dispatch(
                 new RunDataFlowJobMessage($job->getId())
             );
-
             $job->setStatus(DataFlowJob::STATUS_QUEUED);
             $this->entityManager->persist($job);
             $this->entityManager->flush();
