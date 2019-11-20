@@ -7,3 +7,4 @@ twig:
         - 'bootstrap_4_layout.html.twig'
     globals:
         site_name: '%site_name%'
+        site_logo_path: '%site_logo_path%'
