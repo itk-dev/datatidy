@@ -4,11 +4,15 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{% block title %}{% endblock %} | {{ site_name }}</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
         {% block stylesheets %}
             {{ encore_entry_link_tags('base') }}
         {% endblock %}
     </head>
     <body>
+        <a class="skippy sr-only sr-only-focusable" href="#content">
+            <span class="skippy-text">Skip to main content</span>
+        </a>
         {% block body %}{% endblock %}
 
         {% block javascripts %}

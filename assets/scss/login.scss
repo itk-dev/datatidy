@@ -1,0 +1,52 @@
+.login {
+    height: 100vh;
+}
+#login-form {
+    .form-control {
+        box-shadow: none;
+    }
+    .form-group {
+        input,
+        label {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            font-size: 1.25em;
+            padding: 0 0 5px 0;
+            z-index: 10;
+            background: transparent;
+
+            border: none;
+
+        }
+
+        label {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 0 0 5px 0;
+            transition: all .5s ease-in-out;
+            z-index: 1;
+            top: 36px;
+
+            .filled & {
+                top: 0;
+                font-size: .8em;
+            }
+        }
+
+        input[type="submit"] {
+            cursor: pointer;
+            margin: 1.33em auto;
+            width: 100%;
+            padding: 10px 0;
+
+        }
+    }
+}
+
+
+

@@ -24,6 +24,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('base', './assets/js/base.js')
+    .addEntry('login', './assets/js/login.js')
     .addEntry('layout', './assets/js/layout.js')
     .addEntry('data_source', './assets/js/data_source.js')
     .addEntry('data_flow_transforms', './assets/js/data_flow_transforms.js')

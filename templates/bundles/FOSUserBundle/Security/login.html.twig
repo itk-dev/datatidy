@@ -1,0 +1,46 @@
+{% extends '@FOSUser/layout.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+{% block page_title 'security.login.submit'|trans %}
+
+{% block fos_user_content %}
+<form action="{{ path('fos_user_security_check') }}" method="post" id="login-form">
+  {% if error %}
+    <div class="has-error">
+      <p class="error-block">
+        <span class="label label-danger">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </span>
+      </p>
+    </div>
+  {% endif %}
+
+<div class="bg-white rounded-lg shadow-sm">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+    <div class="form-group">
+        <label for="username" class="control-label">{{ 'security.login.username'|trans }}</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+            <div class="input-group-text"><i class="fas {{ iconClass('search') }} mr-2"></i></div>
+            </div>
+            <input class="form-control" type="text" id="username" name="_username" value="" required="required"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <i class="fas {{ iconClass('search') }} mr-2"></i>
+        <label for="password" class="control-label">{{ 'security.login.password'|trans }}</label>
+        <input class="form-control" type="password" id="password" name="_password" required="required" value=""/>
+    </div>
+
+    <div class="form-group">
+        <a href="{{ path('fos_user_resetting_request') }}">{{ 'resetting.reset.forgot'|trans }}</a>
+    </div>
+</div>
+
+
+  <div class="form-group mt-3">
+    <button type="submit" class="btn btn-primary btn-block" id="_submit" name="_submit">{{ 'security.login.submit'|trans }}</button>
+  </div>
+</form>
+{% endblock fos_user_content %}

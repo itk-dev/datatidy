@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('login') }}
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <main class="login d-flex align-items-center justify-content-center">
+
+            <div class="col-12 col-sm-4">
+                {% if site_logo_url|default(false) %}
+                    <img src="{{ site_logo_path }}" alt="{{ site_logo_alt ?? 'logo' }}" class="img-fluid" />
+                {% endif %}
+                <p class="small text-muted mb-1">{{ 'Sign in'|trans }}</p>
+                {% block fos_user_content %}{% endblock %}
+                <p class="small">{{ 'Don’t have an account yet?'|trans }} <a href="/">Create new account</a></p> {# TODO: Link to create new account #}
+            </div>
+        </main>
+    </div>
+{% endblock %}
