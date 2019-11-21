@@ -79,6 +79,17 @@ class DataFlow
     private $dataTargets;
 
     /**
+     * @ORM\Column(type="integer")
+     * @Gedmo\Versioned()
+     */
+    private $frequency;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\DataFlowJob", mappedBy="dataFlow", orphanRemoval=true)
+     */
+    private $jobs;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User")
      * @ORM\JoinTable(name="data_flow_collaborator")
      */
@@ -90,6 +101,7 @@ class DataFlow
         $this->enabled = false;
         $this->ttl = 60 * 60;
         $this->dataTargets = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
         $this->collaborators = new ArrayCollection();
     }
 
@@ -245,6 +257,36 @@ class DataFlow
         return $this;
     }
 
+    public function getFrequency(): ?int
+    {
+        return $this->frequency;
+    }
+
+    public function setFrequency(int $frequency): self
+    {
+        $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DataFlowJob[]
+     */
+    public function getJobs(): Collection
+    {
+        return $this->jobs;
+    }
+
+    public function addJob(DataFlowJob $job): self
+    {
+        if (!$this->jobs->contains($job)) {
+            $this->jobs[] = $job;
+            $job->setDataFlow($this);
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection|User[]
      */
@@ -257,6 +299,19 @@ class DataFlow
     {
         if (!$this->collaborators->contains($collaborator)) {
             $this->collaborators[] = $collaborator;
+        }
+
+        return $this;
+    }
+
+    public function removeJob(DataFlowJob $job): self
+    {
+        if ($this->jobs->contains($job)) {
+            $this->jobs->removeElement($job);
+            // set the owning side to null (unless already changed)
+            if ($job->getDataFlow() === $this) {
+                $job->setDataFlow(null);
+            }
         }
 
         return $this;

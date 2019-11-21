@@ -39,6 +39,20 @@ Open the site in your default browser:
 open http://$(docker-compose port nginx 80)
 ```
 
+#### Jobs
+
+Start the queue consumer:
+
+```bash
+docker-compose exec phpfpm bin/console messenger:consume async
+```
+
+Produce some jobs:
+
+```bash
+docker-compose exec phpfpm bin/console datatidy:data-flow:produce-jobs
+```
+
 ## Running the tests
 
 ```bash
@@ -53,6 +67,7 @@ You will need an environment where the following is present:
 - Composer 1.9 or above.
 - MariaDB 10.3.17.
 - NGINX ([Config example](.docker/vhost.conf))
+- Redis 5 or above.
 - Yarn 1.17.3 or above.
 
 Distribute the app to a place where NGINX can serve it from.
@@ -73,6 +88,8 @@ DATABASE_SERVER_VERSION='mariadb-10.3.17'
 MAILER_URL=smtp://url:port
 MAILER_FROM_EMAIL=info@example.com
 MAILER_FROM_NAME=Info
+
+MESSENGER_TRANSPORT_DSN=redis://url:port/messages
 ```
 
 Install the dependencies and build the assets:
@@ -91,6 +108,39 @@ php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
 Want more? See the [official Symfony 4.3 documentation](https://symfony.com/doc/4.3/deployment.html) section about deployment.
+
+### Jobs
+
+#### Consumer
+
+In order to have jobs processed the queue consumer has to be running. You probably want something to watch that the process is running all the time, and take an action if it doesn't. You could use [Supervisor](http://supervisor.org) as this something with the following settings added:
+
+```ini
+[datatidy:consumer]
+process_name=%(program_name)s_%(process_num)02d
+command=/usr/bin/env php path/to/datatidy/bin/console consume async
+autostart=true
+autorestart=true
+numprocs=1
+redirect_stderr=true
+stdout_logfile=path/to/output.file
+```
+
+#### Producer
+
+You'll need to run the producer every minute to create jobs the consumer can process. You could for example use cron with the following settings to run the producer every minute: 
+
+```crontab
+* * * * * /usr/bin/env php path/to/datatidy/bin/console datatidy:data-flow:produce-jobs > path/to/output.file
+```
+
+#### Handling long running jobs
+
+Sometimes and for different reasons a job may run for a long time. And because jobs only can be created if there is no other active jobs for a DataFlow, you need to set those jobs in a non-active state.
+To help you accomplish this a command is available: 
+```crontab
+*/30 * * * * /usr/bin/env php /path/to/datatidy/bin/console datatidy:data-flow:timeout-jobs --timeout-threshold=30 > path/to/output.file
+```
 
 ## Documentation
 

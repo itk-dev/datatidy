@@ -2,6 +2,7 @@
 import { library, dom } from '@fortawesome/fontawesome-svg-core'
 import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons/faTachometerAlt'
 import { faDatabase } from '@fortawesome/free-solid-svg-icons/faDatabase'
+import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt'
 import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers'
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope'
