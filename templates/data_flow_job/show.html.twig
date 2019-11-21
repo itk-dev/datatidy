@@ -1,0 +1,33 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_flow_job' %}
+
+{% block title %}{{ 'Data Flow Job'|trans }}{% endblock %}
+
+{% block header %}{{ 'Data Flow Job'|trans }}{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{{ 'Id'|trans }}</th>
+                <td>{{ data_flow_job.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Data Flow'|trans }}</th>
+                <td>{{ data_flow_job.dataFlow.name }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Status'|trans }}</th>
+                <td>{{ data_flow_job.status }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Started'|trans }}</th>
+                <td>{{ data_flow_job.startedAt ? data_flow_job.startedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% include 'data_flow_job/_log.html.twig' with {'logEntries': data_flow_job.logEntries} %}
+
+    <a href="{{ path('data_flow_job_index') }}">{{ 'back to list'|trans }}</a>
+{% endblock %}
