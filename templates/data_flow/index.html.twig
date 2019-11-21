@@ -24,7 +24,7 @@
                     <th>{{ 'Owner'|trans }}</th>
                     <th>{{ 'Shared'|trans }}</th>
                 {% endif %}
-                <th>{{ 'Actions'|trans }}</th>
+                <th class="text-right">{{ 'Actions'|trans }}</th>
             </tr>
         {% endblock %}
         {% block tbody %}
@@ -40,7 +40,7 @@
                         <td>{{ data_flow.collaborators|length }}</td>
                     {% endif %}
 
-                    <td>
+                    <td class="text-right">
                         {% if is_granted('edit', data_flow) %}
                             <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit'|trans }}</a>
                             <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}">{{ 'Transforms'|trans }}</a>
