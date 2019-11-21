@@ -3,10 +3,12 @@ App\Entity\DataFlow:
         enabled: false
         name: ODAA
         dataSource: '@data_source_odaa'
+        frequency: 60
 
     data_flow_test:
-        enabled: false
+        enabled: true
         name: Test
+        frequency: 120
         dataSource: '@data_source_test'
         createdBy: '@user-1'
         collaborators:
