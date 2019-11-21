@@ -45,7 +45,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ path('data_flow_job_index') }}" class="nav-link {% if app.request.get('_route') == 'data_flow_job_index' %}active{% endif %}">
-                                <i class="fas {{ iconClass('job') }} mr-2"></i>
+                                <i class="fas {{ iconClass('job') }} fa-fw mr-2"></i>
                                 {{ 'Jobs'|trans({}, 'data_flow_job') }}
                             </a>
                         </li>
