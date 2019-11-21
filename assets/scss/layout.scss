@@ -1,3 +1,8 @@
-main {
-    height: 100vh;
-}
+/* Import base */
+@import "base.scss";
+
+/* Import custom partials */
+@import "_sidebar.scss";
+@import "_main.scss";
+
+

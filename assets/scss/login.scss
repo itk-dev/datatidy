@@ -1,3 +1,6 @@
+/* Import base */
+@import "base.scss";
+
 .login {
     height: 100vh;
 }
@@ -6,36 +9,49 @@
         box-shadow: none;
     }
     .form-group {
+        margin-bottom: 0;
+        .form-icon {
+            color: $gray-300;
+            padding-top: $spacer;
+            padding-bottom: $spacer;
+        }
+        // input {
+        //     background: rgba($color: $black, $alpha: .5) !important;
+        // }
+        // label {
+        //     border: $gray-300 1px solid !important;
+        // }
         input,
         label {
             position: relative;
             display: inline-block;
             width: 100%;
+            height: $spacer*3;
         }
 
         input[type="text"],
         input[type="password"] {
             font-size: 1.25em;
-            padding: 0 0 5px 0;
+            padding: 0;
             z-index: 10;
             background: transparent;
-
             border: none;
-
+            margin-top: $spacer/4;
         }
 
         label {
+            position: absolute;
             display: inline-block;
             margin: 0 auto;
-            padding: 0 0 5px 0;
+            padding: 0;
             transition: all .5s ease-in-out;
             z-index: 1;
-            top: 36px;
-
-            .filled & {
-                top: 0;
-                font-size: .8em;
-            }
+            top: $spacer;
+            color: $gray-300;
+        }
+        &.filled label {
+            top: 0;
+            font-size: .8em;
         }
 
         input[type="submit"] {
