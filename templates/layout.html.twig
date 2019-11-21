@@ -39,8 +39,8 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ path('data_flow_index') }}" class="nav-link {% if app.request.get('_route') == 'data_flow_index' %}active{% endif %}">
-                                <i class="fas {{ iconClass('datasource') }} fa-fw mr-2"></i>
-                                {{ 'Data flows'|trans({}, 'data_flow') }}
+                                <i class="fas {{ iconClass('dataflow') }} fa-fw mr-2"></i>
+                                {{ 'Flows'|trans({}, 'data_flow') }}
                             </a>
                         </li>
 
@@ -68,7 +68,7 @@
             </div>
 
 
-            <main role="main" class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content">
+            <main role="main" class="col-12 col-md-9 col-xl-8 offset-xl-1 py-md-3 px-md-5 px-xl-0">
                 {% for label, messages in app.flashes(['success', 'warning']) %}
                     {% for message in messages %}
                         <div class="alert alert-{{ label }}" role="alert">
@@ -82,7 +82,7 @@
 
 
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-                    <h1 class="h2">{% block header %}{% endblock %}</h1>
+                    <h1 class="h4">{% block header %}{% endblock %}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         {% block toolbar %}{% endblock %}
                     </div>
