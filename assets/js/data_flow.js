@@ -2,7 +2,6 @@ import 'select2'
 
 require('../scss/data-flow.scss')
 
-
 const $ = require('jquery')
 
 // @see https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
