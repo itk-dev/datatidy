@@ -2,7 +2,7 @@ require('../scss/login.scss')
 
 $('#login-form .form-control').on('blur input focus', function () {
   var $field = $(this).closest('.form-group')
-  if (this.value) {
+  if ($(this).val()) {
     $field.addClass('filled')
   } else {
     $field.removeClass('filled')
@@ -11,7 +11,7 @@ $('#login-form .form-control').on('blur input focus', function () {
 
 $('#login-form .form-control').on('focus', function () {
   var $field = $(this).closest('.form-group')
-  if (this) {
+  if ($(this)) {
     $field.addClass('filled')
   } else {
     $field.removeClass('filled')
