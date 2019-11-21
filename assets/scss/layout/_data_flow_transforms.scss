@@ -1,20 +1,20 @@
 @import "~select2/src/scss/core.scss";
 
 iframe {
-  width: 100%;
-  height: 800px;
-  border: none;
+    width: 100%;
+    height: 800px;
+    border: none;
 }
 
 label.required {
-  &::after {
-    color: #f00;
-    content: "•"; // \u2022 (bullet)
-  }
+    &::after {
+        color: $danger;
+        content: "•"; // \u2022 (bullet)
+    }
 }
 
 .form-inline {
-  display: inline-block;
+    display: inline-block;
 }
 
 // .column-string-map-item + .column-string-map-item label {

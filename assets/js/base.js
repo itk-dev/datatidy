@@ -15,7 +15,7 @@ library.add(
   faTachometerAlt, faDatabase, faUsers, faSearch, faEnvelope, faLock
 )
 
-const imagesContext = require.context('../images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/);
-imagesContext.keys().forEach(imagesContext);
+const imagesContext = require.context('../images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/)
+imagesContext.keys().forEach(imagesContext)
 
 dom.watch()

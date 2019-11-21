@@ -2,7 +2,6 @@
 @import "base.scss";
 
 /* Import custom partials */
-@import "_sidebar.scss";
-@import "_main.scss";
-
-
+@import "layout/_sidebar.scss";
+@import "layout/_main.scss";
+@import "layout/_data_flow_transforms.scss";
