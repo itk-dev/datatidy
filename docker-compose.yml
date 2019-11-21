@@ -6,9 +6,6 @@ networks:
   app:
     driver: bridge
     internal: false
-  test:
-    driver: bridge
-    internal: true
 
 services:
   mariadb:
@@ -37,6 +34,7 @@ services:
       - PHP_MEMORY_LIMIT=256M
       # - PHP_MAIL=1 # Uncomment to enable mailhog.
       - DOCKER_HOST_DOMAIN=${COMPOSE_DOMAIN}
+      - PHP_IDE_CONFIG=serverName=localhost
     depends_on:
       - mariadb
     volumes:
@@ -85,11 +83,8 @@ services:
     ports:
       - "6379"
 
-  # Test
-  sql_data_target:
+  database_test:
     image: itkdev/mariadb:latest
-    volumes:
-      - .docker/dumps/sql_data_target:/docker-entrypoint-initdb.d
     networks:
       - app
     ports:
@@ -98,7 +93,7 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_USER=db
       - MYSQL_PASSWORD=db
-      - MYSQL_DATABASE=db
+      - MYSQL_DATABASE=db_test
       #- ENCRYPT=1 # Uncomment to enable database encryption.
 
   http_data_target:

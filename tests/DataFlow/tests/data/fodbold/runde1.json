@@ -1,0 +1,77 @@
+[
+  {
+    "Id": 1,
+    "HjHold": "AGF",
+    "UdeHold": "Brøndby"
+  },
+  {
+    "Id": 2,
+    "HjHold": "Frem",
+    "UdeHold": "OB"
+  },
+  {
+    "Id": 3,
+    "HjHold": "AaB",
+    "UdeHold": "Lyngby"
+  },
+  {
+    "Id": 4,
+    "HjHold": "OB",
+    "UdeHold": "AGF"
+  },
+  {
+    "Id": 5,
+    "HjHold": "Brøndby",
+    "UdeHold": "AaB"
+  },
+  {
+    "Id": 6,
+    "HjHold": "Lyngby",
+    "UdeHold": "Frem"
+  },
+  {
+    "Id": 7,
+    "HjHold": "AaB",
+    "UdeHold": "AGF"
+  },
+  {
+    "Id": 8,
+    "HjHold": "Frem",
+    "UdeHold": "Brøndby"
+  },
+  {
+    "Id": 9,
+    "HjHold": "Lyngby",
+    "UdeHold": "OB"
+  },
+  {
+    "Id": 10,
+    "HjHold": "AGF",
+    "UdeHold": "Frem"
+  },
+  {
+    "Id": 11,
+    "HjHold": "Brøndby",
+    "UdeHold": "Lyngby"
+  },
+  {
+    "Id": 12,
+    "HjHold": "OB",
+    "UdeHold": "AaB"
+  },
+  {
+    "Id": 13,
+    "HjHold": "Frem",
+    "UdeHold": "AaB"
+  },
+  {
+    "Id": 14,
+    "HjHold": "Lyngby",
+    "UdeHold": "AGF"
+  },
+  {
+    "Id": 15,
+    "HjHold": "OB",
+    "UdeHold": "Brøndby"
+  }
+]

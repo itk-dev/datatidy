@@ -1,0 +1,14 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Mikkel",
+            "birthday": "23-05-75"
+        },
+        {
+            "id": 2,
+            "name": "James Hetfield",
+            "birthday": "03-08-63"
+        }
+    ]
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "Id": 1,
+    "HjHold": "AGF",
+    "UdeHold": "Brøndby",
+    "HjScore": 1,
+    "UdeScore": 2
+  },
+  {
+    "Id": 2,
+    "HjHold": "Frem",
+    "UdeHold": "OB",
+    "HjScore": 3,
+    "UdeScore": 0
+  },
+  {
+    "Id": 3,
+    "HjHold": "AaB",
+    "UdeHold": "Lyngby",
+    "HjScore": 1,
+    "UdeScore": 2
+  },
+  {
+    "Id": 4,
+    "HjHold": "OB",
+    "UdeHold": "AGF",
+    "HjScore": 0,
+    "UdeScore": 0
+  },
+  {
+    "Id": 5,
+    "HjHold": "Brøndby",
+    "UdeHold": "AaB",
+    "HjScore": 2,
+    "UdeScore": 2
+  },
+  {
+    "Id": 6,
+    "HjHold": "Lyngby",
+    "UdeHold": "Frem",
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 7,
+    "HjHold": "AaB",
+    "UdeHold": "AGF",
+    "HjScore": 4,
+    "UdeScore": 1
+  },
+  {
+    "Id": 8,
+    "HjHold": "Frem",
+    "UdeHold": "Brøndby",
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 9,
+    "HjHold": "Lyngby",
+    "UdeHold": "OB",
+    "HjScore": 1,
+    "UdeScore": 0
+  },
+  {
+    "Id": 10,
+    "HjHold": "AGF",
+    "UdeHold": "Frem",
+    "HjScore": 2,
+    "UdeScore": 1
+  },
+  {
+    "Id": 11,
+    "HjHold": "Brøndby",
+    "UdeHold": "Lyngby",
+    "HjScore": 0,
+    "UdeScore": 3
+  },
+  {
+    "Id": 12,
+    "HjHold": "OB",
+    "UdeHold": "AaB",
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 13,
+    "HjHold": "Frem",
+    "UdeHold": "AaB",
+    "HjScore": 1,
+    "UdeScore": 2
+  },
+  {
+    "Id": 14,
+    "HjHold": "Lyngby",
+    "UdeHold": "AGF",
+    "HjScore": 2,
+    "UdeScore": 1
+  },
+  {
+    "Id": 15,
+    "HjHold": "OB",
+    "UdeHold": "Brøndby",
+    "HjScore": 1,
+    "UdeScore": 1
+  }
+]

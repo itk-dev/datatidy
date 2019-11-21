@@ -1,0 +1,45 @@
+fixtures:
+    App\Entity\DataSource:
+        data_source_runde1:
+            name: Runde 1
+            ttl: 3600
+            dataSource: App\DataSource\JsonDataSource
+            dataSourceOptions:
+                url: http://test/data/fodbold/runde1.json
+                root: ''
+
+        data_source_resultater:
+            name: Resultater
+            ttl: 3600
+            dataSource: App\DataSource\JsonDataSource
+            dataSourceOptions:
+                url: http://test/data/fodbold/resultater.json
+                root: ''
+
+    App\Entity\DataFlow:
+        data_flow:
+            name: Main data flow
+            dataSource: '@data_source_runde1'
+            frequency: 60
+
+        data_flow_resultater:
+            name: Secondaty data flow
+            dataSource: '@data_source_resultater'
+            frequency: 60
+
+    App\Entity\DataTransform:
+        data_transform_0:
+            data_flow: '@data_flow'
+            name: Merge
+            transformer: App\DataTransformer\MergeFlowsDataTransformer
+            transformerOptions:
+                dataFlow: '@data_flow_resultater'
+                joinType: inner
+                joinColumns: [id]
+                includeAllColumns: false
+
+# default:
+# main_data_flow: data_flow
+
+expected:
+    filename: test-fodbold-002/expected.json

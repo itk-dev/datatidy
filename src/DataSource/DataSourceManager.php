@@ -40,7 +40,7 @@ class DataSourceManager
     {
         $dataSources = $this->getDataSources();
         if (!\array_key_exists($name, $dataSources)) {
-            throw new \Exception('DataSource not found!');
+            throw new \RuntimeException(sprintf('Invalid data source: %s', $name));
         }
 
         /** @var AbstractDataSource $dataSource */

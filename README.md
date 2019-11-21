@@ -56,6 +56,7 @@ docker-compose exec phpfpm bin/console datatidy:data-flow:produce-jobs
 ## Running the tests
 
 ```bash
+docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
 docker-compose exec phpfpm bin/phpunit
 ```
 

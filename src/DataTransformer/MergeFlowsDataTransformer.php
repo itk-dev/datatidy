@@ -14,6 +14,7 @@ use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataFlow\DataFlowManager;
 use App\DataSet\DataSet;
+use App\DataTransformer\Exception\TransformerRuntimeException;
 use App\Entity\DataFlow;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -223,6 +224,11 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
     {
         $result = $this->dataFlowManager->run($this->getDataFlow());
 
-        return end($result);
+        if ($result->hasException()) {
+            $exception = $result->getException();
+            throw new TransformerRuntimeException($exception->getMessage(), $exception->getCode(), $exception);
+        }
+
+        return $result->getLastDataSet();
     }
 }

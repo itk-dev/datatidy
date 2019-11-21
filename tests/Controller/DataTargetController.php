@@ -12,13 +12,10 @@ namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * A quick 'n dirty test controller that can act as a data target.
@@ -62,9 +59,9 @@ class DataTargetController extends AbstractController
     {
         $filename = $this->targetPath.'/'.$path;
 
-        $content= $request->getContent();
+        $content = $request->getContent();
 
-        $filesystem->mkdir(dirname($filename));
+        $filesystem->mkdir(\dirname($filename));
         $filesystem->dumpFile($filename, $content);
 
         return new Response('', 201);
