@@ -104,33 +104,6 @@ class DataSet
         return new static($name, $this->connection, $columns ?? $this->getColumns()->toArray());
     }
 
-    /**
-     * Create table from CSV. If no headers are specified, first row of CSV is assumed to be headers.
-     *
-     * @param string|array $csv
-     *
-     * @return \App\Data\DataSet
-     */
-    public function buildFromCSV($csv, array $headers = null): self
-    {
-        if (\is_string($csv)) {
-            $csv = explode(PHP_EOL, $csv);
-        }
-        // Ignore empty lines.
-        $lines = array_filter(array_map('trim', $csv));
-        $rows = array_map('str_getcsv', $lines);
-
-        if (null === $headers) {
-            $headers = array_shift($rows);
-        }
-
-        $items = array_map(static function ($values) use ($headers) {
-            return array_combine($headers, $values);
-        }, $rows);
-
-        return $this->buildFromData($items);
-    }
-
     public function buildFromData(array $items, array $columns = null): self
     {
         if (null === $this->table) {
