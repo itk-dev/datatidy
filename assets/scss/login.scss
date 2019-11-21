@@ -15,12 +15,6 @@
             padding-top: $spacer;
             padding-bottom: $spacer;
         }
-        // input {
-        //     background: rgba($color: $black, $alpha: .5) !important;
-        // }
-        // label {
-        //     border: $gray-300 1px solid !important;
-        // }
         input,
         label {
             position: relative;
@@ -44,7 +38,7 @@
             display: inline-block;
             margin: 0 auto;
             padding: 0;
-            transition: all .5s ease-in-out;
+            transition: all .4s ease-in-out;
             z-index: 1;
             top: $spacer;
             color: $gray-300;
