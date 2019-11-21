@@ -108,9 +108,6 @@
     "felixfbecker/advanced-json-rpc": {
         "version": "v3.0.4"
     },
-    "fig/link-util": {
-        "version": "1.0.0"
-    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -324,6 +321,9 @@
     },
     "symfony/dotenv": {
         "version": "v4.3.5"
+    },
+    "symfony/error-handler": {
+        "version": "v4.4.0"
     },
     "symfony/event-dispatcher": {
         "version": "v4.3.5"
@@ -586,6 +586,9 @@
             "templates/base.html.twig"
         ]
     },
+    "symfony/twig-pack": {
+        "version": "v1.0.0"
+    },
     "symfony/validator": {
         "version": "4.3",
         "recipe": {
@@ -660,6 +663,9 @@
             "version": "1.0",
             "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
         }
+    },
+    "twig/extra-bundle": {
+        "version": "v3.0.0"
     },
     "twig/twig": {
         "version": "v2.12.0"
