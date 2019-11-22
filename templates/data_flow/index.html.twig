@@ -11,48 +11,47 @@
 
 {% block content %}
 {% set show_user_info = is_granted('ROLE_ADMIN') %}
-<table class="table">
-    <thead>
-        <tr>
-            <th>{{ 'Name'|trans }}</th>
-            <th>{{ 'Data source'|trans }}</th>
-            <th>{{ 'Number of transforms'|trans }}</th>
-            <th>{{ 'TTL'|trans }}</th>
-            <th>{{ 'Last run at'|trans }}</th>
-            <th>{{ 'Updated at'|trans }}</th>
-            {% if show_user_info %}
-                <th>{{ 'Created by'|trans }}</th>
-                <th>{{ 'Number of collaborators'|trans }}</th>
-            {% endif %}
-            <th>{{ 'Actions'|trans }}</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for data_flow in data_flows %}
-        <tr>
-            <td>{{ data_flow.name }}</td>
-            <td>{{ data_flow.dataSource }}</td>
-            <td>{{ data_flow.transforms|length }}</td>
-            <td>{{ data_flow.ttl }}</td>
-            <td>{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : '' }}</td>
-            <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            {% if show_user_info %}
-                <td>{{ data_flow.createdBy }}</td>
-                <td>{{ data_flow.collaborators|length }}</td>
-            {% endif %}
 
-            <td>
-                {% if is_granted('edit', data_flow) %}
-                    <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit'|trans }}</a>
-                    <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}">{{ 'Transforms'|trans }}</a>
+    {% embed '_table.html.twig' %}
+        {% block thead %}
+            <tr>
+                <th>{{ 'Name'|trans }}</th>
+                <th>{{ 'Data source'|trans }}</th>
+                {# <th>{{ 'Number of transforms'|trans }}</th> TODO: Can we leave this column out of the list? #}
+                {# <th>{{ 'TTL'|trans }}</th> TODO: Can we leave this column out of the list? #}
+                <th>{{ 'Updated - Last run'|trans }}</th>
+                {% if show_user_info %}
+                    <th>{{ 'Owner'|trans }}</th>
+                    <th>{{ 'Shared'|trans }}</th>
                 {% endif %}
-            </td>
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="12">{{ 'No records found'|trans }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+                <th class="text-right">{{ 'Actions'|trans }}</th>
+            </tr>
+        {% endblock %}
+        {% block tbody %}
+            {% for data_flow in data_flows %}
+                <tr>
+                    <td><i class="fas {{ iconClass('dataflow') }} fa-fw mr-2 text-gray-300"></i>{{ data_flow.name }}</td>
+                    <td>{{ data_flow.dataSource }}</td>
+                    {# <td>{{ data_flow.transforms|length }}</td> #}
+                    {# <td>{{ data_flow.ttl }}</td> #}
+                    <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }} - {{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : 'Never' }}</td>
+                    {% if show_user_info %}
+                        <td>{{ data_flow.createdBy }}</td>
+                        <td>{{ data_flow.collaborators|length }}</td>
+                    {% endif %}
+
+                    <td class="text-right">
+                        {% if is_granted('edit', data_flow) %}
+                            <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}"><i class="fas {{ iconClass('edit') }} mr-2"></i>{{ 'Edit flow'|trans }}</a>
+                            <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}"><i class="fas {{ iconClass('data-flow-recipe') }} mr-2"></i>{{ 'Change recipe'|trans }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">{{ 'No records found'|trans }}</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

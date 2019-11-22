@@ -39,6 +39,10 @@ class TwigExtension extends AbstractExtension
                 return 'fa-envelope';
             case 'lock':
                 return 'fa-lock';
+            case 'dataflow':
+                return 'fa-wave-square';
+            case 'edit':
+                return 'fa-edit';
             default:
                 return '';
         }

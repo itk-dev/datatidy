@@ -7,39 +7,39 @@
 
 {% block toolbar %}
     <div class="btn-group" role="group">
-        <a href="{{ path('data_source_new') }}" class="btn btn-success">{{ 'Import data'|trans }}</a>
+        <a href="{{ path('data_source_new') }}" class="btn btn-success">{{ 'Add data source'|trans }}</a>
     </div>
 {% endblock %}
 
-
 {% block content %}
-<table class="table">
-    <thead>
-        <tr>
-            <th>{{ 'Name'|trans }}</th>
-            <th>{{ 'TTL'|trans }}</th>
-            <th>{{ 'Last read at'|trans }}</th>
-            <th>{{ 'Updated at'|trans }}</th>
-            <th>{{ 'Actions'|trans }}</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for data_source in data_sources %}
-        <tr>
-            <td>{{ data_source.name }}</td>
-            <td>{{ data_source.ttl }}</td>
-            <td>{{ data_source.lastReadAt ? data_source.lastReadAt|date('Y-m-d H:i:s') : '' }}</td>
-            <td>{{ data_source.updatedAt ? data_source.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            <td>
-                <a href="{{ path('data_source_show', {'id': data_source.id}) }}">show</a>
-                <a href="{{ path('data_source_edit', {'id': data_source.id}) }}">edit</a>
-            </td>
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="12">{{ 'No records found'|trans }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    {% embed '_table.html.twig' %}
+        {% block thead %}
+            <tr>
+                <th>{{ 'Name'|trans }}</th>
+                <th>{{ 'TTL'|trans }}</th>
+                <th>{{ 'Last read at'|trans }}</th>
+                <th>{{ 'Updated at'|trans }}</th>
+                <th class="text-right">{{ 'Actions'|trans }}</th>
+            </tr>
+        {% endblock %}
+        {% block tbody %}
+            {% for data_source in data_sources %}
+                <tr>
+                    {# TODO: Add condtion to show badge width datatype #}
+                    <td><span class="badge badge-light mr-2 text-muted">XML</span>{#<span class="badge badge-light mr-2 text-muted">json</span>#}<a href="{{ path('data_source_show', {'id': data_source.id}) }}">{{ data_source.name }}</a></td>
+                    <td>{{ data_source.ttl }}</td>
+                    <td>{{ data_source.lastReadAt ? data_source.lastReadAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ data_source.updatedAt ? data_source.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td class="text-right">
+                        <a href="{{ path('data_source_edit', {'id': data_source.id}) }}"><i class="fas {{ iconClass('edit') }} fa-fw mr-2"></i>edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">{{ 'No records found'|trans }}</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
+

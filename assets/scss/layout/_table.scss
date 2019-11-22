@@ -1,0 +1,12 @@
+.table {
+    thead {
+        background-color: $gray-200;
+        font-size: $font-size-base*.8;
+        color: $gray-500;
+        th {
+            font-weight: 400;
+            border-top: none;
+            text-transform: uppercase;
+        }
+    }
+}

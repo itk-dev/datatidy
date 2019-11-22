@@ -27,7 +27,7 @@ Encore
     .addEntry('login', './assets/js/login.js')
     .addEntry('layout', './assets/js/layout.js')
     .addEntry('data_source', './assets/js/data_source.js')
-    .addEntry('data_flow_transforms', './assets/js/data_flow_transforms.js')
+    .addEntry('data_flow_transforms', './assets/js/data_flow.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
