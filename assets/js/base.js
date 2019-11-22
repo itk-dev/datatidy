@@ -13,7 +13,7 @@ global.$ = global.jQuery = $
 require('../scss/base.scss')
 require('bootstrap')
 library.add(
-  faTachometerAlt, faDatabase, faUsers, faSearch, faEnvelope, faLock
+  faTachometerAlt, faDatabase, faUsers, faSearch, faEnvelope, faLock, faBolt
 )
 
 const imagesContext = require.context('../images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/)
