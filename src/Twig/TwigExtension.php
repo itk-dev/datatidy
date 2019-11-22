@@ -55,6 +55,8 @@ class TwigExtension extends AbstractExtension
                 return 'fa-cog';
             case 'target':
                 return 'fa-file-export';
+            case 'delete':
+                return 'fa-trash-alt';
             default:
                 return '';
         }
