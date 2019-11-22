@@ -64,3 +64,7 @@ $(() => {
 
   buildCollectionTypes()
 })
+
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})

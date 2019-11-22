@@ -43,6 +43,18 @@ class TwigExtension extends AbstractExtension
                 return 'fa-wave-square';
             case 'edit':
                 return 'fa-edit';
+            case 'help':
+                return 'fa-question-circle';
+            case 'recipe':
+                return 'fa-cogs';
+            case 'previous':
+                return 'fa-chevron-left';
+            case 'next':
+                return 'fa-chevron-right';
+            case 'settings':
+                return 'fa-cog';
+            case 'target':
+                return 'fa-file-export';
             default:
                 return '';
         }

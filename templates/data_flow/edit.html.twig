@@ -1,14 +1,62 @@
-{% extends 'layout.html.twig' %}
+{% extends 'data_flow/layout.html.twig' %}
 {% trans_default_domain 'data_flow' %}
 
 {% block title %}{{ 'Edit Data flow'|trans }}{% endblock %}
 
 {% block header %}{{ 'Edit Data flow'|trans }}{% endblock %}
 
-{% block content %}
-    {{ include('data_flow/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('data_flow_index') }}">{{ 'Back to list'|trans }}</a>
-
+{% block toolbar %}
     {{ include('data_flow/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block content %}
+    <div class="col-12 col-md-4">
+        <div class="row bg-white">
+            <div class="col-12">
+                <span><i class="fas {{ iconClass('datasource') }} fa-fw mr-2"></i>Source</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-right">
+                <button type="button" class="btn" data-toggle="popover" title="{{ 'Data source'|trans }}" data-content="{{ 'Add a datasource. You can combine other flows width this source in your recipe.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-outline-secondary">Add data source</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="row bg-white">
+            <div class="col-12">
+                <span><i class="fas {{ iconClass('recipe') }} fa-fw mr-2"></i>Recipe</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-right">
+                <button type="button" class="btn" data-toggle="popover" title="{{ 'Recipe'|trans }}" data-content="{{ 'Your flows recipe is where you transform the data from your source.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-outline-secondary">Edit recipe</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="row bg-white">
+            <div class="col-12">
+                <span><i class="fas {{ iconClass('target') }} fa-fw mr-2"></i>Target</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-10">
+                <p class="mt-1">Set targets</p>
+            </div>
+            <div class="col-2 text-right">
+                <button type="button" class="btn" data-toggle="popover" title="{{ 'Data target'|trans }}" data-content="{{ 'Data targets is where you define what will happen to your recipes output.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-outline-secondary">Add another target</button>
+            </div>
+        </div>
+    </div>
+    {{ include('data_flow/_form.html.twig', {'button_label': 'Update'}) }}
 {% endblock %}
