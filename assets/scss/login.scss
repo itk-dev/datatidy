@@ -1,0 +1,62 @@
+/* Import base */
+@import "base.scss";
+
+.login {
+    height: 100vh;
+}
+#login-form {
+    .form-control {
+        box-shadow: none;
+    }
+    .form-group {
+        margin-bottom: 0;
+        .form-icon {
+            color: $gray-300;
+            padding-top: $spacer;
+            padding-bottom: $spacer;
+        }
+        input,
+        label {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            height: $spacer*3;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            font-size: 1.25em;
+            padding: 0;
+            z-index: 10;
+            background: transparent;
+            border: none;
+            margin-top: $spacer/4;
+        }
+
+        label {
+            position: absolute;
+            display: inline-block;
+            margin: 0 auto;
+            padding: 0;
+            transition: all .4s ease-in-out;
+            z-index: 1;
+            top: $spacer;
+            color: $gray-300;
+        }
+        &.filled label {
+            top: 0;
+            font-size: .8em;
+        }
+
+        input[type="submit"] {
+            cursor: pointer;
+            margin: 1.33em auto;
+            width: 100%;
+            padding: 10px 0;
+
+        }
+    }
+}
+
+
+

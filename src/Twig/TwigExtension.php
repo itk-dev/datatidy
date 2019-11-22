@@ -33,6 +33,12 @@ class TwigExtension extends AbstractExtension
                 return 'fa-bolt';
             case 'users':
                 return 'fa-users';
+            case 'search':
+                return 'fa-search';
+            case 'envelope':
+                return 'fa-envelope';
+            case 'lock':
+                return 'fa-lock';
             default:
                 return '';
         }

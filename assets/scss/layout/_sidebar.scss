@@ -1,0 +1,66 @@
+//
+// Left side navigation
+//
+
+.sidebar {
+    order: 0;
+    background-color: $white;
+    @include media-breakpoint-up(md) {
+        padding-top: $spacer*2;
+        @supports (position: sticky) {
+            position: sticky;
+            top: 0rem;
+            z-index: 1000;
+            height: calc(100vh);
+        }
+        border-right: $border-color 1px solid;
+    }
+    @include media-breakpoint-up(xl) {
+        flex: 0 1 320px;
+    }
+}
+
+.sidebar-links {
+    padding-top: $spacer;
+    padding-bottom: $spacer;
+    margin-right: -$spacer/2;
+    margin-left: -$spacer/2;
+
+    .nav-link {
+        color: $body-color;
+        font-weight: 300;
+        padding: $spacer/2 $spacer;
+        transition: background .2s ease-in, font-weight .2s ease-in;
+        svg {
+            color: $gray-300;
+            transition: color .2s ease-in;
+        }
+        &:hover {
+            background-color: $gray-100;
+            border-radius: $spacer/4;
+            font-weight: 600;
+            transition: background .4s ease-out, font-weight .4s ease-out;
+            svg {
+                color: $body-color  ;
+                transition: color .4s ease-out;
+            }
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        @supports (position: sticky) {
+            height: calc(100vh - #{$spacer*4} );
+            overflow-y: auto;
+
+            ul.nav {
+                height: calc(100vh - #{$spacer*6} );
+            }
+
+        }
+    }
+
+    // Override collapse behaviors
+    @include media-breakpoint-up(md) {
+        display: block !important;
+    }
+}

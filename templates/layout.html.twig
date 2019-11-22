@@ -7,27 +7,39 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block sidebar">
-                <a class="navbar-brand" href="{{ path('dashboard_index') }}">{{ site_name }}</a>
-                <input class="form-control" type="text" placeholder="{{ 'Search'|trans }}" aria-label="{{ 'Search'|trans }}">
-                <div class="sidebar-sticky">
+        <div class="row flex-xl-nowrap">
+            <div class="col-12 col-md-3 col-xl-2 sidebar">
+                <div class="d-flex justify-content-between">
+                    <div class="order-0">
+                        <a class="navbar-brand" href="{{ path('dashboard_index') }}"><img src="{{ asset('build/images/datatidy-logo.svg') }}" /><span class="sr-only">{{ site_name }}</span></a>
+                    </div>
+                    <div class="ml-md-0 order-2 order-md-1">
+                        <button class="btn btn-link d-md-none" type="button" data-toggle="collapse" data-target="#sidebar-nav" aria-controls="sidebar-nav" aria-expanded="false" aria-label="Toggle navigation"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button>
+                    </div>
+                    <div class="ml-md-auto order-1 order-md-2">
+                        <button type="button" class="btn" data-toggle="modal" data-target="#searchModal">
+                            <i class="fas {{ iconClass('search') }} mr-2"></i>
+                            <span class="sr-only">{{ 'Launch search modal'|trans }}</span>
+                        </button>
+                    </div>
+                </div>
+                <nav class="collapse sidebar-links" id="sidebar-nav">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a href="{{ path('dashboard_index') }}" class="nav-link {% if app.request.get('_route') == 'dashboard_index' %}active{% endif %}">
-                                <i class="fas {{ iconClass('dashboard') }} mr-2"></i>
+                                <i class="fas {{ iconClass('dashboard') }} fa-fw mr-2"></i>
                                 {{ 'Dashboard'|trans }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ path('data_source_index') }}" class="nav-link {% if app.request.get('_route') == 'data_source_index' %}active{% endif %}">
-                                <i class="fas {{ iconClass('datasource') }} mr-2"></i>
+                                <i class="fas {{ iconClass('datasource') }} fa-fw mr-2"></i>
                                 {{ 'Data library'|trans({}, 'data_source') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ path('data_flow_index') }}" class="nav-link {% if app.request.get('_route') == 'data_flow_index' %}active{% endif %}">
-                                <i class="fas {{ iconClass('datasource') }} mr-2"></i>
+                                <i class="fas {{ iconClass('datasource') }} fa-fw mr-2"></i>
                                 {{ 'Data flows'|trans({}, 'data_flow') }}
                             </a>
                         </li>
@@ -41,14 +53,14 @@
                         {% if is_granted('ROLE_USER_ADMIN') %}
                             <li class="nav-item">
                                 <a href="{{ path('user_index') }}" class="nav-link {% if app.request.get('_route') == 'user_index' %}active{% endif %}">
-                                    <i class="fas {{ iconClass('users') }} mr-2"></i>
+                                    <i class="fas {{ iconClass('users') }} fa-fw mr-2"></i>
                                     {{ 'Users'|trans({}, 'user') }}
                                 </a>
                             </li>
                         {% endif %}
 
                         {% if app.user|default(false) %}
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown mt-auto">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>
                             <div class="dropdown-menu" aria-labelledby="dropdown01">
                                 <a class="dropdown-item" href="{{ path('fos_user_profile_show') }}">{{ 'Profile'|trans }}</a>
@@ -58,11 +70,11 @@
                         </li>
                         {% endif %}
                     </ul>
-                </div>
-            </nav>
+                </nav>
+            </div>
 
 
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 bg-light">
+            <main role="main" class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content">
                 {% for label, messages in app.flashes(['success', 'warning']) %}
                     {% for message in messages %}
                         <div class="alert alert-{{ label }}" role="alert">
@@ -86,7 +98,11 @@
             </main>
         </div>
     </div>
+
+    {{ include('search/_search-modal.html.twig') }}
+
 {% endblock %}
+
 
 {% block javascripts %}
     {{ parent() }}

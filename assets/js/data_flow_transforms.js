@@ -1,5 +1,4 @@
 import 'select2'
-require('../scss/data_flow_transforms.scss')
 
 const $ = require('jquery')
 

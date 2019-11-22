@@ -4,12 +4,19 @@ import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons/faTachometerA
 import { faDatabase } from '@fortawesome/free-solid-svg-icons/faDatabase'
 import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt'
 import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers'
+import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch'
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope'
+import { faLock } from '@fortawesome/free-solid-svg-icons/faLock'
 
 const $ = require('jquery')
 global.$ = global.jQuery = $
 require('../scss/base.scss')
 require('bootstrap')
 library.add(
-  faTachometerAlt, faDatabase, faBolt, faUsers
+  faTachometerAlt, faDatabase, faUsers, faSearch, faEnvelope, faLock, faBolt
 )
+
+const imagesContext = require.context('../images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/)
+imagesContext.keys().forEach(imagesContext)
+
 dom.watch()
