@@ -1,5 +1,16 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div class="row">
+        <div class="col">
+            {{ form_widget(form.settings) }}
+        </div>
+        <div class="col">
+            {{ form_widget(form.data_source) }}
+        </div>
+        <div class="col">
+            {{ form_widget(form.data_targets) }}
+        </div>
+    </div>
+
     <button class="btn btn-success">{{ button_label|default('Save'|trans) }}</button>
     {% if cancel_url is defined %}
         <a class="btn btn-link" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
