@@ -124,6 +124,9 @@ class DataFlowManager
 
     public function run(DataFlow $dataFlow, array $options = []): DataFlowRunResult
     {
+        if (null === $this->logger) {
+            $this->logger = new NullLogger();
+        }
         $options = $this->resolveRunOptions($options);
         $result = new DataFlowRunResult($dataFlow, $options);
 

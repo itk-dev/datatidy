@@ -1,0 +1,247 @@
+[
+  {
+    "Price": 3,
+    "Product": "Potatoes",
+    "Quantity": 45
+  },
+  {
+    "Price": 4,
+    "Product": "Potatoes",
+    "Quantity": 45
+  },
+  {
+    "Price": 2,
+    "Product": "Potatoes",
+    "Quantity": 45
+  },
+  {
+    "Price": 1,
+    "Product": "Potatoes",
+    "Quantity": 45
+  },
+  {
+    "Price": 5,
+    "Product": "Potatoes",
+    "Quantity": 45
+  },
+  {
+    "Price": 5,
+    "Product": "Potatoes",
+    "Quantity": 45
+  },
+  {
+    "Price": 6,
+    "Product": "Potatoes",
+    "Quantity": 45
+  },
+  {
+    "Price": 3,
+    "Product": "Avocados",
+    "Quantity": 63
+  },
+  {
+    "Price": 4,
+    "Product": "Avocados",
+    "Quantity": 63
+  },
+  {
+    "Price": 2,
+    "Product": "Avocados",
+    "Quantity": 63
+  },
+  {
+    "Price": 1,
+    "Product": "Avocados",
+    "Quantity": 63
+  },
+  {
+    "Price": 5,
+    "Product": "Avocados",
+    "Quantity": 63
+  },
+  {
+    "Price": 5,
+    "Product": "Avocados",
+    "Quantity": 63
+  },
+  {
+    "Price": 6,
+    "Product": "Avocados",
+    "Quantity": 63
+  },
+  {
+    "Price": 3,
+    "Product": "Kiwis",
+    "Quantity": 19
+  },
+  {
+    "Price": 4,
+    "Product": "Kiwis",
+    "Quantity": 19
+  },
+  {
+    "Price": 2,
+    "Product": "Kiwis",
+    "Quantity": 19
+  },
+  {
+    "Price": 1,
+    "Product": "Kiwis",
+    "Quantity": 19
+  },
+  {
+    "Price": 5,
+    "Product": "Kiwis",
+    "Quantity": 19
+  },
+  {
+    "Price": 5,
+    "Product": "Kiwis",
+    "Quantity": 19
+  },
+  {
+    "Price": 6,
+    "Product": "Kiwis",
+    "Quantity": 19
+  },
+  {
+    "Price": 3,
+    "Product": "Onions",
+    "Quantity": 20
+  },
+  {
+    "Price": 4,
+    "Product": "Onions",
+    "Quantity": 20
+  },
+  {
+    "Price": 2,
+    "Product": "Onions",
+    "Quantity": 20
+  },
+  {
+    "Price": 1,
+    "Product": "Onions",
+    "Quantity": 20
+  },
+  {
+    "Price": 5,
+    "Product": "Onions",
+    "Quantity": 20
+  },
+  {
+    "Price": 5,
+    "Product": "Onions",
+    "Quantity": 20
+  },
+  {
+    "Price": 6,
+    "Product": "Onions",
+    "Quantity": 20
+  },
+  {
+    "Price": 3,
+    "Product": "Melons",
+    "Quantity": 66
+  },
+  {
+    "Price": 4,
+    "Product": "Melons",
+    "Quantity": 66
+  },
+  {
+    "Price": 2,
+    "Product": "Melons",
+    "Quantity": 66
+  },
+  {
+    "Price": 1,
+    "Product": "Melons",
+    "Quantity": 66
+  },
+  {
+    "Price": 5,
+    "Product": "Melons",
+    "Quantity": 66
+  },
+  {
+    "Price": 5,
+    "Product": "Melons",
+    "Quantity": 66
+  },
+  {
+    "Price": 6,
+    "Product": "Melons",
+    "Quantity": 66
+  },
+  {
+    "Price": 3,
+    "Product": "Broccoli",
+    "Quantity": 27
+  },
+  {
+    "Price": 4,
+    "Product": "Broccoli",
+    "Quantity": 27
+  },
+  {
+    "Price": 2,
+    "Product": "Broccoli",
+    "Quantity": 27
+  },
+  {
+    "Price": 1,
+    "Product": "Broccoli",
+    "Quantity": 27
+  },
+  {
+    "Price": 5,
+    "Product": "Broccoli",
+    "Quantity": 27
+  },
+  {
+    "Price": 5,
+    "Product": "Broccoli",
+    "Quantity": 27
+  },
+  {
+    "Price": 6,
+    "Product": "Broccoli",
+    "Quantity": 27
+  },
+  {
+    "Price": 3,
+    "Product": "Squash",
+    "Quantity": 92
+  },
+  {
+    "Price": 4,
+    "Product": "Squash",
+    "Quantity": 92
+  },
+  {
+    "Price": 2,
+    "Product": "Squash",
+    "Quantity": 92
+  },
+  {
+    "Price": 1,
+    "Product": "Squash",
+    "Quantity": 92
+  },
+  {
+    "Price": 5,
+    "Product": "Squash",
+    "Quantity": 92
+  },
+  {
+    "Price": 5,
+    "Product": "Squash",
+    "Quantity": 92
+  },
+  {
+    "Price": 6,
+    "Product": "Squash",
+    "Quantity": 92
+  }
+]

@@ -11,10 +11,12 @@
 namespace App\Tests\DataFlow;
 
 use App\DataSource\JsonDataSource;
+use App\DataTarget\DataTargetHttp;
 use App\Entity\DataFlow;
 use App\Tests\ContainerTestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\Alice\DataLoaderInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 class DataFlowTest extends ContainerTestCase
@@ -23,11 +25,11 @@ class DataFlowTest extends ContainerTestCase
     {
         // Break open our data sources and inject our mock http client.
         $httpClient = new DataSourceMockHttpClient();
-        foreach ([JsonDataSource::class] as $dataSourceClass) {
-            $dataSource = $this->getContainer()->get($dataSourceClass);
-            $property = new \ReflectionProperty($dataSource, 'httpClient');
+        foreach ([JsonDataSource::class, DataTargetHttp::class] as $serviceClass) {
+            $service = $this->getContainer()->get($serviceClass);
+            $property = new \ReflectionProperty($service, 'httpClient');
             $property->setAccessible(true);
-            $property->setValue($dataSource, $httpClient);
+            $property->setValue($service, $httpClient);
         }
     }
 
@@ -42,16 +44,35 @@ class DataFlowTest extends ContainerTestCase
         $data = Yaml::parse($content);
 
         $expected = $this->buildExpected($filename, $data['expected'] ?? []);
+
+        // Clean up before run.
+        if (isset($data['expected']['actual_filename'])) {
+            $filename = $this->getFilename($data['expected']['actual_filename']);
+            $this->filesystem()->remove($filename);
+        }
+
         $dataFlow = $this->buildDataFlow($data['fixtures']);
 
-        $result = $expectedData = $this->dataFlowManager()->run($dataFlow);
+        $result = $expectedData = $this->dataFlowManager()->run($dataFlow, [
+            'publish' => $dataFlow->getDataTargets()->count() > 0,
+        ]);
 
         if ($result->hasException()) {
             throw $result->getException();
         }
 
         $this->assertTrue($result->isSuccess());
-        $this->assertEquals($expected, $result->getLastDataSet()->getRows());
+
+        if (isset($data['expected']['filename'], $data['expected']['actual_filename'])) {
+            $this->assertJsonFileEqualsJsonFile(
+                $this->getFilename($data['expected']['filename']),
+                $this->getFilename($data['expected']['actual_filename'])
+            );
+        } else {
+            $actual = $result->getLastDataSet()->getRows();
+
+            $this->assertEquals($expected, $actual);
+        }
     }
 
     private function buildExpected(string $testFilename, array $data)
@@ -135,5 +156,15 @@ class DataFlowTest extends ContainerTestCase
         return array_map(static function ($filename) {
             return [$filename];
         }, $filenames);
+    }
+
+    private function filesystem(): Filesystem
+    {
+        return $this->get('filesystem');
+    }
+
+    private function getFilename(string $filename)
+    {
+        return $this->filesystem()->isAbsolutePath($filename) ? $filename : __DIR__.'/tests/'.$filename;
     }
 }

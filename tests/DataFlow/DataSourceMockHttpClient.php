@@ -28,7 +28,11 @@ class DataSourceMockHttpClient extends MockHttpClient
             return $this->get($url, $options);
         }
 
-        throw new BadRequestHttpException();
+        if ('POST' === $method) {
+            return $this->post($url, $options);
+        }
+
+        throw new BadRequestHttpException(sprintf('Invalid request method: %s', $method));
     }
 
     private function get($url, $options)
@@ -40,5 +44,21 @@ class DataSourceMockHttpClient extends MockHttpClient
         }
 
         return new MockResponse(file_get_contents($filename));
+    }
+
+    private function post($url, $options)
+    {
+        $filename = __DIR__.'/tests/'.parse_url($url, PHP_URL_PATH);
+
+        $content = null;
+        if (isset($options['body'])) {
+            $content = $options['body'];
+        } elseif (isset($options['json'])) {
+            $content = json_encode($options['json']);
+        }
+
+        file_put_contents($filename, $content);
+
+        return new MockResponse();
     }
 }

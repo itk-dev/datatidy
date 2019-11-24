@@ -1,0 +1,30 @@
+[
+  {
+    "Product": "Potatoes",
+    "Quantity": 45
+  },
+  {
+    "Product": "Avocados",
+    "Quantity": 63
+  },
+  {
+    "Product": "Kiwis",
+    "Quantity": 19
+  },
+  {
+    "Product": "Onions",
+    "Quantity": 20
+  },
+  {
+    "Product": "Melons",
+    "Quantity": 66
+  },
+  {
+    "Product": "Broccoli",
+    "Quantity": 27
+  },
+  {
+    "Product": "Squash",
+    "Quantity": 92
+  }
+]

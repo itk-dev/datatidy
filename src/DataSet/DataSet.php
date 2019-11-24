@@ -162,12 +162,8 @@ class DataSet
         return array_combine($names, array_map([$this, 'quoteName'], $names));
     }
 
-    public function getQuotedColumnName(string $name, bool $requireValidColumn = true)
+    public function getQuotedColumnName(string $name)
     {
-        if ($requireValidColumn && !$this->getColumns()->containsKey($name)) {
-            throw new InvalidColumnException($name);
-        }
-
         return $this->quoteName($name);
     }
 
