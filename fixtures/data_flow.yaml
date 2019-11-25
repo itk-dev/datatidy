@@ -78,14 +78,14 @@ App\Entity\DataTarget:
             username: ~
             password: ~
 
-    data_flow_odaa_target_http_csv:
+    data_flow_odaa_target_sql:
         data_flow: '@data_flow_odaa'
-        description: Send CSV result to an HTTP endpoint
-        dataTarget: App\DataTarget\CsvHttpDataTarget
+        description: Send result to SQL
+        dataTarget: App\DataTarget\SQLDataTarget
         dataTargetOptions:
-            url: 'https://webhook.site/9306637e-9692-403e-80cb-a81609551199'
-            username: ~
-            password: ~
+            url: mysql://db:db@sql_data_target:3306/db
+            tableName: data_flow_odaa
+            append: false
 
     # data_flow_odaa_target_ckan:
     #     data_flow: '@data_flow_odaa'
