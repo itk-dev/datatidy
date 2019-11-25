@@ -82,5 +82,21 @@ services:
     ports:
       - "6379"
 
+  # Test
+  sql_data_target:
+    image: itkdev/mariadb:latest
+    volumes:
+      - .docker/dumps/sql_data_target:/docker-entrypoint-initdb.d
+    networks:
+      - app
+    ports:
+      - '3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=db
+      - MYSQL_PASSWORD=db
+      - MYSQL_DATABASE=db
+      #- ENCRYPT=1 # Uncomment to enable database encryption.
+
 volumes:
   vendor-cache:

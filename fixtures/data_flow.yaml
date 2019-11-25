@@ -76,19 +76,14 @@ App\Entity\DataTarget:
             filename: /tmp/output.json
             format: json
 
-    # data_flow_odaa_target_sql:
-    #     data_flow: '@data_flow_odaa'
-    #     description: Send result to SQL
-    #     dataTarget: App\DataTarget\SQLDataTarget
-    #     dataTargetOptions:
-    #         url: mysql://db:db@data_target_sql_server:3306/db
-    #         tableName: data_flow_odaa
-    #         append: false
-
-    #         # CREATE TABLE `data_flow_odaa` (
-    #         #   `t` DATETIME,
-    #         #   `count` INT
-    #         # ) ENGINE = InnoDB;
+    data_flow_odaa_target_sql:
+        data_flow: '@data_flow_odaa'
+        description: Send result to SQL
+        dataTarget: App\DataTarget\SQLDataTarget
+        dataTargetOptions:
+            url: mysql://db:db@sql_data_target:3306/db
+            tableName: data_flow_odaa
+            append: false
 
     # data_flow_odaa_target_ckan:
     #     data_flow: '@data_flow_odaa'
