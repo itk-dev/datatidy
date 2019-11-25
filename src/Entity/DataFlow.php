@@ -82,7 +82,7 @@ class DataFlow
      * @ORM\Column(type="integer")
      * @Gedmo\Versioned()
      */
-    private $frequency;
+    private $frequency = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\DataFlowJob", mappedBy="dataFlow", orphanRemoval=true)
