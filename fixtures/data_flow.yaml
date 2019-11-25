@@ -85,6 +85,24 @@ App\Entity\DataTarget:
             tableName: data_flow_odaa
             append: false
 
+    data_flow_odaa_target_http_json:
+        data_flow: '@data_flow_odaa'
+        description: Send JSON result to an HTTP endpoint
+        dataTarget: App\DataTarget\JsonHttpDataTarget
+        dataTargetOptions:
+            url: 'https://webhook.site/9306637e-9692-403e-80cb-a81609551199'
+            username: ~
+            password: ~
+
+    data_flow_odaa_target_http_csv:
+        data_flow: '@data_flow_odaa'
+        description: Send CSV result to an HTTP endpoint
+        dataTarget: App\DataTarget\CsvHttpDataTarget
+        dataTargetOptions:
+            url: 'https://webhook.site/9306637e-9692-403e-80cb-a81609551199'
+            username: ~
+            password: ~
+
     # data_flow_odaa_target_ckan:
     #     data_flow: '@data_flow_odaa'
     #     description: Send result to CKAN

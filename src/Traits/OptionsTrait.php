@@ -63,7 +63,7 @@ trait OptionsTrait
             if ($option['required']) {
                 $this->requireOption($name);
             }
-            $value = $this->checkOptionType($name, $option['type'], $options);
+            $value = $this->checkOptionType($name, $option, $options);
             if (!property_exists($this, $name)) {
                 throw new InvalidOptionException(sprintf('Property "%s" does not exist on %s.', $name, static::class));
             }
@@ -192,10 +192,14 @@ trait OptionsTrait
         }
     }
 
-    public function checkOptionType($name, $typeName, array $values)
+    public function checkOptionType($name, array $option, array $values)
     {
         if (\array_key_exists($name, $values)) {
             $value = $values[$name];
+            if (isset($option['nullable']) && null === $value) {
+                return;
+            }
+            $typeName = $option['type'];
             switch ($typeName) {
                 case 'bool':
                     if (!$this->isBool($value)) {
