@@ -57,6 +57,8 @@ class TwigExtension extends AbstractExtension
                 return 'fa-file-export';
             case 'delete':
                 return 'fa-trash-alt';
+            case 'steps':
+                return 'fa-list-ul';
             default:
                 return '';
         }
