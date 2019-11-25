@@ -11,7 +11,8 @@
 namespace App\Tests\DataFlow;
 
 use App\DataSource\JsonDataSource;
-use App\DataTarget\DataTargetHttp;
+use App\DataTarget\CsvHttpDataTarget;
+use App\DataTarget\JsonHttpDataTarget;
 use App\Entity\DataFlow;
 use App\Tests\ContainerTestCase;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,9 +24,9 @@ class DataFlowTest extends ContainerTestCase
 {
     protected function setUp(): void
     {
-        // Break open our data sources and inject our mock http client.
+        // Break open data sources and targets and inject our mock http client.
         $httpClient = new DataSourceMockHttpClient();
-        foreach ([JsonDataSource::class, DataTargetHttp::class] as $serviceClass) {
+        foreach ([JsonDataSource::class, JsonHttpDataTarget::class, CsvHttpDataTarget::class] as $serviceClass) {
             $service = $this->getContainer()->get($serviceClass);
             $property = new \ReflectionProperty($service, 'httpClient');
             $property->setAccessible(true);
@@ -69,7 +70,7 @@ class DataFlowTest extends ContainerTestCase
                 $this->getFilename($data['expected']['actual_filename'])
             );
         } else {
-            $actual = $result->getLastDataSet()->getRows();
+            $actual = $result->getLastTransformResult()->getRows();
 
             $this->assertEquals($expected, $actual);
         }

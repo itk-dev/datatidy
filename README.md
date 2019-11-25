@@ -60,6 +60,9 @@ docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migra
 docker-compose exec phpfpm bin/phpunit
 ```
 
+See [Data flow tests](tests/DataFlow/README.md) for details on how to test data
+flows.
+
 ## Deployment
 
 You will need an environment where the following is present:
@@ -183,9 +186,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Testing
-
-### Loading fixtures
+## Loading fixtures
 
 ```sh
 docker-compose exec phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction

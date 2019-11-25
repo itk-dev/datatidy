@@ -276,6 +276,6 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
             throw new TransformerRuntimeException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
-        return $result->getLastDataSet();
+        return $result->getLastTransformResult();
     }
 }

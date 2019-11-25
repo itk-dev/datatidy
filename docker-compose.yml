@@ -6,6 +6,9 @@ networks:
   app:
     driver: bridge
     internal: false
+  test:
+    driver: bridge
+    internal: true
 
 services:
   mariadb:
@@ -83,6 +86,7 @@ services:
     ports:
       - "6379"
 
+  # Test
   database_test:
     image: itkdev/mariadb:latest
     networks:
@@ -94,6 +98,21 @@ services:
       - MYSQL_USER=db
       - MYSQL_PASSWORD=db
       - MYSQL_DATABASE=db_test
+      #- ENCRYPT=1 # Uncomment to enable database encryption.
+
+  sql_data_target:
+    image: itkdev/mariadb:latest
+    volumes:
+      - .docker/dumps/sql_data_target:/docker-entrypoint-initdb.d
+    networks:
+      - app
+    ports:
+      - '3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=db
+      - MYSQL_PASSWORD=db
+      - MYSQL_DATABASE=db
       #- ENCRYPT=1 # Uncomment to enable database encryption.
 
   http_data_target:

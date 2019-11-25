@@ -174,7 +174,7 @@ class DataFlowManager
             if ($result->isPublished()) {
                 $dataFlow->setLastRunAt(new \DateTime());
                 $this->entityManager->persist($dataFlow);
-                $this->entityManager->flush($dataFlow);
+                $this->entityManager->flush();
             }
         }
 

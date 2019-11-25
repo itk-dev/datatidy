@@ -43,11 +43,9 @@ fixtures:
         data_target:
             dataFlow: '@data_flow'
             description: test
-            dataTarget: App\DataTarget\DataTargetHttp
+            dataTarget: App\DataTarget\JsonHttpDataTarget
             dataTargetOptions:
                 url: http://test/test-merge/result.json
-                format: json
-
 
 expected:
     filename: test-merge/expected-right.json
