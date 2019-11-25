@@ -23,7 +23,7 @@ use Doctrine\DBAL\Statement;
  *     description="Send data flow result to a SQL server.")
  * )
  */
-class DataTargetSQL extends AbstractDataTarget
+class SQLDataTarget extends AbstractDataTarget
 {
     /**
      * @Option(name="Connection url", type="string")

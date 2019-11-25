@@ -63,7 +63,7 @@ App\Entity\DataTarget:
     data_flow_odaa_target_file_csv:
         data_flow: '@data_flow_odaa'
         description: Send result to file
-        dataTarget: App\DataTarget\DataTargetFile
+        dataTarget: App\DataTarget\FileDataTarget
         dataTargetOptions:
             filename: /tmp/output.csv
             format: csv
@@ -71,7 +71,7 @@ App\Entity\DataTarget:
     data_flow_odaa_target_file_json:
         data_flow: '@data_flow_odaa'
         description: Send result to file
-        dataTarget: App\DataTarget\DataTargetFile
+        dataTarget: App\DataTarget\FileDataTarget
         dataTargetOptions:
             filename: /tmp/output.json
             format: json
@@ -79,7 +79,7 @@ App\Entity\DataTarget:
     # data_flow_odaa_target_sql:
     #     data_flow: '@data_flow_odaa'
     #     description: Send result to SQL
-    #     dataTarget: App\DataTarget\DataTargetSQL
+    #     dataTarget: App\DataTarget\SQLDataTarget
     #     dataTargetOptions:
     #         url: mysql://db:db@data_target_sql_server:3306/db
     #         tableName: data_flow_odaa
@@ -93,7 +93,7 @@ App\Entity\DataTarget:
     # data_flow_odaa_target_ckan:
     #     data_flow: '@data_flow_odaa'
     #     description: Send result to CKAN
-    #     dataTarget: App\DataTarget\DataTargetCKAN
+    #     dataTarget: App\DataTarget\CKANDataTarget
     #     dataTargetOptions:
     #         name: 'Result from datatidy'
     #         url: '%CKAN_URL'
