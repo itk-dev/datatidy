@@ -36,7 +36,7 @@
                 <button type="button" class="btn" data-toggle="popover" title="{{ 'Recipe'|trans }}" data-content="{{ 'Your flows recipe is where you transform the data from your source.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
             </div>
             <div class="col-12">
-                <button class="btn btn-outline-secondary">Edit recipe</button>
+                <a class="btn btn-outline-secondary" href="{{ path('data_flow_transforms_index', {data_flow: data_flow.id}) }}">{{ 'Edit recipe'|trans }}</a>
             </div>
         </div>
     </div>
@@ -61,6 +61,8 @@
     </div>
 
 </div>
+{{ form_end(form) }}
+
 <div class="row">
     <div class="settings-drawer collapse col-12 col-md-3 bg-body shadow-lg pt-md-5" id="settingsDrawer">
         <p class="h6">{{ 'Flow settings'|trans }}</p>
@@ -68,5 +70,3 @@
         {{ form_widget(form.settings) }}
     </div>
 </div>
-{{ form_end(form) }}
-

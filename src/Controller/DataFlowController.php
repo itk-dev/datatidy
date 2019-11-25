@@ -80,6 +80,10 @@ class DataFlowController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // @TODO Why is this needed to connect new targets to the flow?
+            foreach ($dataFlow->getDataTargets() as $target) {
+                $target->setDataFlow($dataFlow);
+            }
             $this->getDoctrine()->getManager()->persist($dataFlow);
             $this->getDoctrine()->getManager()->flush();
 
