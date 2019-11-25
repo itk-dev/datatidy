@@ -128,7 +128,7 @@ stdout_logfile=path/to/output.file
 
 #### Producer
 
-You'll need to run the producer every minute to create jobs the consumer can process. You could for example use cron with the following settings to run the producer every minute: 
+You'll need to run the producer every minute to create jobs the consumer can process. You could for example use cron with the following settings to run the producer every minute:
 
 ```crontab
 * * * * * /usr/bin/env php path/to/datatidy/bin/console datatidy:data-flow:produce-jobs > path/to/output.file
@@ -137,7 +137,7 @@ You'll need to run the producer every minute to create jobs the consumer can pro
 #### Handling long running jobs
 
 Sometimes and for different reasons a job may run for a long time. And because jobs only can be created if there is no other active jobs for a DataFlow, you need to set those jobs in a non-active state.
-To help you accomplish this a command is available: 
+To help you accomplish this a command is available:
 ```crontab
 */30 * * * * /usr/bin/env php /path/to/datatidy/bin/console datatidy:data-flow:timeout-jobs --timeout-threshold=30 > path/to/output.file
 ```
