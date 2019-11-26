@@ -3,8 +3,113 @@
 
 {% block title %}{{ 'Edit Data flow'|trans }}{% endblock %}
 
-{% block header %}{{ 'Edit Data flow'|trans }}{% endblock %}
+
 
 {% block content %}
-    {{ include('data_flow/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ form_start(form)}}
+        <div class="row">
+            <div class="col-12 bg-white">
+                <div class="row py-1 py-md-3">
+                    <div class="col-6 col-md-auto">
+                        <a href="{{ path('data_flow_index') }}"><i class="fas {{ iconClass('previous') }} fa-fw mr-2"></i>{{ 'Flows'|trans }}</a>
+                    </div>
+                    <div class="d-none d-md-block col-auto border-left">
+                        <span class="text-gray-300">{{ data_flow.name }}</span>
+                        <span class="text-success ml-1">Saved 1m ago{#TODO: Show time since last save #}</span>
+                    </div>
+                    <div class="col-6 col-md-auto ml-auto z-index-1070 text-right">
+                        {% if cancel_url is defined %}
+                            <a class="btn btn-link btn-sm" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
+                        {% endif %}
+                        <button class="btn btn-primary btn-sm mr-1 mr-md-5">{{ button_label|default('Save flow'|trans) }}</button>
+                        <a data-toggle="collapse" href="#settingsDrawer" role="button" aria-expanded="false" aria-controls="settingsDrawer" title="Open flow settings"><i class="fas {{ iconClass('settings') }} fa-fw mr-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <main role="main" class="row">
+            <div class="col-12 bg-white">
+                <h1 class="h4">{% block header %}{{ 'Edit Data flow'|trans }}{% endblock %}</h1>
+            </div>
+            <div class="col-12 col-md-4 border border-white">
+                <div class="row bg-white pt-1 pb-2">
+                    <div class="col-12">
+                        <span><i class="fas {{ iconClass('datasource') }} fa-fw mr-2"></i>{{ 'Source'|trans }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-right">
+                        <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data source'|trans }}" data-content="{{ 'Add a datasource. You can combine other flows width this source in your recipe.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
+                    </div>
+                    <div class="col-12">
+                        {{ form_widget(form.data_source) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 border border-white">
+                <div class="row bg-white pt-1 pb-2">
+                    <div class="col-12">
+                        <span><i class="fas {{ iconClass('recipe') }} fa-fw mr-2"></i>{{ 'Recipe'|trans }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-right">
+                        <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Recipe'|trans }}" data-content="{{ 'Your flows recipe is where you transform the data from your source.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
+                    </div>
+                    <div class="col-12">
+                        <span><i class="fas {{ iconClass('steps') }} fa-fw mr-2"></i>{{ 'Steps'|trans }}</span>
+                        <div class="recipe-steps px-3 py-1">
+                            {# Markup for stps list #}
+                            {# TODO: Add dynamicaly with loop #}
+                            <div class="row bg-gray-200 rounded-sm mb-1 py-1">
+                                <div class="col-auto">
+                                    0
+                                </div>
+                                <div class="col-auto">
+                                    Raw data from source
+                                </div>
+                            </div>
+                            <div class="row bg-gray-200 rounded-sm mb-1 py-1">
+                                <div class="col-auto">
+                                    1
+                                </div>
+                                <div class="col-auto">
+                                    Select columns
+                                </div>
+                            </div>
+
+                        </div>
+                        <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}" class="btn btn-outline-secondary">{{ 'Edit recipe'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 border border-white">
+                <div class="row bg-white pt-1 pb-2">
+                    <div class="col-12">
+                        <span><i class="fas {{ iconClass('target') }} fa-fw mr-2"></i>{{ 'Target'|trans }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        <p class="mt-1">{{ 'Set targets'|trans }}</p>
+                    </div>
+                    <div class="col-2 text-right">
+                        <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data target'|trans }}" data-content="{{ 'Data targets is where you define what will happen to your recipes output.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
+                    </div>
+                    <div class="col-12">
+                        {{ form_widget(form.data_targets) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="settings-drawer collapse col-12 col-md-4 bg-body shadow-lg pt-md-5" id="settingsDrawer">
+                    <p class="h6">{{ 'Flow settings'|trans }}</p>
+                    {{ form_widget(form.settings) }}
+                    {{ include('data_flow/_delete_form.html.twig') }} {# TODO: Fix error when trying to delete flow  #}
+                </div>
+            </div>
+        </main>
+    {{ form_end(form) }}
 {% endblock %}
+
+

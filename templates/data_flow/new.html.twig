@@ -1,9 +1,36 @@
 {% extends 'data_flow/layout.html.twig' %}
 
-{% block title %}{{ 'New data source'|trans }}{% endblock %}
-
-{% block header %}{{ 'Create new data source'|trans }}{% endblock %}
+{% block title %}{{ 'Create new flow'|trans }}{% endblock %}
 
 {% block content %}
-    {{ include('data_source/_form.html.twig') }}
+
+    <div class="row">
+        <div class="col-12 bg-white">
+            <div class="row py-1 py-md-3">
+                <div class="col-6 col-md-auto">
+                    <a href="{{ path('data_flow_index') }}"><i class="fas {{ iconClass('previous') }} fa-fw mr-2"></i>{{ 'Flows'|trans }}</a>
+                </div>
+                <div class="d-none d-md-block col-auto border-left">
+                    <span class="text-gray-300">{{ 'Create new flow'|trans }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main role="main" class="row pt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="h4">{% block header %}{{ 'Create new flow'|trans }}{% endblock %}</h1>
+                </div>
+                <div class="col-12">
+                    {{ include('data_source/_form.html.twig', {'button_label': 'Create new flow'}) }}
+                    {% if cancel_url is defined %}
+                        <a class="btn btn-link" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+
 {% endblock %}
