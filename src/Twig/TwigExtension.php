@@ -10,11 +10,20 @@
 
 namespace App\Twig;
 
+use App\DataTransformer\DataTransformerManager;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class TwigExtension extends AbstractExtension
 {
+    private $dataTransformerManager;
+
+    public function __construct(DataTransformerManager $dataTransformerManager)
+    {
+        $this->dataTransformerManager = $dataTransformerManager;
+    }
+
     public function getFunctions()
     {
         return [
@@ -62,5 +71,17 @@ class TwigExtension extends AbstractExtension
             default:
                 return '';
         }
+    }
+
+    public function getFilters()
+    {
+        return [
+            new TwigFilter('transformer_name', [$this, 'getTransformerName']),
+        ];
+    }
+
+    public function getTransformerName(string $name)
+    {
+        return $this->dataTransformerManager->getTransformer($name)->getMetadata()['name'];
     }
 }

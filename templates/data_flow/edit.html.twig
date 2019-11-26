@@ -59,25 +59,24 @@
                     <div class="col-12">
                         <span><i class="fas {{ iconClass('steps') }} fa-fw mr-2"></i>{{ 'Steps'|trans }}</span>
                         <div class="recipe-steps px-3 py-1">
-                            {# Markup for stps list #}
-                            {# TODO: Add dynamicaly with loop #}
                             <div class="row bg-gray-200 rounded-sm mb-1 py-1">
                                 <div class="col-auto">
                                     0
                                 </div>
                                 <div class="col-auto">
-                                    Raw data from source
+                                    {{ 'Raw data from source'|trans }}
                                 </div>
                             </div>
-                            <div class="row bg-gray-200 rounded-sm mb-1 py-1">
-                                <div class="col-auto">
-                                    1
+                            {% for transform in data_flow.transforms %}
+                                <div class="row bg-gray-200 rounded-sm mb-1 py-1">
+                                    <div class="col-auto">
+                                        {{ loop.index }}
+                                    </div>
+                                    <div class="col-auto">
+                                        {{ transform.transformer|transformer_name }}
+                                    </div>
                                 </div>
-                                <div class="col-auto">
-                                    Select columns
-                                </div>
-                            </div>
-
+                            {% endfor %}
                         </div>
                         <a class="btn btn-outline-secondary" href="{{ path('data_flow_transforms_index', {data_flow: data_flow.id}) }}">{{ 'Edit recipe'|trans }}</a>
                     </div>
