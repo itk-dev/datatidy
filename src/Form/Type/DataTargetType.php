@@ -49,6 +49,9 @@ class DataTargetType extends AbstractType
             ->add('dataTarget', ChoiceType::class, [
                 'choices' => $targetOptions,
                 'placeholder' => '',
+                'attr' => [
+                    'class' => 'data-target-options',
+                ],
             ]);
 
         // @see https://symfony.com/doc/current/form/dynamic_form_modification.html

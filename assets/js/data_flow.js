@@ -14,23 +14,27 @@ $(() => {
 
   $('#new-tranform-transformer').select2()
 
-  const buildCollectionTypes = () => {
+  const buildCollectionTypes = (context) => {
     // Collection types
     // @see https://symfony.com/doc/current/reference/forms/types/collection.html#adding-and-removing-items
-    $('[data-collection-add-new-widget-selector]').on('click', function () {
+    $('[data-collection-add-new-widget-selector]', context).on('click', function () {
       const $container = $($(this).data('collection-add-new-widget-selector'))
       let counter = $container.data('widget-counter') || $container.children().length
       const template = $container.attr('data-prototype').replace(/__name__/g, counter)
       counter++
       $container.data('widget-counter', counter)
-      $container.append($(template))
+      const item = $(template)
+      $container.append(item)
+      buildCollectionTypes(item)
     })
 
-    $('[data-collection-remove-widget-selector]').on('click', function () {
+    $('[data-collection-remove-widget-selector]', context).on('click', function () {
       const $container = $($(this).data('collection-remove-widget-selector'))
       $container.remove()
     })
   }
+
+  // @TODO const buildDataTargetForms = (context) => {}
 
   const $transformer = $('#data_transform_transformer')
   $transformer.on('change', function () {
@@ -47,9 +51,9 @@ $(() => {
     $.ajax({
       url: $form.attr('action'),
       type: $form.attr('method'),
-      data: data, // $form.serializeArray(),
+      data: data,
       success: (html) => {
-        // Replace current position field ...
+        // Replace current field ...
         $target.replaceWith(
           // ... with the returned one from the AJAX response.
           $(html).find('#data_transform_transformerOptions')
@@ -63,4 +67,8 @@ $(() => {
   })
 
   buildCollectionTypes()
+})
+
+$(function () {
+  $('[data-toggle="popover"]').popover()
 })

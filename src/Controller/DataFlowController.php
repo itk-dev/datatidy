@@ -11,12 +11,14 @@
 namespace App\Controller;
 
 use App\Entity\DataFlow;
+use App\Form\Type\DataFlowCreateType;
 use App\Form\Type\DataFlowType;
 use App\Repository\DataFlowRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/data/flow")
@@ -36,10 +38,10 @@ class DataFlowController extends AbstractController
     /**
      * @Route("/new", name="data_flow_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, TranslatorInterface $translator): Response
     {
         $dataFlow = new DataFlow();
-        $form = $this->createForm(DataFlowType::class, $dataFlow);
+        $form = $this->createForm(DataFlowCreateType::class, $dataFlow);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -47,7 +49,11 @@ class DataFlowController extends AbstractController
             $entityManager->persist($dataFlow);
             $entityManager->flush();
 
-            return $this->redirectToRoute('data_flow_index');
+            $this->addFlash('success', $translator->trans('Data flow %name% created', [
+                '%name%' => $dataFlow->getName(),
+            ]));
+
+            return $this->redirectToRoute('data_flow_edit', ['id' => $dataFlow->getId()]);
         }
 
         return $this->render('data_flow/new.html.twig', [
@@ -74,6 +80,10 @@ class DataFlowController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // @TODO Why is this needed to connect new targets to the flow?
+            foreach ($dataFlow->getDataTargets() as $target) {
+                $target->setDataFlow($dataFlow);
+            }
             $this->getDoctrine()->getManager()->persist($dataFlow);
             $this->getDoctrine()->getManager()->flush();
 

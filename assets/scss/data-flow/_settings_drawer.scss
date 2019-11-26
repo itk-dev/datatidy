@@ -1,0 +1,17 @@
+.settings-drawer {
+    background-color: $body-bg;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    transform: translateX(100%);
+    transform-origin: right top;
+    transition: transform .2s ease-in;
+    &.show {
+        transform: translateX(0%);
+        transition: transform .5s ease-in-out;
+        body & {
+            overflow: hidden;
+        }
+    }
+}

@@ -1,7 +1,0 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success">{{ button_label|default('Save'|trans) }}</button>
-    {% if cancel_url is defined %}
-        <a class="btn btn-link" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
-    {% endif %}
-{{ form_end(form) }}
