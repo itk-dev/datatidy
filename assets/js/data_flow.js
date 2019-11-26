@@ -12,7 +12,10 @@ $(() => {
     $preview.attr('src', $preview.data('src').replace('__id__', id))
   })
 
-  $('#new-tranform-transformer').select2()
+  $('#new-tranform-transformer').select2({
+    placeholder: 'Select transform',
+    allowClear: true
+  })
 
   const buildCollectionTypes = (context) => {
     // Collection types
