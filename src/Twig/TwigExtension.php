@@ -17,6 +17,7 @@ use Twig\TwigFunction;
 
 class TwigExtension extends AbstractExtension
 {
+    /** @var DataTransformerManager */
     private $dataTransformerManager;
 
     public function __construct(DataTransformerManager $dataTransformerManager)
