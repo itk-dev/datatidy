@@ -75,6 +75,10 @@ class TwigExtension extends AbstractExtension
                 return 'fa-trash-alt';
             case 'steps':
                 return 'fa-list-ul';
+            case 'preview':
+                return 'fa-table';
+            case 'play':
+                return 'fa-play-circle';
             default:
                 return '';
         }

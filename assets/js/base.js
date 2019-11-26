@@ -17,13 +17,15 @@ import { faCog } from '@fortawesome/free-solid-svg-icons/faCog'
 import { faFileExport } from '@fortawesome/free-solid-svg-icons/faFileExport'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons/faTrashAlt'
 import { faListUl } from '@fortawesome/free-solid-svg-icons/faListUl'
+import { faTable } from '@fortawesome/free-solid-svg-icons/faTable'
+import { faPlayCircle } from '@fortawesome/free-solid-svg-icons/faPlayCircle'
 
 const $ = require('jquery')
 global.$ = global.jQuery = $
 require('../scss/base.scss')
 require('bootstrap')
 library.add(
-  faTachometerAlt, faDatabase, faUsers, faSearch, faEnvelope, faLock, faWaveSquare, faEdit, faBolt, faQuestionCircle, faCogs, faChevronLeft, faChevronRight, faCog, faFileExport, faTrashAlt, faListUl
+  faTachometerAlt, faDatabase, faUsers, faSearch, faEnvelope, faLock, faWaveSquare, faEdit, faBolt, faQuestionCircle, faCogs, faChevronLeft, faChevronRight, faCog, faFileExport, faTrashAlt, faListUl, faTable, faPlayCircle
 )
 
 const imagesContext = require.context('../images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/)
