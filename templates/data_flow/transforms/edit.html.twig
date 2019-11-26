@@ -26,7 +26,17 @@
     </div>
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script></script> {# TODO: Fix a class(.transform-edit) on body to recognize when editing. Class should change the height of the preview area. #}
+{% block content %}
+    {# result of computing columns available for this transform #}
+    {% if result.exception|default(false) %}
+        <div class="alert alert-danger">
+            {{ result.exception.message }}
+            {% if previous_transform|default(false) %}
+                <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: previous_transform.id}) }}">{{ 'Edit previous transform'|trans }}</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {# @TODO: Add submit button and stuff #}
+    {{ form(form) }}
 {% endblock %}
