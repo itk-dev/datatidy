@@ -16,10 +16,8 @@ use App\DataSource\DataSourceManager;
 use App\DataTarget\DataTargetManager;
 use App\DataTransformer\DataTransformerManager;
 use App\Entity\DataFlow;
-use App\Entity\DataTransform;
 use App\Repository\DataFlowRepository;
 use App\Traits\LogTrait;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\NullLogger;
@@ -98,28 +96,56 @@ class DataFlowManager
         return $this->dataSourceManager;
     }
 
-    public function runColumns(DataFlow $dataFlow, array $options = []): ArrayCollection
+    public function runColumns(DataFlow $dataFlow, array $options = []): DataFlowRunResult
     {
+        $options['publish'] = false;
+
+        return $this->run($dataFlow, $options);
+
         $options = $this->resolveRunOptions($options);
+        $result = new DataFlowRunResult($dataFlow, $options);
+
         $dataSet = $this->getDataSet($dataFlow);
 
-        $columns = $dataSet->getColumns();
-        $numberOfSteps = $options['number_of_steps'] ?? PHP_INT_MAX;
+        $result->addDataSet($dataSet);
 
-        /** @var DataTransform $transform */
-        foreach ($dataFlow->getTransforms() as $index => $transform) {
+        $numberOfSteps = $options['number_of_steps'] ?? PHP_INT_MAX;
+        $transforms = $dataFlow->getTransforms();
+
+        $columns = $dataSet->getColumns();
+        foreach ($transforms as $index => $transform) {
             if ($index >= $numberOfSteps) {
                 break;
             }
-
-            $transformer = $this->transformerManager->getTransformer(
-                $transform->getTransformer(),
-                $transform->getTransformerOptions()
-            );
-            $columns = $transformer->transformColumns($columns);
+            try {
+                $transformer = $this->transformerManager->getTransformer(
+                    $transform->getTransformer(),
+                    $transform->getTransformerOptions()
+                );
+                $columns = $transformer->transformColumns($columns);
+                $result->addColumns($columns);
+            } catch (\Exception $exception) {
+                $result->addException($exception);
+                // It does not make sense to continue after an exception.
+                break;
+            }
         }
 
-        return $columns;
+        if ($result->isSuccess() && $numberOfSteps < \count($transforms) + 1) {
+            $transform = $transforms[$numberOfSteps];
+            try {
+                $transformer = $this->transformerManager->getTransformer(
+                    $transform->getTransformer(),
+                    $transform->getTransformerOptions()
+                );
+                $columns = $transformer->transformColumns($columns);
+                $result->setLookahead($columns);
+            } catch (\Exception $exception) {
+                $result->setLookaheadException($exception);
+            }
+        }
+
+        return $result;
     }
 
     public function run(DataFlow $dataFlow, array $options = []): DataFlowRunResult
@@ -153,7 +179,8 @@ class DataFlowManager
             }
         }
 
-        if ($result->isSuccess() && $numberOfSteps < \count($transforms) + 1) {
+        // Lookahead.
+        if ($result->isSuccess() && $numberOfSteps < $transforms->count()) {
             $transform = $transforms[$numberOfSteps];
             try {
                 $transformer = $this->transformerManager->getTransformer(

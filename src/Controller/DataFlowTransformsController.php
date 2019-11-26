@@ -16,10 +16,12 @@ use App\DataTransformer\Exception\InvalidTransformerException;
 use App\Entity\DataFlow;
 use App\Entity\DataTransform;
 use App\Form\Type\DataTransformType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -105,16 +107,17 @@ class DataFlowTransformsController extends AbstractController
      */
     public function edit(Request $request, DataFlow $dataFlow, DataTransform $transform)
     {
-        $totalNumberOfSteps = $dataFlow->getTransforms()->count();
-        $numberOfSteps = null !== $transform ? $transform->getPosition() : 0;
+        if ($transform->getDataFlow() !== $dataFlow) {
+            throw new BadRequestHttpException();
+        }
 
-        $columns = $this->dataFlowManager->runColumns($dataFlow, [
+        $numberOfSteps = $transform->getPosition();
+        $result = $this->dataFlowManager->runColumns($dataFlow, [
             'number_of_steps' => $numberOfSteps,
-            'return_exceptions' => true,
         ]);
 
         $form = $this->createForm(DataTransformType::class, $transform, [
-            'data_set_columns' => $columns,
+            'data_set_columns' => $result->isSuccess() ? $result->getLastDataSet()->getColumns() : new ArrayCollection(),
         ]);
         $form->handleRequest($request);
 
@@ -136,9 +139,15 @@ class DataFlowTransformsController extends AbstractController
             return $this->redirectToRoute('data_flow_transforms_index', ['data_flow' => $dataFlow->getId()]);
         }
 
+        $previousTransform = 0 < $transform->getPosition()
+            ? $dataFlow->getTransforms()[$transform->getPosition() - 1]
+            : null;
+
         return $this->render('data_flow/transforms/edit.html.twig', [
             'data_flow' => $dataFlow,
             'transform' => $transform,
+            'previous_transform' => $previousTransform,
+            'result' => $result,
             'form' => $form->createView(),
         ]);
     }
