@@ -55,8 +55,13 @@ class DataFlowType extends AbstractType
                 ])
                     ->add('dataTargets', CollectionType::class, [
                         'entry_type' => DataTargetType::class,
+                        'entry_options' => [
+                            'label' => false,
+                            'block_prefix' => 'data_flow_target_item',
+                        ],
                         'allow_add' => true,
                         'allow_delete' => true,
+                        'block_prefix' => 'data_flow_target',
                     ])
             )
         ;

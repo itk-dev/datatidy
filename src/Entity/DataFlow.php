@@ -74,7 +74,7 @@ class DataFlow
     private $lastRunAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DataTarget", mappedBy="dataFlow", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\DataTarget", mappedBy="dataFlow", cascade={"persist"}, orphanRemoval=true)
      */
     private $dataTargets;
 
