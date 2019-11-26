@@ -24,6 +24,13 @@ class TwigExtension extends AbstractExtension
         $this->dataTransformerManager = $dataTransformerManager;
     }
 
+    public function getFilters()
+    {
+        return [
+            new TwigFilter('transformer_name', [$this, 'getTransformerName']),
+        ];
+    }
+
     public function getFunctions()
     {
         return [
@@ -73,15 +80,16 @@ class TwigExtension extends AbstractExtension
         }
     }
 
-    public function getFilters()
-    {
-        return [
-            new TwigFilter('transformer_name', [$this, 'getTransformerName']),
-        ];
-    }
-
     public function getTransformerName(string $name)
     {
-        return $this->dataTransformerManager->getTransformer($name)->getMetadata()['name'];
+        try {
+            $transformer = $this->dataTransformerManager->getTransformer($name);
+            $metadata = $transformer->getMetadata();
+
+            return $metadata['name'];
+        } catch (\Exception $exception) {
+        }
+
+        return $name;
     }
 }
