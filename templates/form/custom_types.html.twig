@@ -27,7 +27,7 @@ Templates for custom form types.
             </div>
         {% endfor %}
         <div class="col-2">
-            <button type="button" class="btn btn-danger" data-collection-remove-widget-selector="#{{ id }}">{{ 'Remove item'|trans }}</button>
+            <button type="button" class="btn btn-danger btn-sm" data-collection-remove-widget-selector="#{{ id }}"><i class="fas {{ iconClass('delete') }} fa-fw mr-2"></i><span class="">{{ 'Remove item'|trans }}</span></button>
         </div>
     </div>
 {% endblock %}
@@ -36,16 +36,19 @@ Templates for custom form types.
 {% block data_flow_target_widget %}
     <div class="data-flow-target-widget">
         {{- block('collection_widget') -}}
-
-        <button type="button"
+        <div class="row">
+            <div class="col-12 text-center">
+                <button type="button"
             data-collection-add-new-widget-selector="#{{ form.vars.id }}"
-            class="btn btn-secondary">{{ 'Add data target'|trans }}</button>
+            class="btn btn-outline-secondary">{{ 'Add data target'|trans }}</button>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
 {% block data_flow_target_item_row %}
-    <div class="row data-flow-target-item" id="{{ id }}">
-        <div class="col">
+    <div class="row data-flow-target-item border-bottom pb-3 mb-3" id="{{ id }}">
+        <div class="col-12">
             {% for child in form.children if not child.rendered %}
                 <div class="form-group">
                     {{ form_label(child) }}
@@ -55,8 +58,8 @@ Templates for custom form types.
                 </div>
             {% endfor %}
         </div>
-        <div class="col-2">
-            <button type="button" class="btn btn-danger" data-collection-remove-widget-selector="#{{ id }}">{{ 'Remove item'|trans }}</button>
+        <div class="col-12">
+            <button type="button" class="btn text-danger btn-sm ml-0 pl-0" data-collection-remove-widget-selector="#{{ id }}"><i class="fas {{ iconClass('delete') }} fa-fw mr-2"></i><span class="">{{ 'Remove target'|trans }}</span></button>
         </div>
     </div>
 {% endblock %}

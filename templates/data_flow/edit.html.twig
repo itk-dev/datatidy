@@ -39,7 +39,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12 text-right">
-                        <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data source'|trans }}" data-content="{{ 'Add a datasource. You can combine other flows width this source in your recipe.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
+                        <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data source'|trans }}" data-content="{{ 'Add a datasource. You can combine other flows width this source in your recipe.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
                     </div>
                     <div class="col-12">
                         {{ form_widget(form.data_source) }}
@@ -54,7 +54,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12 text-right">
-                        <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Recipe'|trans }}" data-content="{{ 'Your flows recipe is where you transform the data from your source.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
+                        <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Recipe'|trans }}" data-content="{{ 'Your flows recipe is where you transform the data from your source.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
                     </div>
                     <div class="col-12">
                         <span><i class="fas {{ iconClass('steps') }} fa-fw mr-2"></i>{{ 'Steps'|trans }}</span>
@@ -78,6 +78,8 @@
                                 </div>
                             {% endfor %}
                         </div>
+                    </div>
+                    <div class="col-12 text-center">
                         <a class="btn btn-outline-secondary" href="{{ path('data_flow_transforms_index', {data_flow: data_flow.id}) }}">{{ 'Edit recipe'|trans }}</a>
                     </div>
                 </div>
@@ -89,11 +91,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-10">
-                        <p class="mt-1">{{ 'Set targets'|trans }}</p>
-                    </div>
-                    <div class="col-2 text-right">
-                        <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data target'|trans }}" data-content="{{ 'Data targets is where you define what will happen to your recipes output.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw mr-2"></i></button>
+                    <div class="col-12 text-right">
+                        <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data target'|trans }}" data-content="{{ 'Data targets is where you define what will happen to your recipes output.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
                     </div>
                     <div class="col-12">
                         {{ form_widget(form.data_targets) }}

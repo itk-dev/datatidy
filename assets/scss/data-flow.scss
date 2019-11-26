@@ -4,3 +4,10 @@
 /* Import custom partials */
 @import "data-flow/data_flow_recipe";
 @import "data-flow/settings_drawer";
+
+/* dataflow target column */
+#data_flow_data_targets {
+    legend {
+        padding-top: 0; /* Remove padding to align with other items */
+    }
+}
