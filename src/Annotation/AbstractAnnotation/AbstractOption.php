@@ -27,6 +27,11 @@ abstract class AbstractOption implements \JsonSerializable
     public $type;
 
     /**
+     * @var bool
+     */
+    public $nullable = false;
+
+    /**
      * @var array
      */
     public $choices;
@@ -72,15 +77,6 @@ abstract class AbstractOption implements \JsonSerializable
 
     public function toArray()
     {
-        return [
-            'type' => $this->type,
-            'formType' => $this->formType,
-            'name' => $this->name,
-            'description' => $this->description,
-            'help' => $this->help,
-            'required' => $this->required,
-            'default' => $this->default,
-            'choices' => $this->choices,
-        ];
+        return get_object_vars($this);
     }
 }

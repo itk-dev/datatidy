@@ -10,6 +10,7 @@
 
 namespace App\DataTarget;
 
+use App\DataTarget\Exception\InvalidDataTargetException;
 use App\DataTransformer\AbstractDataTransformer;
 use App\DataTransformer\Exception\InvalidTransformerException;
 use App\Traits\LogTrait;
@@ -41,7 +42,7 @@ class DataTargetManager
     {
         $transformers = $this->getDataTargets();
         if (!\array_key_exists($name, $transformers)) {
-            throw new InvalidTransformerException(sprintf('Transformer with name "%s" does not exist', $name));
+            throw new InvalidDataTargetException(sprintf('Transformer with name "%s" does not exist', $name));
         }
 
         /** @var AbstractDataTransformer $transformer */

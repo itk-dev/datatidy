@@ -63,7 +63,7 @@ App\Entity\DataTarget:
     data_flow_odaa_target_file_csv:
         data_flow: '@data_flow_odaa'
         description: Send result to file
-        dataTarget: App\DataTarget\DataTargetFile
+        dataTarget: App\DataTarget\FileDataTarget
         dataTargetOptions:
             filename: /tmp/output.csv
             format: csv
@@ -71,29 +71,42 @@ App\Entity\DataTarget:
     data_flow_odaa_target_file_json:
         data_flow: '@data_flow_odaa'
         description: Send result to file
-        dataTarget: App\DataTarget\DataTargetFile
+        dataTarget: App\DataTarget\FileDataTarget
         dataTargetOptions:
             filename: /tmp/output.json
             format: json
 
-    # data_flow_odaa_target_sql:
-    #     data_flow: '@data_flow_odaa'
-    #     description: Send result to SQL
-    #     dataTarget: App\DataTarget\DataTargetSQL
-    #     dataTargetOptions:
-    #         url: mysql://db:db@data_target_sql_server:3306/db
-    #         tableName: data_flow_odaa
-    #         append: false
+    data_flow_odaa_target_sql:
+        data_flow: '@data_flow_odaa'
+        description: Send result to SQL
+        dataTarget: App\DataTarget\SQLDataTarget
+        dataTargetOptions:
+            url: mysql://db:db@sql_data_target:3306/db
+            tableName: data_flow_odaa
+            append: false
 
-    #         # CREATE TABLE `data_flow_odaa` (
-    #         #   `t` DATETIME,
-    #         #   `count` INT
-    #         # ) ENGINE = InnoDB;
+    data_flow_odaa_target_http_json:
+        data_flow: '@data_flow_odaa'
+        description: Send JSON result to an HTTP endpoint
+        dataTarget: App\DataTarget\JsonHttpDataTarget
+        dataTargetOptions:
+            url: 'https://webhook.site/9306637e-9692-403e-80cb-a81609551199'
+            username: ~
+            password: ~
+
+    data_flow_odaa_target_http_csv:
+        data_flow: '@data_flow_odaa'
+        description: Send CSV result to an HTTP endpoint
+        dataTarget: App\DataTarget\CsvHttpDataTarget
+        dataTargetOptions:
+            url: 'https://webhook.site/9306637e-9692-403e-80cb-a81609551199'
+            username: ~
+            password: ~
 
     # data_flow_odaa_target_ckan:
     #     data_flow: '@data_flow_odaa'
     #     description: Send result to CKAN
-    #     dataTarget: App\DataTarget\DataTargetCKAN
+    #     dataTarget: App\DataTarget\CKANDataTarget
     #     dataTargetOptions:
     #         name: 'Result from datatidy'
     #         url: '%CKAN_URL'

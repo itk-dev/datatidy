@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *     description="Write data flow result to a file.",
  * )
  */
-class DataTargetFile extends AbstractDataTarget
+class FileDataTarget extends AbstractDataTarget
 {
     /**
      * @Option(name="File name", description="Absolute path the output file", type="string")

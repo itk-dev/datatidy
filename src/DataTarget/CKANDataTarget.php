@@ -33,7 +33,7 @@ use ItkDev\CKAN\API\Client\DataStore\DataStoreClient;
  *     description="Send result of data flow to a CKAN server."
  * )
  */
-class DataTargetCKAN extends AbstractDataTarget
+class CKANDataTarget extends AbstractDataTarget
 {
     /**
      * @Option(name="Data source name", description="Name for data target", type="string")
