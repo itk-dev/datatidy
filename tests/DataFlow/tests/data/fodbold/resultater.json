@@ -1,0 +1,152 @@
+[
+  {
+    "Id": 1,
+    "HjScore": 1,
+    "UdeScore": 2
+  },
+  {
+    "Id": 2,
+    "HjScore": 3,
+    "UdeScore": 0
+  },
+  {
+    "Id": 3,
+    "HjScore": 1,
+    "UdeScore": 2
+  },
+  {
+    "Id": 4,
+    "HjScore": 0,
+    "UdeScore": 0
+  },
+  {
+    "Id": 5,
+    "HjScore": 2,
+    "UdeScore": 2
+  },
+  {
+    "Id": 6,
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 7,
+    "HjScore": 4,
+    "UdeScore": 1
+  },
+  {
+    "Id": 8,
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 9,
+    "HjScore": 1,
+    "UdeScore": 0
+  },
+  {
+    "Id": 10,
+    "HjScore": 2,
+    "UdeScore": 1
+  },
+  {
+    "Id": 11,
+    "HjScore": 0,
+    "UdeScore": 3
+  },
+  {
+    "Id": 12,
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 13,
+    "HjScore": 1,
+    "UdeScore": 2
+  },
+  {
+    "Id": 14,
+    "HjScore": 2,
+    "UdeScore": 1
+  },
+  {
+    "Id": 15,
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 16,
+    "HjScore": 1,
+    "UdeScore": 2
+  },
+  {
+    "Id": 17,
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 18,
+    "HjScore": 0,
+    "UdeScore": 0
+  },
+  {
+    "Id": 19,
+    "HjScore": 0,
+    "UdeScore": 0
+  },
+  {
+    "Id": 20,
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 21,
+    "HjScore": 3,
+    "UdeScore": 1
+  },
+  {
+    "Id": 22,
+    "HjScore": 2,
+    "UdeScore": 0
+  },
+  {
+    "Id": 23,
+    "HjScore": 2,
+    "UdeScore": 2
+  },
+  {
+    "Id": 24,
+    "HjScore": 0,
+    "UdeScore": 2
+  },
+  {
+    "Id": 25,
+    "HjScore": 2,
+    "UdeScore": 1
+  },
+  {
+    "Id": 26,
+    "HjScore": 6,
+    "UdeScore": 1
+  },
+  {
+    "Id": 27,
+    "HjScore": 4,
+    "UdeScore": 1
+  },
+  {
+    "Id": 28,
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 29,
+    "HjScore": 1,
+    "UdeScore": 1
+  },
+  {
+    "Id": 30,
+    "HjScore": 5,
+    "UdeScore": 1
+  }
+]

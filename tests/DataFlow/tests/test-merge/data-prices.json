@@ -1,0 +1,30 @@
+[
+  {
+    "Product": "Potatoes",
+    "Price": 3
+  },
+  {
+    "Product": "Avocados",
+    "Price": 4
+  },
+  {
+    "Product": "Kiwis",
+    "Price": 2
+  },
+  {
+    "Product": "Onions",
+    "Price": 1
+  },
+  {
+    "Product": "Melons",
+    "Price": 5
+  },
+  {
+    "Product": "Oranges",
+    "Price": 5
+  },
+  {
+    "Product": "Tomatoes",
+    "Price": 6
+  }
+]

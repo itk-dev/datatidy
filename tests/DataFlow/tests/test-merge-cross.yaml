@@ -1,0 +1,59 @@
+# @see https://www.diffen.com/difference/Inner_Join_vs_Outer_Join
+fixtures:
+    App\Entity\DataSource:
+        data_source_prices:
+            name: Prices
+            ttl: 0
+            dataSource: App\DataSource\JsonDataSource
+            dataSourceOptions:
+                url: http://test/test-merge/data-prices.json
+                root: ''
+
+        data_source_quantities:
+            name: Quantities
+            ttl: 0
+            dataSource: App\DataSource\JsonDataSource
+            dataSourceOptions:
+                url: http://test/test-merge/data-quantities.json
+                root: ''
+
+    App\Entity\DataFlow:
+        data_flow:
+            name: Prices
+            dataSource: '@data_source_prices'
+            frequency: 60
+
+        data_flow_quantities:
+            name: Quantities
+            dataSource: '@data_source_quantities'
+            frequency: 60
+
+    App\Entity\DataTransform:
+        data_transform_0:
+            data_flow: '@data_flow'
+            name: Select columns
+            transformer: App\DataTransformer\SelectColumnsDataTransformer
+            transformerOptions:
+                columns: [Price]
+
+        data_transform:
+            data_flow: '@data_flow'
+            name: Merge
+            transformer: App\DataTransformer\MergeFlowsDataTransformer
+            transformerOptions:
+                dataFlow: '@data_flow_quantities'
+                joinType: cross
+                joinColumns: []
+                includeAllColumns: false
+
+    App\Entity\DataTarget:
+        data_target:
+            dataFlow: '@data_flow'
+            description: test
+            dataTarget: App\DataTarget\JsonHttpDataTarget
+            dataTargetOptions:
+                url: http://test/test-merge/result.json
+
+expected:
+    filename: test-merge/expected-cross.json
+    actual_filename: test-merge/result.json

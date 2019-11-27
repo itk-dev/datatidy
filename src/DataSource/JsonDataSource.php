@@ -44,7 +44,7 @@ class JsonDataSource extends AbstractHttpDataSource implements DataSourceInterfa
         if (!empty($this->root)) {
             $propertyPath = $this->buildPropertyPath($this->root);
 
-            $data = $this->propertyAccessor->getValue($data, $propertyPath);
+            $data = $this->propertyAccessor->getValue($data, $propertyPath) ?? [];
         }
 
         return $data;

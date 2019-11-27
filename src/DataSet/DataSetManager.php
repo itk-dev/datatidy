@@ -32,26 +32,10 @@ class DataSetManager
         return $dataSet;
     }
 
-    public function createDataSetFromCSV(string $name, $csv, array $headers = null): DataSet
-    {
-        $dataSet = new DataSet($name, $this->entityManager->getConnection());
-        $dataSet->buildFromCSV($csv, $headers);
-
-        return $dataSet;
-    }
-
     public function createDataSetFromData(string $name, array $items, array $columns = null): DataSet
     {
         $dataSet = new DataSet($name, $this->entityManager->getConnection());
         $dataSet->buildFromData($items, $columns);
-
-        return $dataSet;
-    }
-
-    public function createDataSetFromTable(string $name): DataSet
-    {
-        $dataSet = new DataSet($name, $this->entityManager->getConnection());
-        $dataSet->buildFromTable();
 
         return $dataSet;
     }
