@@ -22,7 +22,7 @@ security:
                 default_target_path: /dashboard
 
             logout:       true
-            anonymous:    true
+            anonymous:    lazy
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
