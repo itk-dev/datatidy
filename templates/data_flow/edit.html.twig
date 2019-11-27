@@ -22,8 +22,8 @@
                                 {{ 'Run data flow…'|trans }}
                             </button>
                             <div class="dropdown-menu">
-                                <button name="run" class="dropdown-item" formmethod="post" formaction="{{ path_with_referer('data_flow_run', {id: data_flow.id}) }}" >{{ 'Run transforms'|trans}}</button>
-                                <button name="publish" value="1" class="dropdown-item" formmethod="post" formaction="{{ path_with_referer('data_flow_run', {id: data_flow.id}) }}" >{{ 'Run transforms and publish result'|trans}}</button>
+                                <button name="run" class="dropdown-item" formmethod="post" formaction="{{ path_with_referer('data_flow_run', {id: data_flow.id}) }}" >{{ 'Run transforms'|trans }}</button>
+                                <button name="publish" value="1" class="dropdown-item" formmethod="post" formaction="{{ path_with_referer('data_flow_run', {id: data_flow.id}) }}" >{{ 'Run transforms and publish result'|trans }}</button>
                             </div>
                         </div>
 
