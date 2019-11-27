@@ -16,6 +16,17 @@
                         <span class="text-success ml-1">Saved 1m ago{#TODO: Show time since last save #}</span>
                     </div>
                     <div class="col-6 col-md-auto ml-auto z-index-1070 text-right">
+                        {# @TODO Move this into place #}
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ 'Run data flow…'|trans }}
+                            </button>
+                            <div class="dropdown-menu">
+                                <button name="run" class="dropdown-item" formmethod="post" formaction="{{ path_with_referer('data_flow_run', {id: data_flow.id}) }}" >{{ 'Run transforms'|trans}}</button>
+                                <button name="publish" value="1" class="dropdown-item" formmethod="post" formaction="{{ path_with_referer('data_flow_run', {id: data_flow.id}) }}" >{{ 'Run transforms and publish result'|trans}}</button>
+                            </div>
+                        </div>
+
                         {% if cancel_url is defined %}
                             <a class="btn btn-link btn-sm" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
                         {% endif %}
@@ -101,7 +112,8 @@
                 <div class="settings-drawer collapse col-12 col-md-4 bg-body shadow-lg pt-md-5" id="settingsDrawer">
                     <p class="h6">{{ 'Flow settings'|trans }}</p>
                     {{ form_widget(form.settings) }}
-                    {{ include('data_flow/_delete_form.html.twig') }} {# TODO: Fix error when trying to delete flow  #}
+                    {# @TODO Nested forms! #}
+                    {# {{ include('data_flow/_delete_form.html.twig') }} #}
                 </div>
             </div>
         </main>

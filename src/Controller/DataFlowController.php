@@ -126,12 +126,21 @@ class DataFlowController extends AbstractController
                 if ($result->isPublished()) {
                     $this->addFlash('success', $translator->trans('Data flow result successfully published', [], 'data_flow'));
                 } else {
-                    $this->addFlash('danger', $translator->trans('Error publishing data flow result', [], 'data_flow'));
+                    $exception = $result->getPublishException();
+                    $this->addFlash(
+                        'danger',
+                        $exception
+                            ? $translator->trans('Error publishing data flow result (%message%)', ['%message%' => $exception->getMessage()], 'data_flow')
+                            : $translator->trans('Error publishing data flow result', [], 'data_flow')
+                    );
                 }
             }
         } else {
             $this->addFlash('danger', $translator->trans('Error running data flow', [], 'data_flow'));
         }
-        $this->redirectToRoute('data_flow_index');
+
+        $url = $request->get('referer') ?? $this->redirectToRoute('data_flow_edit', ['id' => $dataFlow->getId()]);
+
+        return $this->redirect($url);
     }
 }

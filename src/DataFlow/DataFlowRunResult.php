@@ -13,6 +13,7 @@ namespace App\DataFlow;
 use App\DataSet\DataSet;
 use App\Entity\DataFlow;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class DataFlowRunResult
 {
@@ -23,13 +24,10 @@ class DataFlowRunResult
     private $options;
 
     /** @var ArrayCollection */
-    private $dataSets;
+    private $transformResults;
 
     /** @var ArrayCollection */
-    private $exceptions;
-
-    /** @var ArrayCollection */
-    private $results;
+    private $transformExceptions;
 
     /** @var DataSet */
     private $lookahead;
@@ -50,8 +48,8 @@ class DataFlowRunResult
     {
         $this->dataFlow = $dataFlow;
         $this->options = $options;
-        $this->dataSets = new ArrayCollection();
-        $this->exceptions = new ArrayCollection();
+        $this->transformResults = new ArrayCollection();
+        $this->transformExceptions = new ArrayCollection();
         $this->publishResults = new ArrayCollection();
         $this->publishExceptions = new ArrayCollection();
     }
@@ -68,19 +66,19 @@ class DataFlowRunResult
 
     public function addDataSet(DataSet $dataSet): self
     {
-        $this->dataSets[] = $dataSet;
+        $this->transformResults[] = $dataSet;
 
         return $this;
     }
 
-    public function getDataSets(): ArrayCollection
+    public function getTransformResults(): ArrayCollection
     {
-        return $this->dataSets;
+        return $this->transformResults;
     }
 
-    public function getLastDataSet(): ?DataSet
+    public function getLastTransformResult(): ?DataSet
     {
-        return $this->isSuccess() ? $this->dataSets->last() : null;
+        return $this->isSuccess() ? $this->transformResults->last() : null;
     }
 
     public function getLookahead(): ?DataSet
@@ -109,29 +107,32 @@ class DataFlowRunResult
 
     public function addException(\Exception $exception): self
     {
-        $this->exceptions[] = $exception;
+        $this->transformExceptions[] = $exception;
 
         return $this;
     }
 
-    public function getExceptions(): ArrayCollection
+    /**
+     * @return Collection|\Exception[]
+     */
+    public function getTransformExceptions(): Collection
     {
-        return $this->exceptions;
+        return $this->transformExceptions;
     }
 
-    public function getException(): ?\Exception
+    public function getTransformException(): ?\Exception
     {
-        return $this->exceptions->first() ?: null;
+        return $this->getTransformExceptions()->first() ?? null;
     }
 
     public function hasException(): bool
     {
-        return !$this->exceptions->isEmpty();
+        return !$this->getTransformExceptions()->isEmpty();
     }
 
     public function isSuccess(): bool
     {
-        return 0 === $this->getExceptions()->count();
+        return 0 === $this->getTransformExceptions()->count();
     }
 
     /**
@@ -139,7 +140,7 @@ class DataFlowRunResult
      */
     public function isComplete(): bool
     {
-        return $this->dataFlow->getTransforms()->count() + 1 === $this->dataSets->count();
+        return $this->dataFlow->getTransforms()->count() + 1 === $this->transformResults->count();
     }
 
     public function isPublished(): bool
@@ -168,8 +169,21 @@ class DataFlowRunResult
         return $this;
     }
 
-    public function getPublishExceptions(): ArrayCollection
+    /**
+     * @return Collection|\Exception[]
+     */
+    public function getPublishExceptions(): Collection
     {
         return $this->publishExceptions;
+    }
+
+    public function getPublishException(): ?\Exception
+    {
+        return $this->getPublishExceptions()->first() ?? null;
+    }
+
+    public function hasPublishException(): bool
+    {
+        return !$this->getPublishExceptions()->isEmpty();
     }
 }

@@ -60,22 +60,6 @@ App\Entity\DataTransform:
                   to: 'count'
 
 App\Entity\DataTarget:
-    data_flow_odaa_target_file_csv:
-        data_flow: '@data_flow_odaa'
-        description: Send result to file
-        dataTarget: App\DataTarget\FileDataTarget
-        dataTargetOptions:
-            filename: /tmp/output.csv
-            format: csv
-
-    data_flow_odaa_target_file_json:
-        data_flow: '@data_flow_odaa'
-        description: Send result to file
-        dataTarget: App\DataTarget\FileDataTarget
-        dataTargetOptions:
-            filename: /tmp/output.json
-            format: json
-
     data_flow_odaa_target_sql:
         data_flow: '@data_flow_odaa'
         description: Send result to SQL

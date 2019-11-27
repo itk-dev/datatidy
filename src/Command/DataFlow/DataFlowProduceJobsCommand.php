@@ -69,7 +69,8 @@ class DataFlowProduceJobsCommand extends Command
             $job->setDataFlow($dataFlow);
             $this->entityManager->persist($dataFlow);
 
-            $dataFlow->setLastRunAt(new \DateTime());
+            // @TODO What should last run at actually mean? Last successful and published run?
+            // $dataFlow->setLastRunAt(new \DateTime());
             $this->entityManager->persist($job);
 
             $this->entityManager->flush();

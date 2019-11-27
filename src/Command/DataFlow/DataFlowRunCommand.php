@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
 
 class DataFlowRunCommand extends Command
@@ -46,6 +47,8 @@ class DataFlowRunCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
         $showOptions = $input->getOption('show-data-transformer-options');
 
         $logger = new ConsoleLogger($output);
@@ -60,20 +63,20 @@ class DataFlowRunCommand extends Command
             'publish' => $input->getOption('publish'),
         ];
 
-        $run = $this->manager->run($flow, $options);
+        $result = $this->manager->run($flow, $options);
 
-        // @TOOO: https://symfony.com/blog/new-in-symfony-4-4-horizontal-tables-and-definition-lists-in-console-commands
-        $table = new Table($output);
-        $table->addRows([
-            ['Data flow', $flow->getName()],
-            ['Complete?', $run->isComplete() ? 'yes' : 'no'],
-            ['Exception?', $run->hasException() ? 'yes' : 'no'],
-            ['Published?', $run->isPublished() ? 'yes' : 'no'],
-        ]);
-        $table->render();
+        $io->section('Data flow');
+
+        $io->definitionList(
+            ['Name' => $flow->getName()],
+            ['Complete?' => $result->isComplete() ? 'yes' : 'no'],
+            ['Exception?' => $result->hasException() ? 'yes' : 'no'],
+            ['Published?' => $result->isPublished() ? 'yes' : 'no'],
+            ['Publish exception?' => $result->hasPublishException() ? 'yes' : 'no']
+        );
 
         if ($output->isVerbose()) {
-            $table = new Table($output);
+            $io->section('Result');
             $headers = [
                 'index',
                 'result type',
@@ -82,8 +85,8 @@ class DataFlowRunCommand extends Command
             if ($showOptions) {
                 $headers[] = 'transformer options';
             }
-            $table->setHeaders($headers);
-            foreach ($run->getDataSets() as $index => $dataSet) {
+            $rows = [];
+            foreach ($result->getTransformResults() as $index => $dataSet) {
                 $row = [
                     $index,
                     \get_class($dataSet),
@@ -96,20 +99,22 @@ class DataFlowRunCommand extends Command
                     }
                 }
 
-                $table->addRow($row);
+                $rows[] = $row;
             }
 
-            $table->render();
+            $io->table($headers, $rows);
         }
 
-        if ($input->getOption('throw-exceptions')) {
-            foreach ($run->getExceptions() as $exception) {
+        $exceptions = array_merge($result->getTransformExceptions()->toArray(), $result->getPublishExceptions()->toArray());
+        foreach ($exceptions as $exception) {
+            if ($input->getOption('throw-exceptions')) {
                 throw $exception;
             }
+            $output->writeln(sprintf('%s: %s', \get_class($exception), $exception->getMessage()));
         }
 
         if ($input->getOption('dump')) {
-            foreach ($run->getDataSets() as $index => $dataSet) {
+            foreach ($result->getTransformResults() as $index => $dataSet) {
                 $table = new Table($output);
                 $table->setHeaderTitle(sprintf('#%d: %s', $index + 1, $dataSet->getName()));
                 $first = true;

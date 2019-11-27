@@ -69,7 +69,7 @@ class DataFlowJobEventSubscriber implements EventSubscriberInterface
 
     public function onFailed(DataFlowJobFailedEvent $event)
     {
-        $errorMessage = $event->getResult()->getException()->getMessage();
+        $errorMessage = $event->getResult()->getTransformException()->getMessage();
 
         $this->log(
             $event->getJob(),

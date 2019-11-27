@@ -11,6 +11,8 @@
 namespace App\Twig;
 
 use App\DataTransformer\DataTransformerManager;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -20,9 +22,17 @@ class TwigExtension extends AbstractExtension
     /** @var DataTransformerManager */
     private $dataTransformerManager;
 
-    public function __construct(DataTransformerManager $dataTransformerManager)
+    /** @var RouterInterface */
+    private $router;
+
+    /** @var RequestStack */
+    private $requestStack;
+
+    public function __construct(DataTransformerManager $dataTransformerManager, RouterInterface $router, RequestStack $requestStack)
     {
         $this->dataTransformerManager = $dataTransformerManager;
+        $this->router = $router;
+        $this->requestStack = $requestStack;
     }
 
     public function getFilters()
@@ -36,6 +46,7 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('iconClass', [$this, 'getIconClass']),
+            new TwigFunction('path_with_referer', [$this, 'getPathWithReferer']),
         ];
     }
 
@@ -96,5 +107,18 @@ class TwigExtension extends AbstractExtension
         }
 
         return $name;
+    }
+
+    public function getPathWithReferer(string $route, array $parameters = [])
+    {
+        if (!isset($parameters['referer'])) {
+            $request = $this->requestStack->getCurrentRequest();
+            $parameters['referer'] = $this->router->generate(
+                $request->get('_route'),
+                $request->get('_route_params')
+            );
+        }
+
+        return $this->router->generate($route, $parameters);
     }
 }
