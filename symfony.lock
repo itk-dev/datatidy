@@ -392,6 +392,18 @@
     "symfony/intl": {
         "version": "v4.3.5"
     },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "15658c2a0176cda2e7dba66276a2030b52bd81b2"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
+    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -624,15 +636,6 @@
             "config/packages/test/web_profiler.yaml",
             "config/routes/dev/web_profiler.yaml"
         ]
-    },
-    "symfony/web-server-bundle": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "dae9b39fd6717970be7601101ce5aa960bf53d9a"
-        }
     },
     "symfony/webpack-encore-bundle": {
         "version": "1.0",
