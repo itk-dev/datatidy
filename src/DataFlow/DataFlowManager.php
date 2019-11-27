@@ -22,6 +22,7 @@ use App\Traits\LogTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DataFlowManager
@@ -60,6 +61,7 @@ class DataFlowManager
         $this->dataTargetManager = $dataTargetManager;
         $this->repository = $repository;
         $this->entityManager = $entityManager;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -123,11 +125,11 @@ class DataFlowManager
     public function run(DataFlow $dataFlow, array $options = []): DataFlowRunResult
     {
         $options = $this->resolveRunOptions($options);
-        $run = new DataFlowRunResult($dataFlow, $options);
+        $result = new DataFlowRunResult($dataFlow, $options);
 
         $dataSet = $this->getDataSet($dataFlow);
 
-        $run->addDataSet($dataSet);
+        $result->addDataSet($dataSet);
         $numberOfSteps = $options['number_of_steps'] ?? PHP_INT_MAX;
         $transforms = $dataFlow->getTransforms();
         foreach ($transforms as $index => $transform) {
@@ -140,15 +142,15 @@ class DataFlowManager
                     $transform->getTransformerOptions()
                 );
                 $dataSet = $transformer->transform($dataSet)->setTransform($transform);
-                $run->addDataSet($dataSet);
+                $result->addDataSet($dataSet);
             } catch (\Exception $exception) {
-                $run->addException($exception);
+                $result->addException($exception);
                 // It does not make sense to continue after an exception.
                 break;
             }
         }
 
-        if ($run->isSuccess() && $numberOfSteps < \count($transforms) + 1) {
+        if ($result->isSuccess() && $numberOfSteps < \count($transforms) + 1) {
             $transform = $transforms[$numberOfSteps];
             try {
                 $transformer = $this->transformerManager->getTransformer(
@@ -156,38 +158,52 @@ class DataFlowManager
                     $transform->getTransformerOptions()
                 );
                 $dataSet = $transformer->transform($dataSet)->setTransform($transform);
-                $run->setLookahead($dataSet);
+                $result->setLookahead($dataSet);
             } catch (\Exception $exception) {
-                $run->setLookaheadException($exception);
+                $result->setLookaheadException($exception);
             }
         }
 
         // Publish result only if all transforms ran successfully.
-        if ($options['publish'] && $run->isComplete()) {
-            $result = $run->getLastDataSet();
-            $this->publish($result, $dataFlow->getDataTargets());
+        if ($options['publish'] && $result->isComplete()) {
+            $dataSet = $result->getLastTransformResult();
+            $this->publish($result, $dataSet, $dataFlow->getDataTargets());
+            if ($result->isPublished()) {
+                $dataFlow->setLastRunAt(new \DateTime());
+                $this->entityManager->persist($dataFlow);
+                $this->entityManager->flush($dataFlow);
+            }
         }
 
-        return $run;
+        return $result;
     }
 
     /**
      * Publish final result to all data targets defined on the data flow.
      */
-    private function publish(DataSet $result, Collection $dataTargets)
+    private function publish(DataFlowRunResult $result, DataSet $dataSet, Collection $dataTargets)
     {
-        $rows = $result->getRows();
+        $rows = $dataSet->getRows();
         $this->dataTargetManager->setLogger($this->logger);
         foreach ($dataTargets as $dataTarget) {
-            $this->debug(sprintf('publish: %s', $dataTarget));
-            $target = $this->dataTargetManager->getDataTarget($dataTarget->getDataTarget(), $dataTarget->getDataTargetOptions());
-            $target->setLogger($this->logger);
-            $data = $dataTarget->getData() ?? [];
-            $target->publish($rows, $result->getColumns(), $data);
-            $dataTarget->setData($data);
-            $this->entityManager->persist($dataTarget);
-            $this->entityManager->flush();
+            try {
+                $this->debug(sprintf('publish: %s', $dataTarget));
+                $target = $this->dataTargetManager->getDataTarget(
+                    $dataTarget->getDataTarget(),
+                    $dataTarget->getDataTargetOptions()
+                );
+                $target->setLogger($this->logger);
+                $data = $dataTarget->getData() ?? [];
+                $target->publish($rows, $dataSet->getColumns(), $data);
+                $dataTarget->setData($data);
+                $this->entityManager->persist($dataTarget);
+                $result->addPublishResult(true);
+            } catch (\Exception $exception) {
+                $result->addPublishException($exception);
+            }
         }
+        $result->setPublished(true);
+        $this->entityManager->flush();
     }
 
     /**

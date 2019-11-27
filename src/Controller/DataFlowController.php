@@ -10,6 +10,7 @@
 
 namespace App\Controller;
 
+use App\DataFlow\DataFlowManager;
 use App\Entity\DataFlow;
 use App\Form\Type\DataFlowCreateType;
 use App\Form\Type\DataFlowType;
@@ -108,5 +109,38 @@ class DataFlowController extends AbstractController
         }
 
         return $this->redirectToRoute('data_flow_index');
+    }
+
+    /**
+     * @Route("/{id}/run", name="data_flow_run", methods={"POST"})
+     */
+    public function run(Request $request, DataFlow $dataFlow, DataFlowManager $dataFlowManager, TranslatorInterface $translator): Response
+    {
+        $publish = $request->get('publish', false);
+        $result = $dataFlowManager->run($dataFlow, [
+            'publish' => $publish,
+        ]);
+        if ($result->isSuccess()) {
+            $this->addFlash('success', $translator->trans('Data flow run successfully', [], 'data_flow'));
+            if ($publish) {
+                if ($result->isPublished()) {
+                    $this->addFlash('success', $translator->trans('Data flow result successfully published', [], 'data_flow'));
+                } else {
+                    $exception = $result->getPublishException();
+                    $this->addFlash(
+                        'danger',
+                        $exception
+                            ? $translator->trans('Error publishing data flow result (%message%)', ['%message%' => $exception->getMessage()], 'data_flow')
+                            : $translator->trans('Error publishing data flow result', [], 'data_flow')
+                    );
+                }
+            }
+        } else {
+            $this->addFlash('danger', $translator->trans('Error running data flow', [], 'data_flow'));
+        }
+
+        $url = $request->get('referer') ?? $this->redirectToRoute('data_flow_edit', ['id' => $dataFlow->getId()]);
+
+        return $this->redirect($url);
     }
 }

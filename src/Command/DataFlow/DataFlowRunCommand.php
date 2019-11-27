@@ -11,7 +11,6 @@
 namespace App\Command\DataFlow;
 
 use App\DataFlow\DataFlowManager;
-use App\DataSet\DataSet;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Helper\Table;
@@ -20,6 +19,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
 
 class DataFlowRunCommand extends Command
@@ -47,6 +47,8 @@ class DataFlowRunCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
         $showOptions = $input->getOption('show-data-transformer-options');
 
         $logger = new ConsoleLogger($output);
@@ -61,10 +63,20 @@ class DataFlowRunCommand extends Command
             'publish' => $input->getOption('publish'),
         ];
 
-        $run = $this->manager->run($flow, $options);
+        $result = $this->manager->run($flow, $options);
+
+        $io->section('Data flow');
+
+        $io->definitionList(
+            ['Name' => $flow->getName()],
+            ['Complete?' => $result->isComplete() ? 'yes' : 'no'],
+            ['Exception?' => $result->hasException() ? 'yes' : 'no'],
+            ['Published?' => $result->isPublished() ? 'yes' : 'no'],
+            ['Publish exception?' => $result->hasPublishException() ? 'yes' : 'no']
+        );
 
         if ($output->isVerbose()) {
-            $table = new Table($output);
+            $io->section('Result');
             $headers = [
                 'index',
                 'result type',
@@ -73,37 +85,36 @@ class DataFlowRunCommand extends Command
             if ($showOptions) {
                 $headers[] = 'transformer options';
             }
-            $table->setHeaders($headers);
-            foreach ($run->getResults() as $index => $result) {
+            $rows = [];
+            foreach ($result->getTransformResults() as $index => $dataSet) {
                 $row = [
                     $index,
-                    \get_class($result),
+                    \get_class($dataSet),
                 ];
 
-                if ($result instanceof \Exception) {
-                    $row[] = $result->getMessage();
-                } elseif ($result instanceof DataSet) {
-                    if ($result->getTransform()) {
-                        $row[] = $result->getTransform()->getTransformer();
-                        if ($showOptions) {
-                            $row[] = Yaml::dump($result->getTransform()->getTransformerOptions());
-                        }
+                if ($dataSet->getTransform()) {
+                    $row[] = $dataSet->getTransform()->getTransformer();
+                    if ($showOptions) {
+                        $row[] = Yaml::dump($dataSet->getTransform()->getTransformerOptions());
                     }
                 }
 
-                $table->addRow($row);
+                $rows[] = $row;
             }
-            $table->render();
+
+            $io->table($headers, $rows);
         }
 
-        if ($input->getOption('throw-exceptions')) {
-            foreach ($run->getExceptions() as $exception) {
+        $exceptions = array_merge($result->getTransformExceptions()->toArray(), $result->getPublishExceptions()->toArray());
+        foreach ($exceptions as $exception) {
+            if ($input->getOption('throw-exceptions')) {
                 throw $exception;
             }
+            $output->writeln(sprintf('%s: %s', \get_class($exception), $exception->getMessage()));
         }
 
         if ($input->getOption('dump')) {
-            foreach ($run->getDataSets() as $index => $dataSet) {
+            foreach ($result->getTransformResults() as $index => $dataSet) {
                 $table = new Table($output);
                 $table->setHeaderTitle(sprintf('#%d: %s', $index + 1, $dataSet->getName()));
                 $first = true;
