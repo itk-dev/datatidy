@@ -44,6 +44,12 @@ class DataFlowRunResult
     /** @var \Exception */
     private $publishExceptions;
 
+    /** @var int */
+    private $numberOfSteps;
+
+    /** @var int */
+    private $totalNumberOfSteps;
+
     public function __construct(DataFlow $dataFlow, array $options)
     {
         $this->dataFlow = $dataFlow;
@@ -52,6 +58,9 @@ class DataFlowRunResult
         $this->transformExceptions = new ArrayCollection();
         $this->publishResults = new ArrayCollection();
         $this->publishExceptions = new ArrayCollection();
+
+        $this->numberOfSteps = 0;
+        $this->totalNumberOfSteps = $this->dataFlow->getTransforms()->count() + 1;
     }
 
     public function getDataFlow(): DataFlow
@@ -67,6 +76,8 @@ class DataFlowRunResult
     public function addDataSet(DataSet $dataSet): self
     {
         $this->transformResults[] = $dataSet;
+
+        $this->numberOfSteps = $this->dataSets->count();
 
         return $this;
     }
@@ -185,5 +196,15 @@ class DataFlowRunResult
     public function hasPublishException(): bool
     {
         return !$this->getPublishExceptions()->isEmpty();
+    }
+
+    public function getNumberOfSteps(): int
+    {
+        return $this->numberOfSteps;
+    }
+
+    public function getTotalNumberOfSteps(): int
+    {
+        return $this->totalNumberOfSteps;
     }
 }

@@ -13,6 +13,7 @@ namespace App\Twig;
 use App\DataTransformer\DataTransformerManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -28,17 +29,22 @@ class TwigExtension extends AbstractExtension
     /** @var RequestStack */
     private $requestStack;
 
-    public function __construct(DataTransformerManager $dataTransformerManager, RouterInterface $router, RequestStack $requestStack)
+    /** @var TranslatorInterface */
+    private $translator;
+
+    public function __construct(DataTransformerManager $dataTransformerManager, RouterInterface $router, RequestStack $requestStack, TranslatorInterface $translator)
     {
         $this->dataTransformerManager = $dataTransformerManager;
         $this->router = $router;
         $this->requestStack = $requestStack;
+        $this->translator = $translator;
     }
 
     public function getFilters()
     {
         return [
             new TwigFilter('transformer_name', [$this, 'getTransformerName']),
+            new TwigFilter('time_elapsed', [$this, 'getTimeElapsed']),
         ];
     }
 
@@ -109,6 +115,7 @@ class TwigExtension extends AbstractExtension
         return $name;
     }
 
+
     public function getPathWithReferer(string $route, array $parameters = [])
     {
         if (!isset($parameters['referer'])) {
@@ -120,5 +127,41 @@ class TwigExtension extends AbstractExtension
         }
 
         return $this->router->generate($route, $parameters);
+    }
+
+    public function getTimeElapsed(\DateTimeInterface $time, array $options = [])
+    {
+        $now = new \DateTimeImmutable($options['now'] ?? 'now');
+        $seconds = $now->getTimestamp() - $time->getTimestamp();
+
+        $sections = [
+            'day' => 24 * 60 * 60,
+            'hour' => 60 * 60,
+            'minute' => 60,
+        ];
+
+        $parts = [];
+        foreach ($sections as $name => $value) {
+            $parts[$name] = floor($seconds / $value);
+            $seconds %= $value;
+        }
+        $parts = array_filter($parts);
+
+        array_walk($parts, function (&$value, $name) {
+            $value = $this->translator->trans('one:1 '.$name.'|%count% '.$name.'s', ['%count%' => $value]);
+        });
+
+        $result = '';
+        $parts = array_values($parts);
+        foreach ($parts as $index => $part) {
+            if ($index > 0) {
+                $result .= ($index < \count($parts) - 1)
+                    ? ($options['delimiter'] ?? ', ')
+                    : ($options['connector'] ?? ' '.$this->translator->trans('and').' ');
+            }
+            $result .= $part;
+        }
+
+        return $result;
     }
 }

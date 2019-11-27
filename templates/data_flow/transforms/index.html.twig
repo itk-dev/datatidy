@@ -28,40 +28,64 @@
     <div class="bg-white row">
         <h1 class="h4 sr-only">{% block header %}{{ 'Edit flow recipe'|trans }}{% endblock %}</h1>
     </div>
-    <main role="main" class="recipe-main flex-grow-1 w-100 position-relative">
-        <div class="boxes d-flex w-100 h-100 position-absolute flex-column">
-            <div class="top d-flex flex-shrink-0 w-100">
-                <div class="preview row flex-grow-1">
-                    <div class="bg-white col-12 pt-1 pb-2 pl-3">
-                        <span><i class="fas {{ iconClass('preview') }} fa-fw mr-2"></i>{{ 'Data preview'|trans }}</span><span class="text-success ml-3">Step 0 of 4</span> {# TODO: Show step count from preview #}
-                    </div>
-                    <div class="col-12 p-3">
-                        <div class="text-right">
-                            <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data preview'|trans }}" data-content="{{ 'The data preview shows the current state of your data at the selected step.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
+    <main role="main" class="row">
+        <div class="col-12 bg-white">
+            <h1 class="h4 sr-only">{% block header %}{{ 'Edit flow recipe'|trans }}{% endblock %}</h1>
+        </div>
+        <div class="col-12 col-md-8 border border-white">
+            <div class="row bg-white pt-1 pb-2">
+                <div class="col-12">
+                    <span><i class="fas {{ iconClass('preview') }} fa-fw mr-2"></i>{{ 'Data preview'|trans }}</span><span class="text-success ml-3">Step 0 of 4</span> {# TODO: Show step count from preview #}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-right">
+                    <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data preview'|trans }}" data-content="{{ 'The data preview shows the current state of your data at the selected step.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
+                </div>
+                <div class="col-12">
+                    <pre>SHOW RESULT</pre>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 border border-white">
+            <div class="row bg-white pt-1 pb-2">
+                <div class="col-12">
+                    <span><i class="fas {{ iconClass('steps') }} fa-fw mr-2"></i>{{ 'Steps'|trans }}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-right">
+                    <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Steps'|trans }}" data-content="{{ 'Edit the steps to change and manipulate your data.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-auto pr-1">
+                            <button data-run-flow-transform-id class="btn btn-sm pt-0"><i class="fas {{ iconClass('play') }} fa-fw"></i><span class="sr-only">{{ 'First step'|trans }}</span></button>
+                        </div>
+                        <div class="col-auto pl-1">
+                            <span>0</span>
                         </div>
                         <div class="preview-content">
                             <iframe id="data-flow-preview" data-src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id, id: '__id__'}) }}" src="{{ path('data_flow_transforms_preview', {data_flow: data_flow.id}) }}"></iframe>
                         </div>
                     </div>
-                </div>
-                <div class="transforms">
-                    <div class="bg-white col-12 pt-1 pb-2">
-                        <span><i class="fas {{ iconClass('steps') }} fa-fw mr-2"></i>{{ 'Steps'|trans }}</span>
-                    </div>
-                    <div class="col-12 p-3">
-                        <div class="text-right">
-                            <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Steps'|trans }}" data-content="{{ 'Edit the steps to change and manipulate your data.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
-                        </div>
-                        <div class="transforms-content">
-                            <div class="row">
-                                <div class="col-auto pr-1">
-                                    <button data-run-flow-transform-id class="btn btn-sm pt-0"><i class="fas {{ iconClass('play') }} fa-fw"></i><span class="sr-only">{{ 'First step'|trans }}</span></button>
-                                </div>
-                                <div class="col-auto pl-1">
-                                    <span>0</span>
-                                </div>
-                                <div class="col-auto mr-auto">
-                                    <span>Raw data from source</span>
+                    {% for transform in data_flow.transforms %}
+                        <div class="row">
+                            <div class="col-auto pr-1">
+                                <a class="btn btn-sm pt-0" href="{{ path('data_flow_transforms_show', {data_flow: data_flow.id, id: transform.id}) }}"><i class="fas {{ iconClass('play') }} fa-fw"></i><span class="sr-only">{{ 'Run to this step'|trans }}</span></a>
+                            </div>
+                            <div class="col-auto pl-1">
+                                <span>{{ loop.index }}</span>
+                            </div>
+                            <div class="col-auto mr-auto">
+                                <span>{{ transform.name }}</span>
+                            </div>
+                            <div class="col-auto pl-1">
+                                <div class="btn-group" role="group" aria-label="Action buttons">
+                                    <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: transform.id}) }}" class="btn btn-sm text-primary"><i class="fas {{ iconClass('edit') }} fa-fw mr-1"></i>{{ 'Edit'|trans }}</a>
+                                    <form class="form-inline" method="post" action="{{ path('data_flow_transforms_delete', {data_flow: data_flow.id, id: transform.id}) }}">
+                                        <button type="submit" class="btn btn-sm text-danger"><i class="fas {{ iconClass('delete') }} fa-fw mr-1"></i>{{ 'Delete'|trans }}</button>
+                                    </form>
                                 </div>
                             </div>
                             {% for transform in data_flow.transforms %}
