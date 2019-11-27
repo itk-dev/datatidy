@@ -13,6 +13,7 @@ namespace App\DataFlow;
 use App\DataSet\DataSet;
 use App\DataSet\DataSetManager;
 use App\DataSource\DataSourceManager;
+use App\DataSource\Exception\AbstractDataSourceException;
 use App\DataTarget\DataTargetManager;
 use App\DataTransformer\DataTransformerManager;
 use App\Entity\DataFlow;
@@ -105,7 +106,13 @@ class DataFlowManager
         $options = $this->resolveRunOptions($options);
         $result = new DataFlowRunResult($dataFlow, $options);
 
-        $dataSet = $this->getDataSet($dataFlow);
+        try {
+            $dataSet = $this->getDataSet($dataFlow);
+        } catch (\Exception $exception) {
+            $result->addException($exception);
+
+            return $result;
+        }
 
         $result->addDataSet($dataSet);
 
@@ -153,7 +160,13 @@ class DataFlowManager
         $options = $this->resolveRunOptions($options);
         $result = new DataFlowRunResult($dataFlow, $options);
 
-        $dataSet = $this->getDataSet($dataFlow);
+        try {
+            $dataSet = $this->getDataSet($dataFlow);
+        } catch (\Exception $exception) {
+            $result->addException($exception);
+
+            return $result;
+        }
 
         $result->addDataSet($dataSet);
         $numberOfSteps = $options['number_of_steps'] ?? PHP_INT_MAX;
