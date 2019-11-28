@@ -77,7 +77,7 @@ class DataFlowRunResult
     {
         $this->transformResults[] = $dataSet;
 
-        $this->numberOfSteps = $this->transformResults->count();
+        ++$this->numberOfSteps;
 
         return $this;
     }
@@ -116,9 +116,11 @@ class DataFlowRunResult
         return $this;
     }
 
-    public function addException(\Exception $exception): self
+    public function addTransformException(\Exception $exception): self
     {
         $this->transformExceptions[] = $exception;
+
+        ++$this->numberOfSteps;
 
         return $this;
     }
@@ -133,17 +135,17 @@ class DataFlowRunResult
 
     public function getTransformException(): ?\Exception
     {
-        return $this->getTransformExceptions()->first() ?? null;
+        return $this->hasTransformException() ? $this->getTransformExceptions()->first() : null;
     }
 
-    public function hasException(): bool
+    public function hasTransformException(): bool
     {
         return !$this->getTransformExceptions()->isEmpty();
     }
 
     public function isSuccess(): bool
     {
-        return !$this->getTransformResults()->isEmpty() && !$this->hasException();
+        return !$this->getTransformResults()->isEmpty() && !$this->hasTransformException();
     }
 
     /**
@@ -190,7 +192,7 @@ class DataFlowRunResult
 
     public function getPublishException(): ?\Exception
     {
-        return $this->getPublishExceptions()->first() ?? null;
+        return $this->hasPublishException() ? $this->getPublishExceptions()->first() : null;
     }
 
     public function hasPublishException(): bool

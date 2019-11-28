@@ -58,7 +58,7 @@ class DataFlowTest extends ContainerTestCase
             'publish' => $dataFlow->getDataTargets()->count() > 0,
         ]);
 
-        if ($result->hasException()) {
+        if ($result->hasTransformException()) {
             throw $result->getException();
         }
 

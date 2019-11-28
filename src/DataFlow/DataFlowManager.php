@@ -13,7 +13,6 @@ namespace App\DataFlow;
 use App\DataSet\DataSet;
 use App\DataSet\DataSetManager;
 use App\DataSource\DataSourceManager;
-use App\DataSource\Exception\AbstractDataSourceException;
 use App\DataTarget\DataTargetManager;
 use App\DataTransformer\DataTransformerManager;
 use App\Entity\DataFlow;
@@ -109,7 +108,7 @@ class DataFlowManager
         try {
             $dataSet = $this->getDataSet($dataFlow);
         } catch (\Exception $exception) {
-            $result->addException($exception);
+            $result->addTransformException($exception);
 
             return $result;
         }
@@ -132,7 +131,7 @@ class DataFlowManager
                 $columns = $transformer->transformColumns($columns);
                 $result->addColumns($columns);
             } catch (\Exception $exception) {
-                $result->addException($exception);
+                $result->addTransformException($exception);
                 // It does not make sense to continue after an exception.
                 break;
             }
@@ -163,7 +162,7 @@ class DataFlowManager
         try {
             $dataSet = $this->getDataSet($dataFlow);
         } catch (\Exception $exception) {
-            $result->addException($exception);
+            $result->addTransformException($exception);
 
             return $result;
         }
@@ -183,7 +182,7 @@ class DataFlowManager
                 $dataSet = $transformer->transform($dataSet)->setTransform($transform);
                 $result->addDataSet($dataSet);
             } catch (\Exception $exception) {
-                $result->addException($exception);
+                $result->addTransformException($exception);
                 // It does not make sense to continue after an exception.
                 break;
             }

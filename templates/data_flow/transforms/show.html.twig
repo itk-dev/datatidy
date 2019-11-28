@@ -41,10 +41,10 @@
                     <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data preview'|trans }}" data-content="{{ 'The data preview shows the current state of your data at the selected step.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
                 </div>
                 <div class="col-12">
-                    {% if result.exception %}
+                    {% if result.transformException|default(false) %}
                         <div class="alert alert-danger">
-                            <h1>{{ result.exception.message }}</h1>
-                            <pre>{{ result.exception }}</pre>
+                            <h1>{{ result.transformException.message }}</h1>
+                            <pre>{{ result.transformException }}</pre>
                         </div>
                     {% else %}
                         {{ _self.render_data_set(result.lastTransformResult) }}
