@@ -35,7 +35,7 @@ pipeline {
 /*
                   stage('Tests') {
                       steps {
-                          sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest bin/phpunit'
+                          // sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest bin/phpunit'
                       }
                   }
 */
