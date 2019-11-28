@@ -1,0 +1,7 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<p>
+    {{ 'profile.show.email'|trans }}: {{ user.email }}
+</p>
+<a class="btn btn-primary" href="{{ path('fos_user_change_password') }}">{{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}</a>
+

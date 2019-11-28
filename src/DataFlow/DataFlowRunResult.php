@@ -132,7 +132,7 @@ class DataFlowRunResult
 
     public function isSuccess(): bool
     {
-        return 0 === $this->getTransformExceptions()->count();
+        return !$this->getDataSets()->isEmpty() && !$this->hasException();
     }
 
     /**

@@ -31,7 +31,7 @@
                     <td>{{ data_source.lastReadAt ? data_source.lastReadAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ data_source.updatedAt ? data_source.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td class="text-right">
-                        <a href="{{ path('data_source_edit', {'id': data_source.id}) }}"><i class="fas {{ iconClass('edit') }} fa-fw mr-2"></i>edit</a>
+                        <a href="{{ path('data_source_edit', {'id': data_source.id}) }}"><i class="fas {{ iconClass('edit') }} fa-fw mr-2"></i>{{ 'Edit'|trans }}</a>
                     </td>
                 </tr>
             {% else %}

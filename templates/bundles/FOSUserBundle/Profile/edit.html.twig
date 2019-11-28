@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title 'profile.title'|trans %}
+
+{% block header 'profile.title'|trans %}
+
+{% block content %}
+    <div class="bg-white p-3 shadow-sm">
+        {% block fos_user_content %}
+            {% include "@FOSUser/Profile/edit_content.html.twig" %}
+        {% endblock fos_user_content %}
+    </div>
+{% endblock %}
+
+

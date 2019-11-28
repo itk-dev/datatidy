@@ -10,8 +10,8 @@
 {% endblock %}
 
 {% block content %}
-    <table class="table">
-        <thead>
+    {% embed '_table.html.twig' %}
+        {% block thead %}
             <tr>
                 <th>{{ 'Email'|trans }}</th>
                 <th>{{ 'Enabled'|trans }}</th>
@@ -19,24 +19,23 @@
                 <th>{{ 'Roles'|trans }}</th>
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.email }}</td>
-                <td>{{ user.enabled ? 'Yes'|trans : 'No'|trans }}</td>
-                <td>{{ user.lastLogin ? user.lastLogin|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
-                <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">{{ 'Show'|trans }}</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">{{ 'Edit'|trans }}</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">{{ 'No users found'|trans }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        {% endblock %}
+        {% block tbody %}
+            {% for user in users %}
+                <tr>
+                    <td><a href="{{ path('user_show', {'id': user.id}) }}">{{ user.email }}</a></td>
+                    <td>{{ user.enabled ? 'Yes'|trans : 'No'|trans }}</td>
+                    <td>{{ user.lastLogin ? user.lastLogin|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
+                    <td>
+                        <a href="{{ path('user_edit', {'id': user.id}) }}"><i class="fas {{ iconClass('edit') }} fa-fw mr-2"></i>{{ 'Edit'|trans }}</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">{{ 'No users found'|trans }}</td>
+                </tr>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

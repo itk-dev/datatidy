@@ -5,9 +5,14 @@
 
 {% block header 'User'|trans %}
 
+{% block toolbar %}
+    <a class="btn btn-secondary btn-sm" href="{{ path('user_index') }}">{{ 'Back to list'|trans }}</a>
+    <a class="btn btn-primary ml-3 btn-sm" href="{{ path('user_edit', {'id': user.id}) }}">{{ 'Edit'|trans }}</a>
+{% endblock %}
+
 {% block content %}
-    <table class="table">
-        <tbody>
+    {% embed '_table.html.twig' %}
+        {% block tbody %}
             <tr>
                 <th>{{ 'Email'|trans }}</th>
                 <td>{{ user.email }}</td>
@@ -20,10 +25,7 @@
                 <th>{{ 'Roles'|trans }}</th>
                 <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
             </tr>
-        </tbody>
-    </table>
+        {% endblock %}
+    {% endembed %}
 
-    <a href="{{ path('user_index') }}">{{ 'Back to list'|trans }}</a>
-
-    <a href="{{ path('user_edit', {'id': user.id}) }}">{{ 'Edit'|trans }}</a>
 {% endblock %}
