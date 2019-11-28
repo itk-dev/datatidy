@@ -5,8 +5,12 @@
 
 {% block header 'Add user'|trans %}
 
-{% block content %}
-    {{ include('user/_form.html.twig') }}
+{% block toolbar %}
+    <a class="btn btn-secondary btn-sm" href="{{ path('user_index') }}">{{ 'Back to list'|trans }}</a>
+{% endblock %}
 
-    <a href="{{ path('user_index') }}">{{ 'Back to list'|trans }}</a>
+{% block content %}
+    <div class="bg-white p-3 shadow-sm">
+        {{ include('user/_form.html.twig') }}
+    </div>
 {% endblock %}

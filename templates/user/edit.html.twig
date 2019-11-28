@@ -5,8 +5,15 @@
 
 {% block header 'Edit user'|trans %}
 
-{% block content %}
-    {{ include('user/_form.html.twig', {'button_label': 'Update'|trans}) }}
-
-    <a href="{{ path('user_index') }}">{{ 'Back to list'|trans }}</a>
+{% block toolbar %}
+    <a class="btn btn-secondary btn-sm" href="{{ path('user_index') }}">{{ 'Back to list'|trans }}</a>
 {% endblock %}
+
+{% block content %}
+        <div class="bg-white p-3 shadow-sm">
+            {{ include('user/_form.html.twig', {'button_label': 'Save changes'|trans}) }}
+        </div>
+{% endblock %}
+
+
+
