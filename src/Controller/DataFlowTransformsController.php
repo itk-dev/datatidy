@@ -59,6 +59,27 @@ class DataFlowTransformsController extends AbstractController
     }
 
     /**
+     * @Route("/new", name="new", methods={"GET", "POST"})
+     */
+    public function new(Request $request, DataFlow $dataFlow)
+    {
+        $transformer = $request->get('transformer');
+        $transform = (new DataTransform())->setDataFlow($dataFlow);
+        if (null !== $transformer) {
+            try {
+                $this->dataTransformerManager->getTransformer($transformer);
+                $transform->setTransformer($transformer);
+            } catch (InvalidTransformerException $invalidTransformerException) {
+                $this->addFlash('danger', $this->translator->trans('Invalid transformer'));
+
+                return $this->redirectToRoute('data_flow_transforms_index', ['data_flow' => $dataFlow->getId()]);
+            }
+        }
+
+        return $this->edit($request, $dataFlow, $transform);
+    }
+
+    /**
      * @Route("/{id}", name="show", methods={"GET"})
      */
     public function show(DataFlow $dataFlow, DataTransform $transform = null): Response
@@ -93,27 +114,6 @@ class DataFlowTransformsController extends AbstractController
             'number_of_steps' => $numberOfSteps,
             'total_steps' => $totalNumberOfSteps,
         ]);
-    }
-
-    /**
-     * @Route("/new", name="new", methods={"GET", "POST"})
-     */
-    public function new(Request $request, DataFlow $dataFlow)
-    {
-        $transformer = $request->get('transformer');
-        $transform = new DataTransform();
-        if (null !== $transformer) {
-            try {
-                $this->dataTransformerManager->getTransformer($transformer);
-                $transform->setTransformer($transformer);
-            } catch (InvalidTransformerException $invalidTransformerException) {
-                $this->addFlash('danger', $this->translator->trans('Invalid transformer'));
-
-                return $this->redirectToRoute('data_flow_transforms_index', ['data_flow' => $dataFlow->getId()]);
-            }
-        }
-
-        return $this->edit($request, $dataFlow, $transform);
     }
 
     /**
