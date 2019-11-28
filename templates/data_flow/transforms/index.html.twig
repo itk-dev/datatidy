@@ -4,7 +4,7 @@
 {% block title %}{{ 'Edit flow recipe'|trans }}{% endblock %}
 
 {% block content %}
-
+    {# @TODO Something is not right here! #}
     <header class="recipe-header row bg-white sticky-top">
         <div class="col-12">
         <div class="row py-1 py-md-3">
@@ -25,13 +25,12 @@
             </div>
         </div>
     </header>
+
     <div class="bg-white row">
         <h1 class="h4 sr-only">{% block header %}{{ 'Edit flow recipe'|trans }}{% endblock %}</h1>
     </div>
+
     <main role="main" class="row">
-        <div class="col-12 bg-white">
-            <h1 class="h4 sr-only">{% block header %}{{ 'Edit flow recipe'|trans }}{% endblock %}</h1>
-        </div>
         <div class="col-12 col-md-8 border border-white">
             <div class="row bg-white pt-1 pb-2">
                 <div class="col-12">
@@ -88,64 +87,40 @@
                                     </form>
                                 </div>
                             </div>
-                            {% for transform in data_flow.transforms %}
-                                <div class="row">
-                                    <div class="col-auto pr-1">
-                                        <button data-run-flow-transform-id="{{ transform.id }}" class="btn btn-sm pt-0"><i class="fas {{ iconClass('play') }} fa-fw"></i><span class="sr-only">{{ 'Run to this step'|trans }}</span></button>
-                                    </div>
-                                    <div class="col-auto pl-1">
-                                        <span>{{ loop.index }}</span>
-                                    </div>
-                                    <div class="col-auto mr-auto">
-                                        <span>{{ transform.name }}</span>
-                                    </div>
-                                    <div class="col-auto pl-1">
-                                        <div class="btn-group" role="group" aria-label="Action buttons">
-                                            <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: transform.id}) }}" class="btn btn-sm text-primary"><i class="fas {{ iconClass('edit') }} fa-fw mr-1"></i>{{ 'Edit'|trans }}</a>
-                                            <form class="form-inline" method="post" action="{{ path('data_flow_transforms_delete', {data_flow: data_flow.id, id: transform.id}) }}">
-                                                <button type="submit" class="btn btn-sm text-danger"><i class="fas {{ iconClass('delete') }} fa-fw mr-1"></i>{{ 'Delete'|trans }}</button>
-                                            </form>
+                    {% endfor %}
+                    {% if transformers|default(false) %}
+                        <div class="row">
+                            <div class="col-12 mt-5">
+                                <form method="get" action="{{ path('data_flow_transforms_new', {data_flow: data_flow.id}) }}" class="form">
+                                    <div class="form-row">
+                                        <div class="col-12">
+                                            <label for="new-tranform-transformer">Add new step</label>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                            {% if transformers|default(false) %}
-                                <div class="row">
-                                    <div class="col-12 mt-5">
-                                        <form method="get" action="{{ path('data_flow_transforms_new', {data_flow: data_flow.id}) }}" class="form">
-                                            <div class="form-row">
-                                                <div class="col-12">
-                                                    <label for="new-tranform-transformer">Add new step</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <select id="new-tranform-transformer" name="transformer" required class="form-control">
-                                                        <option></option>
-                                                        {% for transformer in transformers %}
-                                                            <option value="{{ transformer.class }}">{{ transformer.name|trans }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <button type="submit" class="btn btn-outline-secondary btn-sm">{{ 'Add transform'|trans }}</button>
-                                                    {# TODO: Fix - Add transform fails with error #}
-                                                </div>
-                                            </div>
-                                        </form>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <select id="new-tranform-transformer" name="transformer" required class="form-control">
+                                                <option></option>
+                                                {% for transformer in transformers %}
+                                                    <option value="{{ transformer.class }}">{{ transformer.name|trans }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm">{{ 'Add transform'|trans }}</button>
+                                            {# TODO: Fix - Add transform fails with error #}
+                                        </div>
                                     </div>
-                                </div>
-                            {% endif %}
+                                </form>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
+                        </div>
                 </div>
             </div>
-            {% block edit_transforms %}
-            {% endblock %}
+            {% block edit_transforms %}{% endblock %}
         </div>
     </main>
-
-
 {% endblock %}
 
 {% block translations %}

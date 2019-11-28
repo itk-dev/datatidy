@@ -131,7 +131,7 @@ class DataFlowTransformsController extends AbstractController
         ]);
 
         $form = $this->createForm(DataTransformType::class, $transform, [
-            'data_set_columns' => $result->isSuccess() ? $result->getLastDataSet()->getColumns() : new ArrayCollection(),
+            'data_set_columns' => $result->isSuccess() ? $result->getLastTransformResult()->getColumns() : new ArrayCollection(),
         ]);
         $form->handleRequest($request);
 

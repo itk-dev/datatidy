@@ -77,7 +77,7 @@ class DataFlowRunResult
     {
         $this->transformResults[] = $dataSet;
 
-        $this->numberOfSteps = $this->dataSets->count();
+        $this->numberOfSteps = $this->transformResults->count();
 
         return $this;
     }
@@ -143,7 +143,7 @@ class DataFlowRunResult
 
     public function isSuccess(): bool
     {
-        return !$this->getDataSets()->isEmpty() && !$this->hasException();
+        return !$this->getTransformResults()->isEmpty() && !$this->hasException();
     }
 
     /**

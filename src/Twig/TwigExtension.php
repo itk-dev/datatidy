@@ -115,7 +115,6 @@ class TwigExtension extends AbstractExtension
         return $name;
     }
 
-
     public function getPathWithReferer(string $route, array $parameters = [])
     {
         if (!isset($parameters['referer'])) {
