@@ -70,7 +70,7 @@ class DataFlowRunCommand extends Command
         $io->definitionList(
             ['Name' => $flow->getName()],
             ['Complete?' => $result->isComplete() ? 'yes' : 'no'],
-            ['Exception?' => $result->hasException() ? 'yes' : 'no'],
+            ['Exception?' => $result->hasTransformException() ? 'yes' : 'no'],
             ['Published?' => $result->isPublished() ? 'yes' : 'no'],
             ['Publish exception?' => $result->hasPublishException() ? 'yes' : 'no']
         );

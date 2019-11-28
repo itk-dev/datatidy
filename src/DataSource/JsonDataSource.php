@@ -12,6 +12,7 @@ namespace App\DataSource;
 
 use App\Annotation\DataSource;
 use App\Annotation\DataSource\Option;
+use App\DataSource\Exception\DataSourceRuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPathBuilder;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
@@ -37,17 +38,21 @@ class JsonDataSource extends AbstractHttpDataSource implements DataSourceInterfa
 
     public function pull()
     {
-        $response = $this->getResponse();
+        try {
+            $response = $this->getResponse();
 
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        if (!empty($this->root)) {
-            $propertyPath = $this->buildPropertyPath($this->root);
+            if (!empty($this->root)) {
+                $propertyPath = $this->buildPropertyPath($this->root);
 
-            $data = $this->propertyAccessor->getValue($data, $propertyPath) ?? [];
+                $data = $this->propertyAccessor->getValue($data, $propertyPath);
+            }
+
+            return $data;
+        } catch (\Exception $exception) {
+            throw new DataSourceRuntimeException($exception->getMessage());
         }
-
-        return $data;
     }
 
     private function buildPropertyPath(string $root): PropertyPathInterface

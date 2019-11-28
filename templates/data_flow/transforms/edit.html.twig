@@ -14,9 +14,9 @@
     <div class="row transform-step pt-3 border-top border-white">
         <div class="col-12">
             {# result of computing columns available for this transform #}
-            {% if result.exception|default(false) %}
+            {% if result.transformException|default(false) %}
                 <div class="alert alert-danger">
-                    {{ result.exception.message }}
+                    {{ result.transformException.message }}
                     {% if previous_transform|default(false) %}
                         <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: previous_transform.id}) }}">{{ 'Edit previous transform'|trans }}</a>
                     {% endif %}
