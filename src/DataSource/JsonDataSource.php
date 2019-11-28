@@ -23,7 +23,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class JsonDataSource extends AbstractHttpDataSource implements DataSourceInterface
 {
     /**
-     * @Option(name="root", description="Root node, e.g. “data.results”", type="string")
+     * @Option(name="root", description="Root node, e.g. “data.results”", type="string", required=false)
      */
     private $root;
 

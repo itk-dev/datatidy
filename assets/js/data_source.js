@@ -8,6 +8,7 @@ $(() => {
     // Simulate form data, but only include the selected data source value.
     const data = {
       'data_source[name]': 'ajax',
+      'data_source[ttl]': '0',
       [$dataSource.attr('name')]: $dataSource.val()
     }
 
