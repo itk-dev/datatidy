@@ -125,7 +125,7 @@ class DataFlowTransformsController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $numberOfSteps = $transform->getPosition();
+        $numberOfSteps = $transform->getPosition() + 1;
         $result = $this->dataFlowManager->runColumns($dataFlow, [
             'number_of_steps' => $numberOfSteps,
         ]);
