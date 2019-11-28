@@ -32,11 +32,13 @@ pipeline {
                           sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest composer check-coding-standards/twigcs'
                       }
                   }
+/*
                   stage('Tests') {
                       steps {
                           sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.composer-cache:/.composer:rw itkdev/php7.3-fpm:latest bin/phpunit'
                       }
                   }
+*/
                 }
             }
             stage('Assets') {
