@@ -1,42 +1,52 @@
-{% extends 'data_flow/transforms/index.html.twig' %}
+{% extends 'data_flow/transforms/show.html.twig' %}
 {% trans_default_domain 'data_flow_transforms' %}
 
 {% set title = transform.id ? 'Edit transform'|trans : 'Add transform'|trans %}
 
 {% block title %}{{ title }}{% endblock %}
 
-{% block edit_transforms %}
-    <div class="bottom flex-shrink-1 position-relative p-3">
-        <div class="bottom-inner">
-            <div class="transform-edit">
-                {# result of computing columns available for this transform #}
-                {% if result.exception|default(false) %}
-                    <div class="alert alert-danger">
-                        {{ result.exception.message }}
-                        {% if previous_transform|default(false) %}
-                            <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: previous_transform.id}) }}">{{ 'Edit previous transform'|trans }}</a>
-                        {% endif %}
-                    </div>
-                {% endif %}
-
-                {# @TODO: Add submit button and stuff #}
-                {{ form(form) }}
-            </div>
-        </div>
-    </div>
+{% block body_classes %}
+    {{ parent() }}
+    transform-edit
 {% endblock %}
 
-{% block content %}
-    {# result of computing columns available for this transform #}
-    {% if result.exception|default(false) %}
-        <div class="alert alert-danger">
-            {{ result.exception.message }}
-            {% if previous_transform|default(false) %}
-                <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: previous_transform.id}) }}">{{ 'Edit previous transform'|trans }}</a>
+{% block edit_transforms %}
+    <div class="row transform-step pt-3 border-top border-white">
+        <div class="col-12">
+            {# result of computing columns available for this transform #}
+            {% if result.exception|default(false) %}
+                <div class="alert alert-danger">
+                    {{ result.exception.message }}
+                    {% if previous_transform|default(false) %}
+                        <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: previous_transform.id}) }}">{{ 'Edit previous transform'|trans }}</a>
+                    {% endif %}
+                </div>
             {% endif %}
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-auto">
+                        <h2 class="h4">{{ 'Edit step'|trans }}</h2>
+                    </div>
+                    <div class="col-auto ml-auto">
+                        {% if cancel_url is defined %}
+                            <a class="btn btn-link btn-sm" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
+                        {% endif %}
+                        <button class="btn btn-primary">{{ button_label|default('Save step') }}</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        {{ form_row(form.name) }}
+                    </div>
+                    <div class="col-12 col-md-6">
+                        {{ form_row(form.transformer) }}
+                    </div>
+                    <div class="col-12">
+                        {{ form_row(form.transformerOptions) }}
+                        {{ form_rest(form) }}
+                    </div>
+                </div>
+            {{ form_end(form) }}
         </div>
-    {% endif %}
-
-    {# @TODO: Add submit button and stuff #}
-    {{ form(form) }}
+    </div>
 {% endblock %}

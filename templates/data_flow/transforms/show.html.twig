@@ -3,8 +3,10 @@
 
 {% block title %}{{ 'Data flow recipe step'|trans }}{% endblock %}
 
+
+
 {% block content %}
-    <div class="row">
+    <div class="row recipe-header">
         <div class="col-12 bg-white">
             <div class="row py-1 py-md-3">
                 <div class="col-6 col-md-auto">
@@ -24,11 +26,11 @@
             </div>
         </div>
     </div>
-    <main role="main" class="row">
-        <div class="col-12 bg-white">
-            <h1 class="h4 sr-only">{% block header %}{{ 'Edit flow recipe'|trans }}{% endblock %}</h1>
+    <main role="main" class="row recipe-main">
+        <div class="col-12 bg-white sr-only">
+            <h1 class="h4">{% block header %}{{ 'Edit flow recipe'|trans }}{% endblock %}</h1>
         </div>
-        <div class="col-12 col-md-8 border border-white">
+        <div class="col-12 col-md-8 border border-white preview">
             <div class="row bg-white pt-1 pb-2">
                 <div class="col-12">
                     <span><i class="fas {{ iconClass('preview') }} fa-fw mr-2"></i>{{ 'Data preview'|trans }}</span><span class="text-success ml-3">
@@ -40,7 +42,7 @@
                 <div class="col-12 text-right">
                     <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data preview'|trans }}" data-content="{{ 'The data preview shows the current state of your data at the selected step.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
                 </div>
-                <div class="col-12">
+                <div class="col-12 preview-content">
                     {% if result.exception %}
                         <div class="alert alert-danger">
                             <h1>{{ result.exception.message }}</h1>
@@ -49,7 +51,6 @@
                     {% else %}
                         {{ _self.render_data_set(result.lastTransformResult) }}
                     {% endif %}
-
                 </div>
             </div>
         </div>
@@ -96,6 +97,7 @@
                             </div>
                         </div>
                     {% endfor %}
+                    {% if transformers|default(false) %}
                     <div class="row">
                         <div class="col-12 mt-5">
                             <form method="get" action="{{ path('data_flow_transforms_new', {data_flow: data_flow.id}) }}" class="form">
@@ -120,12 +122,14 @@
                             </form>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-        <div class="col-12 transform-edit border-top border-white">
-        </div>
     </main>
+    {% block edit_transforms %}
+    {% endblock %}
+
 {% endblock %}
 
 {% block translations %}
@@ -136,7 +140,7 @@
 {% endblock %}
 
 {% macro render_data_set(data_set) %}
-    <table class="table bg-white table-hover rounded-lg">
+    <table class="table bg-white table-hover rounded-lg mr-3">
         {% for row in data_set.rows %}
             {% if loop.first %}
                 <tr>
