@@ -1,0 +1,38 @@
+App\Entity\DataSource:
+    data_source_invalid:
+        name: ODAA
+        ttl: 3600
+        dataSource: App\DataSource\JsonDataSource
+        dataSourceOptions:
+            url: https://example.com
+            root: ''
+
+App\Entity\DataFlow:
+    data_flow_transform_error:
+        enabled: false
+        name: Flow with error (invalid columns)
+        dataSource: '@data_source_odaa'
+        frequency: 60
+
+    data_flow_source_error:
+        enabled: false
+        name: Flow with error (invalid source)
+        dataSource: '@data_source_invalid'
+        frequency: 60
+
+App\Entity\DataTransform:
+    data_flow_transform_error_0:
+        data_flow: '@data_flow_transform_error'
+        name: Select columns
+        transformer: App\DataTransformer\SelectColumnsDataTransformer
+        transformerOptions:
+            columns: ['name']
+            include: false
+
+    data_flow_source_error_0:
+        data_flow: '@data_flow_source_error'
+        name: Select columns
+        transformer: App\DataTransformer\SelectColumnsDataTransformer
+        transformerOptions:
+            columns: ['name']
+            include: false

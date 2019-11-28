@@ -105,7 +105,13 @@ class DataFlowManager
         $options = $this->resolveRunOptions($options);
         $result = new DataFlowRunResult($dataFlow, $options);
 
-        $dataSet = $this->getDataSet($dataFlow);
+        try {
+            $dataSet = $this->getDataSet($dataFlow);
+        } catch (\Exception $exception) {
+            $result->addTransformException($exception);
+
+            return $result;
+        }
 
         $result->addDataSet($dataSet);
 
@@ -125,7 +131,7 @@ class DataFlowManager
                 $columns = $transformer->transformColumns($columns);
                 $result->addColumns($columns);
             } catch (\Exception $exception) {
-                $result->addException($exception);
+                $result->addTransformException($exception);
                 // It does not make sense to continue after an exception.
                 break;
             }
@@ -153,7 +159,13 @@ class DataFlowManager
         $options = $this->resolveRunOptions($options);
         $result = new DataFlowRunResult($dataFlow, $options);
 
-        $dataSet = $this->getDataSet($dataFlow);
+        try {
+            $dataSet = $this->getDataSet($dataFlow);
+        } catch (\Exception $exception) {
+            $result->addTransformException($exception);
+
+            return $result;
+        }
 
         $result->addDataSet($dataSet);
         $numberOfSteps = $options['number_of_steps'] ?? PHP_INT_MAX;
@@ -170,7 +182,7 @@ class DataFlowManager
                 $dataSet = $transformer->transform($dataSet)->setTransform($transform);
                 $result->addDataSet($dataSet);
             } catch (\Exception $exception) {
-                $result->addException($exception);
+                $result->addTransformException($exception);
                 // It does not make sense to continue after an exception.
                 break;
             }
