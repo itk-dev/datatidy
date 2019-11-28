@@ -12,7 +12,7 @@
             {{ encore_entry_link_tags('base') }}
         {% endblock %}
     </head>
-    <body>
+    <body class="{% block body_classes %}{% endblock %}">
         <a class="skippy sr-only sr-only-focusable" href="#content">
             <span class="skippy-text">Skip to main content</span>
         </a>
