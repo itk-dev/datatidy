@@ -11,6 +11,7 @@
 namespace App\DataTransformer;
 
 use App\DataSet\DataSet;
+use App\DataTransformer\Exception\InvalidKeyException;
 use App\Traits\OptionsTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\Column;
@@ -38,5 +39,25 @@ abstract class AbstractDataTransformer
         unset($options['name']);
 
         return new Column($name, $column->getType(), $options);
+    }
+
+    /**
+     * Note: PropertyAccessor should/could be used, but apparently it does not really check existence of array values.
+     *
+     * @param $propertyPath
+     *
+     * @return array|mixed
+     */
+    protected function getValue(array $value, $propertyPath)
+    {
+        $keys = explode('.', $propertyPath);
+        foreach ($keys as $key) {
+            if (!\array_key_exists($key, $value)) {
+                throw (new InvalidKeyException($key))->setKey($key)->setValue($value);
+            }
+            $value = $value[$key];
+        }
+
+        return $value;
     }
 }

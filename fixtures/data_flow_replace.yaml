@@ -1,0 +1,46 @@
+App\Entity\DataSource:
+    data_source:
+        name: 'ODAA c65b055d-a020-4871-ab51-bdbc3fd73fd8'
+        ttl: 3600
+        dataSource: App\DataSource\JsonDataSource
+        dataSourceOptions:
+            url: 'https://data.datatidy.srvitkphp73stg.itkdev.dk/data/portal.opendata.dk/api/3/action/datastore_search/resource_id/c65b055d-a020-4871-ab51-bdbc3fd73fd8.json'
+            root: result.records
+
+App\Entity\DataFlow:
+    data_flow:
+        enabled: false
+        name: Data flow with replace value
+        dataSource: '@data_source'
+        frequency: 60
+
+App\Entity\DataTransform:
+    data_flow_transform_0:
+        data_flow: '@data_flow'
+        name: Select columns
+        transformer: App\DataTransformer\SelectColumnsDataTransformer
+        transformerOptions:
+            columns: ['type', 'value']
+            include: true
+
+    data_flow_transform_1:
+        data_flow: '@data_flow'
+        name: 'Replace value (96 → east)'
+        transformer: App\DataTransformer\ReplaceValueDataTransformer
+        transformerOptions:
+            columns: ['value']
+            search: '96'
+            replace: 'east'
+            partial: false
+            regexp: false
+
+    data_flow_transform_2:
+        data_flow: '@data_flow'
+        name: 'Replace partial value (9 → nine)'
+        transformer: App\DataTransformer\ReplaceValueDataTransformer
+        transformerOptions:
+            columns: ['value']
+            search: '9'
+            replace: 'nine'
+            partial: true
+            regexp: false

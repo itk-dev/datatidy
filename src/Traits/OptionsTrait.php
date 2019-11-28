@@ -13,6 +13,7 @@ namespace App\Traits;
 use App\Annotation\Exception\InvalidConfigurationException;
 use App\Annotation\Exception\InvalidOptionException;
 use App\Annotation\Exception\InvalidTypeException;
+use App\DataTransformer\Exception\InvalidKeyException;
 use App\Util\DataTypes;
 use ReflectionProperty;
 
