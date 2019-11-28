@@ -55,8 +55,22 @@ class DataFlowTransformsController extends AbstractController
      */
     public function index(DataFlow $dataFlow): Response
     {
-        return $this->render('data_flow/transforms/index.html.twig', [
+        return $this->show($dataFlow);
+    }
+
+    /**
+     * @Route("/{id}", name="show", methods={"GET"})
+     */
+    public function show(DataFlow $dataFlow, DataTransform $transform = null): Response
+    {
+        $result = $this->dataFlowManager->run($dataFlow, [
+            'number_of_steps' => null !== $transform ? $transform->getPosition() + 1 : 0,
+        ]);
+
+        return $this->render('data_flow/transforms/show.html.twig', [
             'data_flow' => $dataFlow,
+            'transform' => $transform,
+            'result' => $result,
             'transformers' => $this->dataTransformerManager->getTransformers(),
         ]);
     }
@@ -117,7 +131,7 @@ class DataFlowTransformsController extends AbstractController
         ]);
 
         $form = $this->createForm(DataTransformType::class, $transform, [
-            'data_set_columns' => $result->isSuccess() ? $result->getLastDataSet()->getColumns() : new ArrayCollection(),
+            'data_set_columns' => $result->isSuccess() ? $result->getLastTransformResult()->getColumns() : new ArrayCollection(),
         ]);
         $form->handleRequest($request);
 
