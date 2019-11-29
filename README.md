@@ -20,7 +20,7 @@ docker-compose up --detach
 docker-compose exec phpfpm composer install
 docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 
-docker run -v ${PWD}:/app itkdev/yarn:latest install
+FONTAWESOME_NPM_AUTH_TOKEN='font awesome pro token' docker run -v ${PWD}:/app -e FONTAWESOME_NPM_AUTH_TOKEN itkdev/yarn:latest install
 docker run -v ${PWD}:/app itkdev/yarn:latest encore dev
 ```
 
