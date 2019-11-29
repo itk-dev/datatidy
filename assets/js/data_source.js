@@ -12,7 +12,7 @@ $(() => {
     }
 
     const $target = $('#data_source_dataSourceOptions')
-    $target.html('<span class="loader">Loading …</loader>')
+    $target.html('<div class="text-center"><i class="fas fa-spinner fa-pulse fa-3x mr-3"></i><span class="sr-only">loading ...</span></div>')
     $.ajax({
       url: $form.attr('action'),
       type: $form.attr('method'),
