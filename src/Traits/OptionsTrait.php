@@ -13,6 +13,7 @@ namespace App\Traits;
 use App\Annotation\Exception\InvalidConfigurationException;
 use App\Annotation\Exception\InvalidOptionException;
 use App\Annotation\Exception\InvalidTypeException;
+use App\DataTransformer\Exception\InvalidKeyException;
 use App\Util\DataTypes;
 use ReflectionProperty;
 
@@ -150,7 +151,7 @@ trait OptionsTrait
         $keys = explode('.', $propertyPath);
         foreach ($keys as $key) {
             if (!\array_key_exists($key, $value)) {
-                throw (new InvalidKeyException($key))->setKey($key)->setValue($value);
+                throw new InvalidKeyException(sprintf('Invalid key: %s', $key));
             }
             $value = $value[$key];
         }
