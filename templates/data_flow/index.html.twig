@@ -17,12 +17,12 @@
             <tr>
                 <th>{{ 'Name'|trans }}</th>
                 <th>{{ 'Data source'|trans }}</th>
-                {# <th>{{ 'Number of transforms'|trans }}</th> TODO: Can we leave this column out of the list? #}
+                <th>{{ 'Number of transforms'|trans }}</th>
                 {# <th>{{ 'TTL'|trans }}</th> TODO: Can we leave this column out of the list? #}
                 <th>{{ 'Updated - Last run'|trans }}</th>
                 {% if show_user_info %}
                     <th>{{ 'Owner'|trans }}</th>
-                    <th>{{ 'Shared'|trans }}</th>
+                    {# <th>{{ 'Shared'|trans }}</th> TODO: Can we leave this column out of the list? #}
                 {% endif %}
                 <th class="text-right">{{ 'Actions'|trans }}</th>
             </tr>
@@ -32,12 +32,12 @@
                 <tr>
                     <td><i class="fal {{ iconClass('dataflow') }} fa-fw mr-2 text-gray-300"></i>{{ data_flow.name }}</td>
                     <td>{{ data_flow.dataSource }}</td>
-                    {# <td>{{ data_flow.transforms|length }}</td> #}
+                    <td>{{ data_flow.transforms|length }}</td>
                     {# <td>{{ data_flow.ttl }}</td> #}
                     <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }} - {{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : 'Never' }}</td>
                     {% if show_user_info %}
                         <td>{{ data_flow.createdBy }}</td>
-                        <td>{{ data_flow.collaborators|length }}</td>
+                        {# <td>{{ data_flow.collaborators|length }}</td> #}
                     {% endif %}
 
                     <td class="text-right">
