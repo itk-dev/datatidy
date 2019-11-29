@@ -4,3 +4,33 @@
 {% block title %}{{ 'Dashboard'|trans }}{% endblock %}
 
 {% block header %}{{ 'Welcome back %username%'|trans({'%username%': app.user.username}) }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <p class="text-muted">{{ 'Recently updated'|trans }}</p>
+            {% embed '_table.html.twig' %}
+                {% block tbody %}
+                <tr><td>Not yet implemented</td></tr>
+                {% endblock %}
+            {% endembed %}
+            <p class="text-muted mt-md-5">{{ 'Recent jobs'|trans }}</p>
+            {% embed '_table.html.twig' %}
+                {% block tbody %}
+                <tr><td>Not yet implemented</td></tr>
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+    <div class="row my-md-5">
+        <div class="col-12">
+            <a href="{{ path('data_source_new') }}" class="btn btn-outline-secondary btn-lg px-5 mr-3">{{ 'Add data source'|trans }}</a><a class="btn btn-primary btn-lg px-5" href="{{ path('data_flow_new') }}">{{ 'Add data flow'|trans }}</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <p class="text-muted">{{ 'Resources'|trans }}</p>
+            <a class="mr-5" href="https://github.com/itk-dev/datatidy">Project on Github</a><a href="https://opendata.dk">OpenData.dk website</a>
+        </div>
+    </div>
+{% endblock %}
