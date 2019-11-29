@@ -6,8 +6,8 @@
 {% block header %}{{ 'Data Flow Job'|trans }}{% endblock %}
 
 {% block content %}
-    <table class="table">
-        <tbody>
+    {% embed '_table.html.twig' %}
+        {% block tbody %}
             <tr>
                 <th>{{ 'Id'|trans }}</th>
                 <td>{{ data_flow_job.id }}</td>
@@ -24,8 +24,8 @@
                 <th>{{ 'Started'|trans }}</th>
                 <td>{{ data_flow_job.startedAt ? data_flow_job.startedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-        </tbody>
-    </table>
+        {% endblock %}
+    {% endembed %}
 
     {% include 'data_flow_job/_log.html.twig' with {'logEntries': data_flow_job.logEntries} %}
 
