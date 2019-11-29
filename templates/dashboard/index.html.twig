@@ -6,7 +6,6 @@
 {% block header %}{{ 'Welcome back %username%'|trans({'%username%': app.user.username}) }}{% endblock %}
 
 {% block content %}
-
     <div class="row">
         <div class="col-12">
             <p class="text-muted">{{ 'Recently updated'|trans }}</p>
@@ -15,7 +14,6 @@
                 <tr><td>Not yet implemented</td></tr>
                 {% endblock %}
             {% endembed %}
-
             <p class="text-muted mt-md-5">{{ 'Recent jobs'|trans }}</p>
             {% embed '_table.html.twig' %}
                 {% block tbody %}
@@ -35,6 +33,4 @@
             <a class="mr-5" href="https://github.com/itk-dev/datatidy">Project on Github</a><a href="https://opendata.dk">OpenData.dk website</a>
         </div>
     </div>
-
-
 {% endblock %}
