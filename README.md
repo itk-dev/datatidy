@@ -20,9 +20,18 @@ docker-compose up --detach
 docker-compose exec phpfpm composer install
 docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 
-docker run -v ${PWD}:/app itkdev/yarn:latest install
+# Note: We need a custom userconfig file and an environment variables to authenticate when installing Font Awesome Pro.
+FONTAWESOME_NPM_AUTH_TOKEN='font awesome pro token' docker run -v ${PWD}:/app -e FONTAWESOME_NPM_AUTH_TOKEN itkdev/yarn:latest --userconfig=.npmrc.install install
 docker run -v ${PWD}:/app itkdev/yarn:latest encore dev
 ```
+
+Use
+
+```sh
+docker run -v ${PWD}:/app --tty --interactive itkdev/yarn:latest watch
+```
+
+to watch for changes (hit Ctrl+C to kill the process).
 
 Create a user:
 
