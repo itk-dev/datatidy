@@ -10,7 +10,7 @@
         <div class="col-12 bg-white">
             <div class="row py-1 py-md-3">
                 <div class="col-6 col-md-auto">
-                    <a href="{{ path('data_flow_index') }}"><i class="fas {{ iconClass('previous') }} fa-fw mr-2"></i>{{ 'Flows'|trans }}</a><span class="text-primary ml-3 mr-3">|</span><a href="{{ path('data_flow_edit', {id: data_flow.id}) }}">{{ data_flow.name }}</a>
+                    <a href="{{ path('data_flow_edit', {id: data_flow.id}) }}"><i class="fas {{ iconClass('previous') }} fa-fw mr-2"></i>{{ data_flow.name }}</a>
                 </div>
                 <div class="d-none d-md-block col-auto border-left">
                     <span class="text-gray-300">{{ 'Edit flow recipe'|trans }}</span>
