@@ -29,6 +29,3 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
-###> fontawesome npm key ###
-.npmrc
-###< fontawesome npm key ###

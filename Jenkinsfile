@@ -12,7 +12,9 @@ pipeline {
                 }
                 stage('Yarn') {
                     steps {
-                        sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.yarn-cache:/usr/local/share/.cache/yarn:rw itkdev/yarn:latest install'
+                        withCredentials([string(credentialsId: 'FONTAWESOME_NPM_AUTH_TOKEN', variable: 'FONTAWESOME_NPM_AUTH_TOKEN')]) {
+                            sh 'docker run -v $WORKSPACE:/app -v /var/lib/jenkins/.yarn-cache:/usr/local/share/.cache/yarn:rw -e FONTAWESOME_NPM_AUTH_TOKEN itkdev/yarn:latest --userconfig=.npmrc.install install'
+                        }
                     }
                 }
             }
