@@ -125,13 +125,14 @@ class DataFlowTransformsController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $numberOfSteps = $transform->getPosition() + 1;
-        $result = $this->dataFlowManager->runColumns($dataFlow, [
-            'number_of_steps' => $numberOfSteps,
-        ]);
+        $options = [];
+        if (null !== $transform->getId()) {
+            $options['number_of_steps'] = $transform->getPosition() + 1;
+        }
+        $result = $this->dataFlowManager->runColumns($dataFlow, $options);
 
         $form = $this->createForm(DataTransformType::class, $transform, [
-            'data_set_columns' => $result->isSuccess() ? $result->getLastTransformResult()->getColumns() : new ArrayCollection(),
+            'data_set_columns' => $result->isSuccess() ? $result->getTransformResult(-1)->getColumns() : new ArrayCollection(),
         ]);
         $form->handleRequest($request);
 
@@ -150,12 +151,19 @@ class DataFlowTransformsController extends AbstractController
                 $isNew ? $this->translator->trans('New transform added') : $this->translator->trans('transform updated')
             );
 
-            return $this->redirectToRoute('data_flow_transforms_index', ['data_flow' => $dataFlow->getId()]);
+            return $this->redirectToRoute('data_flow_transforms_show', ['data_flow' => $dataFlow->getId(), 'id' => $transform->getId()]);
         }
 
         $previousTransform = 0 < $transform->getPosition()
             ? $dataFlow->getTransforms()[$transform->getPosition() - 1]
             : null;
+
+        $parameters = [
+            'data_flow' => $dataFlow->getId(),
+            'id' => $transform->getId() ?? 'show',
+        ];
+
+        $cancelUrl = $this->generateUrl('data_flow_transforms_show', $parameters);
 
         return $this->render('data_flow/transforms/edit.html.twig', [
             'data_flow' => $dataFlow,
@@ -163,6 +171,7 @@ class DataFlowTransformsController extends AbstractController
             'previous_transform' => $previousTransform,
             'result' => $result,
             'form' => $form->createView(),
+            'cancel_url' => $cancelUrl,
         ]);
     }
 
