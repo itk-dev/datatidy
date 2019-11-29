@@ -21,7 +21,7 @@ docker-compose exec phpfpm composer install
 docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 
 # Note: We need a custom userconfig file and an environment variables to authenticate when installing Font Awesome Pro.
-FONTAWESOME_NPM_AUTH_TOKEN='font awesome pro token' docker run -v ${PWD}:/app -e FONTAWESOME_NPM_AUTH_TOKEN itkdev/yarn:latest --userconfig=.npmrc.install install
+FONTAWESOME_NPM_AUTH_TOKEN='font awesome pro token' docker run -v ${PWD}:/app -e FONTAWESOME_NPM_AUTH_TOKEN -e NPM_CONFIG_USERCONFIG=.npmrc.install itkdev/yarn:latest install
 docker run -v ${PWD}:/app itkdev/yarn:latest encore dev
 ```
 
