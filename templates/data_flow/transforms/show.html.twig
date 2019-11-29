@@ -10,7 +10,7 @@
         <div class="col-12 bg-white">
             <div class="row py-1 py-md-3">
                 <div class="col-6 col-md-auto">
-                    <a href="{{ path('data_flow_index') }}"><i class="fal {{ iconClass('previous') }} fa-fw mr-2"></i>{{ 'Flows'|trans }}</a><span class="text-primary ml-3 mr-3">|</span><a href="{{ path('data_flow_edit', {id: data_flow.id}) }}">{{ data_flow.name }}</a>
+                    <a href="{{ path('data_flow_edit', {id: data_flow.id}) }}"><i class="fas {{ iconClass('previous') }} fa-fw mr-2"></i>{{ data_flow.name }}</a>
                 </div>
                 <div class="d-none d-md-block col-auto border-left">
                     <span class="text-gray-300">{{ 'Edit flow recipe'|trans }}</span>
@@ -42,7 +42,7 @@
                 <div class="col-12 text-right">
                     <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data preview'|trans }}" data-content="{{ 'The data preview shows the current state of your data at the selected step.'|trans }}"><i class="fal {{ iconClass('help') }} fa-fw"></i></button>
                 </div>
-                <div class="col-12">
+                <div class="col-12 preview-content">
                     {% if result.transformException|default(false) %}
                         <div class="alert alert-danger">
                             <h1>{{ result.transformException.message }}</h1>
