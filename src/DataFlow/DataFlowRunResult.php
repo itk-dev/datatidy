@@ -87,6 +87,15 @@ class DataFlowRunResult
         return $this->transformResults;
     }
 
+    public function getTransformResult($index): ?DataSet
+    {
+        if ($index < 0) {
+            $index = $this->transformResults->count() + $index - 1;
+        }
+
+        return $this->transformResults[$index];
+    }
+
     public function getLastTransformResult(): ?DataSet
     {
         return $this->isSuccess() ? $this->transformResults->last() : null;
