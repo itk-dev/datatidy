@@ -21,7 +21,7 @@
                         <a class="btn btn-link btn-sm" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
                     {% endif %}
                     <button class="btn btn-primary btn-sm mr-1 mr-md-5">{{ button_label|default('Save recipe'|trans) }}</button>
-                    <a data-toggle="collapse" href="#settingsDrawer" role="button" aria-expanded="false" aria-controls="settingsDrawer" title="Open flow settings"><i class="fas {{ iconClass('settings') }} fa-fw mr-2"></i></a>
+                    <a data-toggle="collapse" href="#settingsDrawer" role="button" aria-expanded="false" aria-controls="settingsDrawer" title="Open flow settings"><i class="fal {{ iconClass('settings') }} fa-fw mr-2"></i></a>
                 </div>
             </div>
         </div>
@@ -33,14 +33,14 @@
         <div class="col-12 col-md-8 border border-white preview">
             <div class="row bg-white pt-1 pb-2">
                 <div class="col-12">
-                    <span><i class="fas {{ iconClass('preview') }} fa-fw mr-2"></i>{{ 'Data preview'|trans }}</span><span class="text-success ml-3">
+                    <span><i class="fal {{ iconClass('preview') }} fa-fw mr-2"></i>{{ 'Data preview'|trans }}</span><span class="text-success ml-3">
                         {{ 'Step %step% of %total%'|trans({'%step%': result.numberOfSteps, '%total%': result.totalNumberOfSteps}) }}
                     </span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 text-right">
-                    <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data preview'|trans }}" data-content="{{ 'The data preview shows the current state of your data at the selected step.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
+                    <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data preview'|trans }}" data-content="{{ 'The data preview shows the current state of your data at the selected step.'|trans }}"><i class="fal {{ iconClass('help') }} fa-fw"></i></button>
                 </div>
                 <div class="col-12 preview-content">
                     {% if result.transformException|default(false) %}
@@ -57,17 +57,17 @@
         <div class="col-12 col-md-4 border border-white">
             <div class="row bg-white pt-1 pb-2">
                 <div class="col-12">
-                    <span><i class="fas {{ iconClass('steps') }} fa-fw mr-2"></i>{{ 'Steps'|trans }}</span>
+                    <span><i class="fal {{ iconClass('steps') }} fa-fw mr-2"></i>{{ 'Steps'|trans }}</span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 text-right">
-                    <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Steps'|trans }}" data-content="{{ 'Edit the steps to change and manipulate your data.'|trans }}"><i class="fas {{ iconClass('help') }} fa-fw"></i></button>
+                    <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Steps'|trans }}" data-content="{{ 'Edit the steps to change and manipulate your data.'|trans }}"><i class="fal {{ iconClass('help') }} fa-fw"></i></button>
                 </div>
                 <div class="col-12">
                     <div class="row">
                         <div class="col-auto pr-1">
-                            <a class="btn btn-sm pt-0" href="{{ path('data_flow_transforms_index', {data_flow: data_flow.id}) }}"><i class="fas {{ iconClass('play') }} fa-fw"></i><span class="sr-only">{{ 'First step'|trans }}</span></a>
+                            <a class="btn btn-sm pt-0" href="{{ path('data_flow_transforms_index', {data_flow: data_flow.id}) }}"><i class="fal {{ iconClass('play') }} fa-fw"></i><span class="sr-only">{{ 'First step'|trans }}</span></a>
                         </div>
                         <div class="col-auto pl-1">
                             <span>{{ 0 + 1 }}</span>
@@ -79,7 +79,7 @@
                     {% for transform in data_flow.transforms %}
                         <div class="row">
                             <div class="col-auto pr-1">
-                                <a class="btn btn-sm pt-0" href="{{ path('data_flow_transforms_show', {data_flow: data_flow.id, id: transform.id}) }}"><i class="fas {{ iconClass('play') }} fa-fw"></i><span class="sr-only">{{ 'Run to this step'|trans }}</span></a>
+                                <a class="btn btn-sm pt-0" href="{{ path('data_flow_transforms_show', {data_flow: data_flow.id, id: transform.id}) }}"><i class="fal {{ iconClass('play') }} fa-fw"></i><span class="sr-only">{{ 'Run to this step'|trans }}</span></a>
                             </div>
                             <div class="col-auto pl-1">
                                 <span>{{ loop.index + 1 }}</span>
@@ -89,9 +89,9 @@
                             </div>
                             <div class="col-auto pl-1">
                                 <div class="btn-group" role="group" aria-label="Action buttons">
-                                    <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: transform.id}) }}" class="btn btn-sm text-primary"><i class="fas {{ iconClass('edit') }} fa-fw mr-1"></i>{{ 'Edit'|trans }}</a>
+                                    <a href="{{ path('data_flow_transforms_edit', {data_flow: data_flow.id, id: transform.id}) }}" class="btn btn-sm text-primary"><i class="fal {{ iconClass('edit') }} fa-fw mr-1"></i>{{ 'Edit'|trans }}</a>
                                     <form class="form-inline" method="post" action="{{ path('data_flow_transforms_delete', {data_flow: data_flow.id, id: transform.id}) }}">
-                                        <button type="submit" class="btn btn-sm text-danger"><i class="fas {{ iconClass('delete') }} fa-fw mr-1"></i>{{ 'Delete'|trans }}</button>
+                                        <button type="submit" class="btn btn-sm text-danger"><i class="fal {{ iconClass('delete') }} fa-fw mr-1"></i>{{ 'Delete'|trans }}</button>
                                     </form>
                                 </div>
                             </div>
