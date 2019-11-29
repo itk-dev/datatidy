@@ -56,6 +56,7 @@ class DataSourceType extends AbstractType
             )
             ->add('dataSource', ChoiceType::class, [
                 'choices' => $dataSourceChoices,
+                'placeholder' => '',
             ])
         ;
 

@@ -21,7 +21,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class XmlDataSource extends AbstractHttpDataSource implements DataSourceInterface
 {
     /**
-     * @Option(name="root", description="Root node XPath, e.g. “/data/results” – beware of namespaces!", type="string")
+     * @Option(name="root", description="Root node XPath, e.g. “/data/results” – beware of namespaces!", type="string", required=false)
      */
     private $root;
 
