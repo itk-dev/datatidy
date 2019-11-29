@@ -5,10 +5,10 @@
 
 {% block header %}{{ 'Edit DataSource'|trans }}{% endblock %}
 
-{% block content %}
-    {{ include('data_source/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('data_source_index') }}">{{ 'Back to list'|trans }}</a>
-
+{% block toolbar %}
     {{ include('data_source/_delete_form.html.twig') }}
+    <a class="btn btn-secondary btn-sm" href="{{ path('data_source_index') }}">{{ 'Back to list'|trans }}</a>
+{% endblock %}
+{% block content %}
+    {{ include('data_source/_form.html.twig', {'button_label': 'Save changes'}) }}
 {% endblock %}

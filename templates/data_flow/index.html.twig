@@ -30,7 +30,7 @@
         {% block tbody %}
             {% for data_flow in data_flows %}
                 <tr>
-                    <td><i class="fas {{ iconClass('dataflow') }} fa-fw mr-2 text-gray-300"></i>{{ data_flow.name }}</td>
+                    <td><i class="fal {{ iconClass('dataflow') }} fa-fw mr-2 text-gray-300"></i>{{ data_flow.name }}</td>
                     <td>{{ data_flow.dataSource }}</td>
                     {# <td>{{ data_flow.transforms|length }}</td> #}
                     {# <td>{{ data_flow.ttl }}</td> #}
@@ -42,8 +42,8 @@
 
                     <td class="text-right">
                         {% if is_granted('edit', data_flow) %}
-                            <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}" class="mr-2"><i class="fas {{ iconClass('edit') }} mr-1"></i>{{ 'Edit flow'|trans }}</a>
-                            <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}"><i class="fas {{ iconClass('recipe') }} mr-1"></i>{{ 'Change recipe'|trans }}</a>
+                            <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}" class="mr-2"><i class="fal {{ iconClass('edit') }} mr-1"></i>{{ 'Edit flow'|trans }}</a>
+                            <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}"><i class="fal {{ iconClass('recipe') }} mr-1"></i>{{ 'Change recipe'|trans }}</a>
                         {% endif %}
                     </td>
                 </tr>

@@ -53,7 +53,7 @@ abstract class AbstractDataTransformer
         $keys = explode('.', $propertyPath);
         foreach ($keys as $key) {
             if (!\array_key_exists($key, $value)) {
-                throw (new InvalidKeyException($key))->setKey($key)->setValue($value);
+                throw new InvalidKeyException(sprintf('Invalid key: %s', $key));
             }
             $value = $value[$key];
         }

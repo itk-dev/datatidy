@@ -1,8 +1,10 @@
 {
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^5.11.2",
+        "@fortawesome/fontawesome-pro": "^5.11.2",
         "@fortawesome/fontawesome-svg-core": "^1.2.25",
         "@fortawesome/free-solid-svg-icons": "^5.11.2",
+        "@fortawesome/pro-light-svg-icons": "^5.11.2",
         "@symfony/webpack-encore": "^0.28.0",
         "add": "^2.0.6",
         "bootstrap": "^4.3.1",

@@ -49,7 +49,7 @@ $(() => {
     }
 
     const $target = $('#data_transform_transformerOptions')
-    $target.html('<span class="loader">Loading …</loader>')
+    $target.html('<div class="text-center"><i class="fas fa-spinner fa-pulse fa-3x mr-3"></i><span class="sr-only">loading ...</span></div>')
     // Submit data via AJAX to the form's action path.
     $.ajax({
       url: $form.attr('action'),

@@ -6,8 +6,8 @@
 {% block header %}{{ 'DataSource'|trans }}{% endblock %}
 
 {% block content %}
-    <table class="table">
-        <tbody>
+    {% embed '_table.html.twig' %}
+        {% block tbody %}
             <tr>
                 <th>{{ 'Name'|trans }}</th>
                 <td>{{ data_source.name }}</td>
@@ -44,8 +44,8 @@
                 <th>{{ 'Updated at'|trans }}</th>
                 <td>{{ data_source.updatedAt ? data_source.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-        </tbody>
-    </table>
+        {% endblock %}
+    {% endembed %}
 
     <a href="{{ path('data_source_index') }}">back to list</a>
 
