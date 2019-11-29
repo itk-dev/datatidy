@@ -1,23 +1,23 @@
 {% trans_default_domain 'data_flow_job' %}
-<table class="table">
-    <thead>
+{% embed '_table.html.twig' %}
+        {% block thead %}
     <tr>
         <th>{{ 'Created at'|trans }}</th>
         <th>{{ 'Level'|trans }}</th>
         <th>{{ 'Message'|trans }}</th>
     </tr>
-    </thead>
-    <tbody>
-    {% for logEntry in logEntries %}
-        <tr>
-            <td>{{ logEntry.createdAt ? logEntry.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            <td>{{ logEntry.level }}</td>
-            <td>{{ logEntry.message }}</td>
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="5">{{ 'no records found'|trans }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    {% endblock %}
+    {% block tbody %}
+        {% for logEntry in logEntries %}
+            <tr>
+                <td>{{ logEntry.createdAt ? logEntry.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ logEntry.level }}</td>
+                <td>{{ logEntry.message }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">{{ 'no records found'|trans }}</td>
+            </tr>
+        {% endfor %}
+    {% endblock %}
+{% endembed %}
