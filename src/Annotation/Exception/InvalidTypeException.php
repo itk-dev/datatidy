@@ -10,6 +10,6 @@
 
 namespace App\Annotation\Exception;
 
-class InvalidTypeException extends \InvalidArgumentException
+class InvalidTypeException extends AbstractOptionException
 {
 }

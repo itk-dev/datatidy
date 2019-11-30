@@ -11,6 +11,7 @@
 namespace App\Entity;
 
 use App\Traits\BlameableEntity;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DataTransformRepository")
  * @Gedmo\Loggable
- * @ AppAssert\ValidTransform
+ * @AppAssert\ValidTransform
  */
 class DataTransform
 {

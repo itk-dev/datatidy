@@ -10,6 +10,7 @@
 
 namespace App\Traits;
 
+use App\Annotation\Exception\AbstractOptionException;
 use App\Annotation\Exception\InvalidConfigurationException;
 use App\Annotation\Exception\InvalidOptionException;
 use App\Annotation\Exception\InvalidTypeException;
@@ -57,16 +58,16 @@ trait OptionsTrait
     protected function validateAndApplyOptions(array $options)
     {
         if (null === $this->metadata || !isset($this->metadata['options'])) {
-            throw new InvalidOptionException('Missing metadata');
+            throw new \RuntimeException('Missing metadata');
         }
 
         foreach ($this->metadata['options'] as $name => $option) {
             if ($option['required']) {
-                $this->requireOption($name);
+                $this->requireOption($name, $option);
             }
             $value = $this->checkOptionType($name, $option, $options);
             if (!property_exists($this, $name)) {
-                throw new InvalidOptionException(sprintf('Property "%s" does not exist on %s.', $name, static::class));
+                throw $this->createException(sprintf('Property "%s" does not exist on %s.', $name, static::class), $name);
             }
             $property = new ReflectionProperty($this, $name);
             $property->setAccessible(true);
@@ -151,7 +152,7 @@ trait OptionsTrait
         $keys = explode('.', $propertyPath);
         foreach ($keys as $key) {
             if (!\array_key_exists($key, $value)) {
-                throw new InvalidKeyException(sprintf('Invalid key: %s', $key));
+                throw $this->createException(sprintf('Invalid key: %s', $key), null, InvalidKeyException::class);
             }
             $value = $value[$key];
         }
@@ -159,10 +160,15 @@ trait OptionsTrait
         return $value;
     }
 
-    protected function requireOption(string $option): void
+    protected function requireOption(string $name, array $option): void
     {
-        if (!\array_key_exists($option, $this->options)) {
-            throw new InvalidConfigurationException(sprintf('missing option: %s', $option));
+        if (!\array_key_exists($name, $this->options)) {
+            throw $this->createException(sprintf('missing option: %s', $name), $name);
+        }
+
+        $value = $this->options[$name];
+        if ('columns' === $option['type'] && empty($value)) {
+            throw $this->createException(sprintf('missing value: %s', $name), $name);
         }
     }
 
@@ -171,7 +177,7 @@ trait OptionsTrait
         $this->requireOption($key);
 
         if (!$this->isArray($this->options[$key])) {
-            throw new InvalidConfigurationException(sprintf('must be an array: %s', $key));
+            throw $this->createException(sprintf('must be an array: %s', $key), $key);
         }
     }
 
@@ -180,7 +186,7 @@ trait OptionsTrait
         $this->requireOption($key);
 
         if (!$this->isMap($this->options[$key])) {
-            throw new InvalidConfigurationException(sprintf('must be an map (associative array): %s', $key));
+            throw $this->createException(sprintf('must be an map (associative array): %s', $key), $key);
         }
     }
 
@@ -189,7 +195,7 @@ trait OptionsTrait
         $this->requireOption($key);
 
         if (!$this->isString($this->options[$key])) {
-            throw new InvalidConfigurationException(sprintf('must be a string: %s', $key));
+            throw $this->createException(sprintf('must be a string: %s', $key), $key);
         }
     }
 
@@ -204,53 +210,53 @@ trait OptionsTrait
             switch ($typeName) {
                 case 'bool':
                     if (!$this->isBool($value)) {
-                        throw new InvalidTypeException(sprintf('Must be a bool: %s', $name));
+                        throw $this->createInvalidTypeException(sprintf('Must be a bool: %s', $name), $name);
                     }
                     break;
                 case 'date':
                     $value = $this->createDateTime($value);
                     if (!$this->isDate($value)) {
-                        throw new InvalidTypeException(sprintf('Must be a date: %s', $name));
+                        throw $this->createInvalidTypeException(sprintf('Must be a date: %s', $name), $name);
                     }
                     break;
                 case 'time':
                     $value = $this->createTime($value);
                     if (!$this->isDate($value)) {
-                        throw new InvalidTypeException(sprintf('Must be a time: %s', $name));
+                        throw $this->createInvalidTypeException(sprintf('Must be a time: %s', $name), $name);
                     }
                     break;
                 case 'int':
                     if (!$this->isInt($value)) {
-                        throw new InvalidTypeException(sprintf('Must be an int: %s', $name));
+                        throw $this->createInvalidTypeException(sprintf('Must be an int: %s', $name), $name);
                     }
                     break;
                 case 'string':
                 case 'text':
                 case 'column':
                     if (!$this->isString($value)) {
-                        throw new InvalidTypeException(sprintf('Must be a string: %s', $name));
+                        throw $this->createInvalidTypeException(sprintf('Must be a string: %s', $name), $name);
                     }
                     break;
                 case 'type':
                     if (!$this->isType($value)) {
-                        throw new InvalidTypeException(sprintf('Must be a type: %s', $name));
+                        throw $this->createInvalidTypeException(sprintf('Must be a type: %s', $name), $name);
                     }
                     break;
                 case 'columns':
                     if (!$this->isArray($value)) {
-                        throw new InvalidTypeException(sprintf('Must be an array: %s', $name));
+                        throw $this->createInvalidTypeException(sprintf('Must be an array: %s', $name), $name);
                     }
                     break;
                 case 'map':
                     if (!$this->isMap($value)) {
-                        throw new InvalidTypeException(sprintf('Must be a map: %s', $name));
+                        throw $this->createInvalidTypeException(sprintf('Must be a map: %s', $name), $name);
                     }
                     break;
                 case 'data_flow':
                 case 'choice':
                     break;
                 default:
-                    throw new InvalidTypeException(sprintf('Unknown type: %s', $typeName));
+                    throw $this->createInvalidTypeException(sprintf('Unknown type: %s', $typeName), $name);
             }
 
             return $value;
@@ -271,5 +277,21 @@ trait OptionsTrait
         } else {
             $this->options[$key] = $default;
         }
+    }
+
+    private function createInvalidTypeException(string $message, string $path = null)
+    {
+        return $this->createException($message, $path, InvalidTypeException::class);
+    }
+
+    private function createException(string $message, string $path = null, string $exceptionClass = InvalidOptionException::class)
+    {
+        $exception = new $exceptionClass($message);
+
+        if (null !== $path && $exception instanceof AbstractOptionException) {
+            $exception->setPath($path);
+        }
+
+        return $exception;
     }
 }

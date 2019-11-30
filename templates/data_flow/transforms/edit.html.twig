@@ -36,6 +36,12 @@
                         {{ form_row(form.transformer) }}
                     </div>
                     <div class="col-12">
+                        {% for field, errors in transformer_validation_errors|default([]) %}
+                            {% for error in errors %}
+                                {# @TODO Improve display of errors #}
+                                <div class="alert alert-danger">{{ error.message }}</div>
+                            {% endfor %}
+                        {% endfor %}
                         {{ form_row(form.transformerOptions) }}
                         {{ form_rest(form) }}
                     </div>

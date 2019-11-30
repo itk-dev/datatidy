@@ -156,6 +156,15 @@ class DataFlow
         return $this->transforms;
     }
 
+    public function getTransform($index): ?DataTransform
+    {
+        if ($index < 0) {
+            $index = $this->transforms->count() + $index;
+        }
+
+        return $this->transforms[$index];
+    }
+
     public function addTransform(DataTransform $transform): self
     {
         if (!$this->transforms->contains($transform)) {

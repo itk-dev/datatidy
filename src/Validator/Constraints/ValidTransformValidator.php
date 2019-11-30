@@ -10,6 +10,7 @@
 
 namespace App\Validator\Constraints;
 
+use App\Annotation\Exception\AbstractOptionException;
 use App\DataTransformer\DataTransformerManager;
 use App\Entity\DataTransform;
 use Symfony\Component\Validator\Constraint;
@@ -48,9 +49,13 @@ class ValidTransformValidator extends ConstraintValidator
                     $value->getTransformer(),
                     $value->getTransformerOptions()
                 );
-            } catch (AbstractTransformerException $exception) {
+            } catch (\Exception $exception) {
+                $path = 'transformerOptions';
+                if ($exception instanceof AbstractOptionException) {
+                    $path .= '.'.$exception->getPath();
+                }
                 $this->context->buildViolation('Invalid transformer arguments: {{ message }}')
-                    ->atPath('transformerArguments')
+                    ->atPath($path)
                     ->setParameter('{{ message }}', $exception->getMessage())
                     ->addViolation();
             }

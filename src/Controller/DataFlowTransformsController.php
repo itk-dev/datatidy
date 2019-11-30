@@ -125,23 +125,25 @@ class DataFlowTransformsController extends AbstractController
             throw new BadRequestHttpException();
         }
 
+        $isNew = null === $transform->getId();
+
         $options = [];
-        if (null !== $transform->getId()) {
+        // Run flow to the step right before this transform.
+        if (!$isNew) {
             $options['number_of_steps'] = $transform->getPosition();
         }
         $result = $this->dataFlowManager->run($dataFlow, $options);
 
+        $lastTransformResult = $result->isSuccess() ? $result->getTransformResult(-1) : null;
         $form = $this->createForm(DataTransformType::class, $transform, [
-            'data_set_columns' => $result->isSuccess() ? $result->getTransformResult(-1)->getColumns() : new ArrayCollection(),
+            'data_set_columns' => null !== $lastTransformResult ? $lastTransformResult->getColumns() : new ArrayCollection(),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $isNew = false;
             $entityManager = $this->getDoctrine()->getManager();
-            if (null === $transform->getId()) {
+            if ($isNew) {
                 $dataFlow->addTransform($transform);
-                $isNew = true;
             }
             $entityManager->persist($dataFlow);
             $entityManager->flush();
@@ -154,9 +156,7 @@ class DataFlowTransformsController extends AbstractController
             return $this->redirectToRoute('data_flow_transforms_show', ['data_flow' => $dataFlow->getId(), 'id' => $transform->getId()]);
         }
 
-        $previousTransform = 0 < $transform->getPosition()
-            ? $dataFlow->getTransforms()[$transform->getPosition() - 1]
-            : null;
+        $previousTransform = $transform->getPosition() > 1 ? $dataFlow->getTransform(-2) : null;
 
         $parameters = [
             'data_flow' => $dataFlow->getId(),
@@ -165,12 +165,22 @@ class DataFlowTransformsController extends AbstractController
 
         $cancelUrl = $this->generateUrl('data_flow_transforms_show', $parameters);
 
+        // @TODO: There must be a better way to do this!
+        $transformerValidationErrors = [];
+        foreach ($form->getErrors() as $error) {
+            $path = $error->getCause()->getPropertyPath();
+            if (0 === strpos($path, 'data.transformerOptions')) {
+                $transformerValidationErrors[ltrim(substr($path, 23), '.')][] = $error;
+            }
+        }
+
         return $this->render('data_flow/transforms/edit.html.twig', [
             'data_flow' => $dataFlow,
             'transform' => $transform,
             'previous_transform' => $previousTransform,
             'result' => $result,
             'form' => $form->createView(),
+            'transformer_validation_errors' => $transformerValidationErrors,
             'cancel_url' => $cancelUrl,
         ]);
     }
