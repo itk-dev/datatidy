@@ -13,6 +13,7 @@ namespace App\Util;
 use App\DataTransformer\DataTransformerManager;
 use App\Form\Type\Option\ColumnStringMapType;
 use App\Form\Type\Option\ColumnsType;
+use App\Form\Type\Option\ColumnType;
 use App\Form\Type\Option\FlowType;
 use App\Form\Type\Option\MapType;
 use App\Form\Type\Option\TypeType;
@@ -83,6 +84,8 @@ class OptionsFormHelper
                 return TextType::class;
             case 'text':
                 return TextareaType::class;
+            case 'column':
+                return ColumnType::class;
             case 'columns':
                 return ColumnsType::class;
             case 'map':
@@ -120,6 +123,7 @@ class OptionsFormHelper
                 }
                 $options['choices'] = $choices;
                 break;
+            case ColumnType::class:
             case ColumnsType::class:
             case ColumnStringMapType::class:
                 $options['data_set_columns'] = $this->getOption('data_set_columns');
