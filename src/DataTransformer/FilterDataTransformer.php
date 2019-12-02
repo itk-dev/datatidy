@@ -75,7 +75,7 @@ class FilterDataTransformer extends AbstractDataTransformer
             $value = $this->getValue($row, $this->column);
             $isMatch = false;
             if ($this->regexp) {
-                throw new \RuntimeException(__METHOD__.' not implemented');
+                $isMatch = preg_match($this->match, $value);
             } else {
                 if ($this->partial) {
                     $isMatch = false !== ($this->ignoreCase ? stripos($value, $this->match) : strpos(
