@@ -127,7 +127,7 @@ class DataFlowTransformsController extends AbstractController
 
         $options = [];
         if (null !== $transform->getId()) {
-            $options['number_of_steps'] = $transform->getPosition() + 1;
+            $options['number_of_steps'] = $transform->getPosition();
         }
         $result = $this->dataFlowManager->runColumns($dataFlow, $options);
 
