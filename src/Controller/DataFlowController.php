@@ -12,7 +12,6 @@ namespace App\Controller;
 
 use App\DataFlow\DataFlowManager;
 use App\Entity\DataFlow;
-use App\Entity\DataFlowJob;
 use App\Form\Type\DataFlowCreateType;
 use App\Form\Type\DataFlowType;
 use App\Repository\DataFlowJobRepository;
