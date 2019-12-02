@@ -90,7 +90,7 @@ class DataFlowRunResult
     public function getTransformResult($index): ?DataSet
     {
         if ($index < 0) {
-            $index = $this->transformResults->count() + $index - 1;
+            $index = $this->transformResults->count() + $index;
         }
 
         return $this->transformResults[$index];
