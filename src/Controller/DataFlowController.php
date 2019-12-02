@@ -59,6 +59,7 @@ class DataFlowController extends AbstractController
 
         return $this->render('data_flow/new.html.twig', [
             'form' => $form->createView(),
+            'cancel_url' => $this->generateUrl('data_flow_index'),
         ]);
     }
 
