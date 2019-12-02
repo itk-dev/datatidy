@@ -60,7 +60,7 @@ class DataFlowJobRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return DataFlow[]
+     * @return DataFlowJob[]
      */
     public function findActiveJobsByDataFlow(DataFlow $dataFlow): array
     {
