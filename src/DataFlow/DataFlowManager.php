@@ -182,6 +182,7 @@ class DataFlowManager
                 $dataSet = $transformer->transform($dataSet)->setTransform($transform);
                 $result->addDataSet($dataSet);
             } catch (\Exception $exception) {
+                $result->setFailedTransform($transform);
                 $result->addTransformException($exception);
                 // It does not make sense to continue after an exception.
                 break;
@@ -199,6 +200,7 @@ class DataFlowManager
                 $dataSet = $transformer->transform($dataSet)->setTransform($transform);
                 $result->setLookahead($dataSet);
             } catch (\Exception $exception) {
+                $result->setFailedTransform($transform);
                 $result->setLookaheadException($exception);
             }
         }

@@ -78,9 +78,7 @@
                     {% for transform in data_flow.transforms %}
                         <div class="row">
                             <div class="col-auto mr-auto">
-
-                                {# TODO: Change transformException below to lookaheadException so we only mark the step where the transform fails. #}
-                                <a class="btn {% if result.transformException|default(false) %}text-danger{% else %}{% if result.numberOfSteps >= loop.index + 1 %}text-success{% else %}text-primary{% endif %}{% endif %}" href="{{ path('data_flow_transforms_show', {data_flow: data_flow.id, id: transform.id}) }}">
+                                <a class="btn {{ _self.render_transform_status(loop, result, transform) }}" href="{{ path('data_flow_transforms_show', {data_flow: data_flow.id, id: transform.id}) }}">
                                     <i class="fal {{ iconClass('play') }} fa-fw mr-1"></i>
                                     <span class="sr-only">{{ 'Run to this step'|trans }}</span>
                                     <span class="mr-1">{{ loop.index + 1 }}</span>
@@ -163,4 +161,20 @@
             </tr>
         {% endfor %}
     </table>
+{% endmacro %}
+
+{% macro render_transform_status(loop, result, transform) %}
+    {% if result.failedTransform %}
+        {% if result.failedTransform.id == transform.id %}
+            text-danger
+        {% else %}
+            text-primary
+        {% endif %}
+    {% endif %}
+
+    {% if result.numberOfSteps >= loop.index + 1 %}
+        text-success
+    {% else %}
+        text-primary
+    {% endif %}
 {% endmacro %}
