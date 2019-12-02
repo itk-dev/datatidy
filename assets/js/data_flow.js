@@ -29,6 +29,7 @@ $(() => {
       const item = $(template)
       $container.append(item)
       buildCollectionTypes(item)
+      buildOptionsForms(item)
     })
 
     $('[data-collection-remove-widget-selector]', context).on('click', function () {
@@ -37,12 +38,39 @@ $(() => {
     })
   }
 
-  // @TODO const buildDataTargetForms = (context) => {}
+  const buildOptionsForms = (context) => {
+    $('select[data-options-form]', context).on('change', function () {
+      const $form = $(this).closest('form')
+      const dataTargetNamePrefix = $(this).attr('name').replace(/\[[^\]]+\]$/, '')
+      const data = {
+        'data_flow[settings][name]': 'ajax',
+        'data_flow[data_source][ttl]': 'ajax',
+        'data_flow[data_source][dataSource]': 'ajax',
+        [dataTargetNamePrefix + '[description]']: 'ajax',
+        [$(this).attr('name')]: $(this).val()
+      }
+      const $target = $('#' + $(this).attr('id').replace(/_[^_]+$/, '_') + $(this).data('options-form'))
+      $target.html('<div class="text-center"><i class="fas fa-spinner fa-pulse fa-3x mr-3"></i><span class="sr-only">loading ...</span></div>')
+      $.ajax({
+        url: $form.attr('action'),
+        type: $form.attr('method'),
+        data: data,
+        success: (html) => {
+          $target.replaceWith(
+            $(html).find('#' + $target.attr('id'))
+          )
+        },
+        error: (error) => {
+          $target.replaceWith($('<div class="alert alert-danger"/>').html(error))
+        }
+      })
+    })
+  }
 
   const $transformer = $('#data_transform_transformer')
   $transformer.on('change', function () {
     const $form = $(this).closest('form')
-    // Simulate form data, but only include the selected sport value.
+    // Simulate form data, but only include the selected value.
     const data = {
       [$transformer.attr('name')]: $transformer.val(),
       ajax: true
@@ -56,9 +84,7 @@ $(() => {
       type: $form.attr('method'),
       data: data,
       success: (html) => {
-        // Replace current field ...
         $target.replaceWith(
-          // ... with the returned one from the AJAX response.
           $(html).find('#data_transform_transformerOptions')
         )
         buildCollectionTypes()
@@ -70,6 +96,7 @@ $(() => {
   })
 
   buildCollectionTypes()
+  buildOptionsForms()
 })
 
 $(function () {

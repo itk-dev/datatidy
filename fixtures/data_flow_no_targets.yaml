@@ -1,0 +1,22 @@
+App\Entity\DataFlow:
+    data_flow_no_targets:
+        enabled: false
+        name: Flow with no data targets
+        dataSource: '@data_source_odaa'
+        frequency: 60
+
+App\Entity\DataTransform:
+    data_flow_no_targets_0:
+        data_flow: '@data_flow_no_targets'
+        name: Select columns
+        transformer: App\DataTransformer\SelectColumnsDataTransformer
+        transformerOptions:
+            columns: ['_id', 'REPORT_ID']
+            include: false
+
+    data_flow_no_targets_1:
+        data_flow: '@data_flow_no_targets'
+        name: Select columns
+        transformer: App\DataTransformer\SelectColumnsDataTransformer
+        transformerOptions:
+            columns: ['TIMESTAMP', 'vehicleCount']

@@ -10,19 +10,12 @@
 
 namespace App\DataTarget;
 
-use App\Annotation\DataTarget;
 use App\Annotation\DataTarget\Option;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-/**
- * @DataTarget(
- *     name="HTTP",
- *     description="Send data flow result to an HTTP endpoint.",
- * )
- */
 abstract class AbstractHttpDataTarget extends AbstractDataTarget
 {
     /**
