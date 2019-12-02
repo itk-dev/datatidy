@@ -40,12 +40,20 @@
                 <th>{{ 'Updated at'|trans }}</th>
                 <td>{{ data_source.updatedAt ? data_source.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+            <tr>
+                <th>{{ 'Data source'|trans }}</th>
+                <td>{{ data_source.dataSource }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'Data source options'|trans }}</th>
+                <td><pre><code>{{ data_source.dataSourceOptions|yaml_encode(4) }}</code></pre></td>
+            </tr>
         {% endblock %}
     {% endembed %}
 
-    <a href="{{ path('data_source_index') }}">back to list</a>
+    <a href="{{ path('data_source_index') }}">{{ 'Back to data source list'|trans }}</a>
 
-    <a href="{{ path('data_source_edit', {'id': data_source.id}) }}">edit</a>
-
-    {{ include('data_source/_delete_form.html.twig') }}
+    {% if is_granted('edit', data_source) %}
+        <a href="{{ path('data_source_edit', {'id': data_source.id}) }}">{{ 'Edit data source'|trans }}</a>
+    {% endif %}
 {% endblock %}
