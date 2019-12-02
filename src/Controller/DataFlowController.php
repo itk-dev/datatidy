@@ -89,7 +89,7 @@ class DataFlowController extends AbstractController
             $this->getDoctrine()->getManager()->persist($dataFlow);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('data_flow_index');
+            return $this->redirectToRoute('data_flow_edit', ['id' => $dataFlow->getId()]);
         }
 
         return $this->render('data_flow/edit.html.twig', [
