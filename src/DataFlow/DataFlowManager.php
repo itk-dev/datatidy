@@ -18,6 +18,7 @@ use App\DataTransformer\DataTransformerManager;
 use App\Entity\DataFlow;
 use App\Repository\DataFlowRepository;
 use App\Traits\LogTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\NullLogger;
@@ -96,12 +97,14 @@ class DataFlowManager
         return $this->dataSourceManager;
     }
 
-    public function runColumns(DataFlow $dataFlow, array $options = []): DataFlowRunResult
+    public function runColumns(DataFlow $dataFlow, array $options = []): Collection
     {
         $options['publish'] = false;
 
         // @TODO: We should compute columns using only AbstractDataTransformer::transformColumns here.
-        return $this->run($dataFlow, $options);
+        $result = $this->run($dataFlow, $options);
+
+        return $result->isSuccess() ? $result->getTransformResult(-1)->getColumns() : new ArrayCollection();
     }
 
     public function run(DataFlow $dataFlow, array $options = []): DataFlowRunResult

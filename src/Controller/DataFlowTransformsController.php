@@ -129,7 +129,7 @@ class DataFlowTransformsController extends AbstractController
         if (null !== $transform->getId()) {
             $options['number_of_steps'] = $transform->getPosition();
         }
-        $result = $this->dataFlowManager->runColumns($dataFlow, $options);
+        $result = $this->dataFlowManager->run($dataFlow, $options);
 
         $form = $this->createForm(DataTransformType::class, $transform, [
             'data_set_columns' => $result->isSuccess() ? $result->getTransformResult(-1)->getColumns() : new ArrayCollection(),
