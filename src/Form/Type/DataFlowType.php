@@ -43,7 +43,6 @@ class DataFlowType extends AbstractType
                 $builder->create('data_source', FormType::class, [
                         'inherit_data' => true,
                 ])
-                    ->add('ttl', IntegerType::class)
                     ->add('dataSource', EntityType::class, [
                         'class' => DataSource::class,
                         'placeholder' => '',
