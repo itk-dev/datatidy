@@ -53,6 +53,7 @@ class DataFlow
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\DataTransform", mappedBy="dataFlow", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position": "ASC"})
      */
     private $transforms;
 
