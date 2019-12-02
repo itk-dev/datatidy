@@ -139,6 +139,10 @@ class TwigExtension extends AbstractExtension
             'minute' => 60,
         ];
 
+        if ($seconds < 60) {
+            $sections['second'] = 1;
+        }
+
         $parts = [];
         foreach ($sections as $name => $value) {
             $parts[$name] = floor($seconds / $value);
