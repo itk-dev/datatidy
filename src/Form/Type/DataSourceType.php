@@ -15,6 +15,8 @@ use App\Entity\DataSource;
 use App\Util\OptionsFormHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -43,14 +45,23 @@ class DataSourceType extends AbstractType
         }
 
         $builder
-            ->add('name')
-            ->add('description')
+            ->add(
+                $builder->create('settings', FormType::class, [
+                    'inherit_data' => true,
+                    'label' => null,
+                ])
+                    ->add('name')
+                    ->add('description')
+                    ->add('ttl', NumberType::class)
+            )
             ->add('dataSource', ChoiceType::class, [
                 'choices' => $dataSourceChoices,
-            ]);
+                'placeholder' => '',
+            ])
+        ;
 
         // @see https://symfony.com/doc/current/form/dynamic_form_modification.html
-        $formModifier = function (FormInterface $form, string $dataSource) {
+        $formModifier = function (FormInterface $form, string $dataSource = null) {
             $this->helper->buildForm(
                 $form,
                 $this->dataSourceManager->getDataSourceOptions($dataSource),

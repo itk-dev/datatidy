@@ -3,11 +3,11 @@ const $ = require('jquery')
 $(() => {
   const $dataSource = $('#data_source_dataSource')
   $dataSource.change(function () {
-    // ... retrieve the corresponding form.
     const $form = $(this).closest('form')
-    // Simulate form data, but only include the selected data source value.
     const data = {
-      'data_source[name]': 'ajax',
+      // @TODO Get the extra fields dynamically.
+      'data_source[settings][name]': 'ajax',
+      'data_source[settings][ttl]': '0',
       [$dataSource.attr('name')]: $dataSource.val()
     }
 

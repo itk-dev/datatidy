@@ -74,6 +74,7 @@ class DataSource
 
     public function __construct()
     {
+        $this->ttl = 60 * 60;
         $this->dataFlows = new ArrayCollection();
     }
 

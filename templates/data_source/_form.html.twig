@@ -2,13 +2,11 @@
 <div class="bg-white p-3 rounded-lg shadow-sm">
     <div class="row">
         <div class="col-12 col-md-6">
-            {{ form_row(form.name) }}
-            {{ form_row(form.description) }}
+            {{ form_row(form.settings) }}
             {{ form_row(form.dataSource) }}
         </div>
         <div class="col-12 col-md-6">
             {{ form_row(form.dataSourceOptions) }}
-            {{ form_rest(form) }}
         </div>
         <div class="col-12">
             <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
