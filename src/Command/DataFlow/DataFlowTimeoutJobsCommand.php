@@ -46,6 +46,10 @@ class DataFlowTimeoutJobsCommand extends Command
             throw new \InvalidArgumentException('timeout-threshold can only be an integer value.');
         }
 
+        if ($timeoutThreshold <= 0) {
+            throw new \InvalidArgumentException('timeout-threshold cannot be negative or zero.');
+        }
+
         $now = new \DateTime();
         $threshold = $timeoutThreshold * 60;
 
