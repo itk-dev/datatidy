@@ -51,6 +51,7 @@ class DataTargetType extends AbstractType
                 'placeholder' => '',
                 'attr' => [
                     'class' => 'data-target-options',
+                    'data-options-form' => 'dataTargetOptions',
                 ],
             ]);
 
