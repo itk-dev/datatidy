@@ -12,8 +12,10 @@ namespace App\Controller;
 
 use App\DataFlow\DataFlowManager;
 use App\Entity\DataFlow;
+use App\Entity\DataFlowJob;
 use App\Form\Type\DataFlowCreateType;
 use App\Form\Type\DataFlowType;
+use App\Repository\DataFlowJobRepository;
 use App\Repository\DataFlowRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,12 +77,19 @@ class DataFlowController extends AbstractController
     /**
      * @Route("/{id}/edit", name="data_flow_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, DataFlow $dataFlow): Response
+    public function edit(Request $request, DataFlow $dataFlow, DataFlowJobRepository $dataFlowJobRepository): Response
     {
+        // We disable the DataFlow so no jobs are created and queued while editing the DataFlow.
+        $dataFlow->setEnabled(false);
+        $this->getDoctrine()->getManager()->persist($dataFlow);
+        $this->getDoctrine()->getManager()->flush();
+
         $form = $this->createForm(DataFlowType::class, $dataFlow);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $dataFlow->setEnabled(true);
+
             // @TODO Why is this needed to connect new targets to the flow?
             foreach ($dataFlow->getDataTargets() as $target) {
                 $target->setDataFlow($dataFlow);

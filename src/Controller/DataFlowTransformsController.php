@@ -125,6 +125,11 @@ class DataFlowTransformsController extends AbstractController
             throw new BadRequestHttpException();
         }
 
+        // We disable the DataFlow so no jobs are created and queued while editing the DataFlow recipe.
+        $dataFlow->setEnabled(false);
+        $this->getDoctrine()->getManager()->persist($dataFlow);
+        $this->getDoctrine()->getManager()->flush();
+
         $options = [];
         if (null !== $transform->getId()) {
             $options['number_of_steps'] = $transform->getPosition() + 1;
@@ -143,6 +148,7 @@ class DataFlowTransformsController extends AbstractController
                 $dataFlow->addTransform($transform);
                 $isNew = true;
             }
+            $dataFlow->setEnabled(true);
             $entityManager->persist($dataFlow);
             $entityManager->flush();
 
