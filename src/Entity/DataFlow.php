@@ -63,12 +63,6 @@ class DataFlow
     private $enabled;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Gedmo\Versioned()
-     */
-    private $ttl;
-
-    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastRunAt;
@@ -99,7 +93,6 @@ class DataFlow
     {
         $this->transforms = new ArrayCollection();
         $this->enabled = false;
-        $this->ttl = 60 * 60;
         $this->dataTargets = new ArrayCollection();
         $this->jobs = new ArrayCollection();
         $this->collaborators = new ArrayCollection();
@@ -193,18 +186,6 @@ class DataFlow
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    public function getTtl(): ?int
-    {
-        return $this->ttl;
-    }
-
-    public function setTtl(int $ttl): self
-    {
-        $this->ttl = $ttl;
 
         return $this;
     }
