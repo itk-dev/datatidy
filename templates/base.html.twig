@@ -21,8 +21,9 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('base') }}
 
-            <script type="text/javascript" src="https://www.bugherd.com/sidebarv2.js?apikey=51fkhgvx3emczkdkn854sq" async="true"></script>
-
+            {% if bugherd_apikey|default(false) %}
+                <script type="text/javascript" src="https://www.bugherd.com/sidebarv2.js?apikey={{ bugherd_apikey }}" async="true"></script>
+            {% endif %}
         {% endblock %}
     </body>
 </html>
