@@ -35,5 +35,5 @@ imagesContext.keys().forEach(imagesContext)
 dom.watch()
 
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="tooltip"]').tooltip()
 })
