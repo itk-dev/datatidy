@@ -33,3 +33,18 @@ const imagesContext = require.context('../images', true, /\.(png|jpg|jpeg|gif|ic
 imagesContext.keys().forEach(imagesContext)
 
 dom.watch()
+
+// Show alert when user is leaving a dirty form uncommitted
+let unsaved = false;
+
+$(":input").change(function() {
+  unsaved = true;
+});
+
+function unloadPage(){
+  if(unsaved){
+    return "You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?";
+  }
+}
+
+window.onbeforeunload = unloadPage;
