@@ -16,12 +16,13 @@
         {% block thead %}
             <tr>
                 <th>{{ 'Name'|trans }}</th>
-                <th>{{ 'Data source'|trans }}</th>
-                <th>{{ 'Number of transforms'|trans }}</th>
+                <th class="w-10">{{ 'Data source'|trans }}</th>
+                <th><span class="d-none d-xl-table-cell">{{ 'Number of transforms'|trans }}</span><span class="d-table-cell d-xl-none" title="{{'Number of transforms'|trans }}">#</span></th>
                 {# <th>{{ 'TTL'|trans }}</th> TODO: Can we leave this column out of the list? #}
-                <th>{{ 'Updated - Last run'|trans }}</th>
+                <th>{{ 'Updated'|trans }}</th>
+                <th class="d-none d-xl-table-cell">{{ 'Last run'|trans }}</th>
                 {% if show_user_info %}
-                    <th>{{ 'Owner'|trans }}</th>
+                    <th class="d-none d-xl-table-cell">{{ 'Owner'|trans }}</th>
                     {# <th>{{ 'Shared'|trans }}</th> TODO: Can we leave this column out of the list? #}
                 {% endif %}
                 <th class="text-right">{{ 'Actions'|trans }}</th>
@@ -35,16 +36,19 @@
                     <td>{{ data_flow.dataSource }}</td>
                     <td>{{ data_flow.transforms|length }}</td>
                     {# <td>{{ data_flow.ttl }}</td> #}
-                    <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }} - {{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : 'Never' }}</td>
+                    <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td class="d-none d-xl-table-cell">{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : 'Never' }}</td>
                     {% if show_user_info %}
-                        <td>{{ data_flow.createdBy }}</td>
+                        <td class="d-none d-xl-table-cell">{{ data_flow.createdBy }}</td>
                         {# <td>{{ data_flow.collaborators|length }}</td> #}
                     {% endif %}
 
                     <td class="text-right">
                         {% if is_granted('edit', data_flow) %}
-                            <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}" class="mr-2"><i class="fal {{ iconClass('edit') }} mr-1"></i>{{ 'Edit flow'|trans }}</a>
-                            <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}"><i class="fal {{ iconClass('recipe') }} mr-1"></i>{{ 'Change recipe'|trans }}</a>
+                            <div class="btn-group" role="group" aria-label="">
+                                <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}" class="btn text-primary m-0 p-0 mr-3" data-toggle="tooltip" title="{{ 'Edit flow'|trans }}"><i class="fal {{ iconClass('edit') }} mr-1"></i><span class="sr-only">{{ 'Edit flow'|trans }}</span></a>
+                                <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}" class="btn text-primary m-0 p-0 mr-3 mr-2" data-toggle="tooltip" title="{{ 'Change recipe'|trans }}"><i class="fal {{ iconClass('recipe') }} mr-1"></i><span class="sr-only">{{ 'Change recipe'|trans }}</span></a>
+                            </div>
                         {% endif %}
                     </td>
                 </tr>

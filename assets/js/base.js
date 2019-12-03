@@ -33,3 +33,7 @@ const imagesContext = require.context('../images', true, /\.(png|jpg|jpeg|gif|ic
 imagesContext.keys().forEach(imagesContext)
 
 dom.watch()
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
