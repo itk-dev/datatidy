@@ -1,19 +1,32 @@
 doctrine:
     dbal:
-        url: '%env(resolve:DATABASE_URL)%'
+        default_connection: default
+        connections:
+            default:
+                url: '%env(resolve:DATABASE_URL)%'
 
-        # IMPORTANT: You MUST configure your db driver and server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #driver: 'mysql'
-        #server_version: '5.7'
+                # IMPORTANT: You MUST configure your db driver and server version,
+                # either here or in the DATABASE_URL env var (see .env file)
+                #driver: 'mysql'
+                #server_version: '5.7'
 
-        # Only needed for MySQL (ignored otherwise)
-        charset: utf8mb4
-        default_table_options:
-            collate: utf8mb4_unicode_ci
+                # Only needed for MySQL (ignored otherwise)
+                charset: utf8mb4
+                default_table_options:
+                    collate: utf8mb4_unicode_ci
 
-        # Ignore data set tables
-        schema_filter: ~^(?!__data_set)~
+            data_transforms:
+                url: '%env(resolve:DATABASE_URL_TRANSFORMS)%'
+
+                # IMPORTANT: You MUST configure your db driver and server version,
+                # either here or in the DATABASE_URL env var (see .env file)
+                #driver: 'mysql'
+                #server_version: '5.7'
+
+                # Only needed for MySQL (ignored otherwise)
+                charset: utf8mb4
+                default_table_options:
+                    collate: utf8mb4_unicode_ci
 
     orm:
         auto_generate_proxy_classes: true
