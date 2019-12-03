@@ -24,14 +24,8 @@
             {% endif %}
             {{ form_start(form) }}
                 <div class="row">
-                    <div class="col-auto">
+                    <div class="col-12">
                         <h2 class="h4">{{ title }}</h2>
-                    </div>
-                    <div class="col-auto ml-auto">
-                        {% if cancel_url is defined %}
-                            <a class="btn btn-link btn-sm" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
-                        {% endif %}
-                        <button class="btn btn-primary">{{ button_label|default('Save step') }}</button>
                     </div>
                 </div>
                 <div class="row">
@@ -44,6 +38,14 @@
                     <div class="col-12">
                         {{ form_row(form.transformerOptions) }}
                         {{ form_rest(form) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {% if cancel_url is defined %}
+                            <a class="btn btn-outline-secondary" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
+                        {% endif %}
+                        <button class="btn btn-primary">{{ button_label|default('Save step') }}</button>
                     </div>
                 </div>
             {{ form_end(form) }}
