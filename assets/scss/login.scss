@@ -4,7 +4,7 @@
 .login {
     height: 100vh;
 }
-#login-form {
+.login-form {
     .form-control {
         box-shadow: none;
     }
@@ -24,6 +24,7 @@
         }
 
         input[type="text"],
+        input[type="email"],
         input[type="password"] {
             font-size: 1.25em;
             padding: 0;
