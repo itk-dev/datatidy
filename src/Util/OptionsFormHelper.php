@@ -110,8 +110,7 @@ class OptionsFormHelper
         ];
 
         if (null !== $option['default']) {
-            // @TODO: This does not work as expected.
-            // $options['data'] = $option['default'];
+            $options['data'] = $option['default'];
         }
 
         $type = $this->getFormType($option);

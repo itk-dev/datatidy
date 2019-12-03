@@ -13,6 +13,7 @@ namespace App\Controller;
 use App\Entity\DataSource;
 use App\Form\Type\DataSourceType;
 use App\Repository\DataSourceRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,6 +69,7 @@ class DataSourceController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="data_source_edit", methods={"GET","POST"})
+     * @IsGranted("edit", subject="dataSource")
      */
     public function edit(Request $request, DataSource $dataSource): Response
     {

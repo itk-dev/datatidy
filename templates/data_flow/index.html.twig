@@ -30,7 +30,8 @@
         {% block tbody %}
             {% for data_flow in data_flows %}
                 <tr>
-                    <td><i class="fal {{ iconClass('dataflow') }} fa-fw mr-2 text-gray-300"></i>{{ data_flow.name }}</td>
+                    <td><i class="fal {{ iconClass('dataflow') }} fa-fw mr-2 text-gray-300"></i><a href="{{ path('data_flow_show', {id: data_flow.id}) }}">{{ data_flow.name }}</a>
+                    </td>
                     <td>{{ data_flow.dataSource }}</td>
                     <td>{{ data_flow.transforms|length }}</td>
                     {# <td>{{ data_flow.ttl }}</td> #}

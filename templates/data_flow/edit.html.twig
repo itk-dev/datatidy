@@ -14,8 +14,7 @@
                     <div class="d-none d-md-block col-auto border-left">
                         <span class="text-gray-300">{{ data_flow.name }}</span>
                         <span class="text-success ml-1">
-                            {{ 'Saved %elapsed% ago'|trans({'%elapsed%': data_flow.updatedAt|time_elapsed({_delimiter: '; ', _connector: '; '})}) }}
-                            {#{ 'Saved %elapsed% ago'|trans({'%elapsed%': data_flow.updatedAt|time_elapsed({now: '2001-01-01', delimiter: '; ', connector: '; '})}) }#}
+                            {{ 'Saved %elapsed% ago'|trans({'%elapsed%': data_flow.updatedAt|time_elapsed}) }}
                         </span>
                     </div>
                     <div class="col-6 col-md-auto ml-auto z-index-1070 text-right">

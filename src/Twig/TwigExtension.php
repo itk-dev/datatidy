@@ -10,6 +10,7 @@
 
 namespace App\Twig;
 
+use App\DataTarget\DataTargetManager;
 use App\DataTransformer\DataTransformerManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
@@ -23,6 +24,9 @@ class TwigExtension extends AbstractExtension
     /** @var DataTransformerManager */
     private $dataTransformerManager;
 
+    /** @var DataTargetManager */
+    private $dataTargetManager;
+
     /** @var RouterInterface */
     private $router;
 
@@ -32,9 +36,10 @@ class TwigExtension extends AbstractExtension
     /** @var TranslatorInterface */
     private $translator;
 
-    public function __construct(DataTransformerManager $dataTransformerManager, RouterInterface $router, RequestStack $requestStack, TranslatorInterface $translator)
+    public function __construct(DataTransformerManager $dataTransformerManager, DataTargetManager $dataTargetManager, RouterInterface $router, RequestStack $requestStack, TranslatorInterface $translator)
     {
         $this->dataTransformerManager = $dataTransformerManager;
+        $this->dataTargetManager = $dataTargetManager;
         $this->router = $router;
         $this->requestStack = $requestStack;
         $this->translator = $translator;
@@ -44,6 +49,7 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFilter('transformer_name', [$this, 'getTransformerName']),
+            new TwigFilter('data_target_name', [$this, 'getDataTargetName']),
             new TwigFilter('time_elapsed', [$this, 'getTimeElapsed']),
         ];
     }
@@ -115,6 +121,19 @@ class TwigExtension extends AbstractExtension
         return $name;
     }
 
+    public function getDataTargetName(string $name)
+    {
+        try {
+            $dataTarget = $this->dataTargetManager->getDataTarget($name);
+            $metadata = $dataTarget->getMetadata();
+
+            return $metadata['name'];
+        } catch (\Exception $exception) {
+        }
+
+        return $name;
+    }
+
     public function getPathWithReferer(string $route, array $parameters = [])
     {
         if (!isset($parameters['referer'])) {
@@ -138,6 +157,10 @@ class TwigExtension extends AbstractExtension
             'hour' => 60 * 60,
             'minute' => 60,
         ];
+
+        if ($seconds < 60) {
+            $sections['second'] = 1;
+        }
 
         $parts = [];
         foreach ($sections as $name => $value) {
