@@ -23,11 +23,6 @@
             </tr>
         {% endblock %}
         {% block tbody %}
-
-            <pre>
-                {{ dump(data_sources) }}
-            </pre>
-
             {% for data_source in data_sources %}
                 <tr>
                     {# TODO: Add condtion to show badge width datatype
