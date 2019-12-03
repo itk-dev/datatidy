@@ -5,6 +5,10 @@
 
 {% block header %}{{ 'DataFlow'|trans }}{% endblock %}
 
+{% block toolbar %}
+    <a href="{{ path('data_flow_index') }}">{{ 'Back to data flow list'|trans }}</a>
+{% endblock %}
+
 {% block content %}
     {% embed '_table.html.twig' %}
         {% block tbody %}
@@ -69,9 +73,7 @@
         {% endif %}
     </fieldset>
 
-    <a href="{{ path('data_flow_index') }}">{{ 'Back to data flow list'|trans }}</a>
-
     {% if is_granted('edit', data_flow) %}
-        <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit data flow'|trans }}</a>
+        <a class="btn btn-primary" href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit data flow'|trans }}</a>
     {% endif %}
 {% endblock %}

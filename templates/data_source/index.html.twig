@@ -25,7 +25,8 @@
         {% block tbody %}
             {% for data_source in data_sources %}
                 <tr>
-                    {# TODO: Add condtion to show badge width datatype #}
+                    {# TODO: Add condtion to show badge width datatype
+                    {{ data_source.type ? 'XML' : 'JSON' }} #}
                     <td><span class="badge badge-light mr-2 text-muted">XML</span>{#<span class="badge badge-light mr-2 text-muted">json</span>#}<a href="{{ path('data_source_show', {'id': data_source.id}) }}">{{ data_source.name }}</a></td>
                     <td>{{ data_source.ttl }}</td>
                     <td>{{ data_source.lastReadAt ? data_source.lastReadAt|date('Y-m-d H:i:s') : '' }}</td>

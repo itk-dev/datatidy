@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="3RJINQ0" resname="Authentication request could not be processed due to a system problem.">
         <source>Authentication request could not be processed due to a system problem.</source>
-        <target>Godkendelsesanmodning kan ikke behandles på grund af et systemfejl.</target>
+        <target>Godkendelsesanmodning kan ikke behandles på grund af en systemfejl.</target>
       </trans-unit>
       <trans-unit id="qr0aiUo" resname="Invalid credentials.">
         <source>Invalid credentials.</source>

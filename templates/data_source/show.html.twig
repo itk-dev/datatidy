@@ -5,6 +5,10 @@
 
 {% block header %}{{ 'DataSource'|trans }}{% endblock %}
 
+{% block toolbar %}
+    <a href="{{ path('data_source_index') }}">{{ 'Back to data source list'|trans }}</a>
+{% endblock %}
+
 {% block content %}
     {% embed '_table.html.twig' %}
         {% block tbody %}
@@ -50,10 +54,7 @@
             </tr>
         {% endblock %}
     {% endembed %}
-
-    <a href="{{ path('data_source_index') }}">{{ 'Back to data source list'|trans }}</a>
-
     {% if is_granted('edit', data_source) %}
-        <a href="{{ path('data_source_edit', {'id': data_source.id}) }}">{{ 'Edit data source'|trans }}</a>
+        <a class="btn btn-primary btn-small" href="{{ path('data_source_edit', {'id': data_source.id}) }}">{{ 'Edit data source'|trans }}</a>
     {% endif %}
 {% endblock %}
