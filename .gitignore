@@ -29,3 +29,7 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
+
+###> friends-of-behat/symfony-extension ###
+/behat.yml
+###< friends-of-behat/symfony-extension ###

@@ -1,0 +1,14 @@
+default:
+    suites:
+        default:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension: null
+        Behat\MinkExtension:
+            # show_cmd: 'chrome %s'
+            base_url: 'http://datatidy.local.computer/'
+            sessions:
+                symfony:
+                    symfony: ~
