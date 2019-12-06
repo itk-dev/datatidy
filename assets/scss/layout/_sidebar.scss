@@ -49,11 +49,11 @@
 
     @include media-breakpoint-up(md) {
         @supports (position: sticky) {
-            height: calc(100vh - #{$spacer*4} );
+            height: calc(100vh - #{$spacer*5} );
             overflow-y: auto;
 
             ul.nav {
-                height: calc(100vh - #{$spacer*6} );
+                height: calc(100vh - #{$spacer*7} );
             }
 
         }
