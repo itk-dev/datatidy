@@ -20,7 +20,7 @@
             <p class="lead">{{ data_flow.description }}</p>
         </div>
     {% endif %}
-    {% embed '_table.html.twig' with {'hover': 'null'} %}
+    {% embed '_table.html.twig' with {hover: null} %}
         {% block thead %}
             <tr>
                 <th>{{ 'Last read at'|trans }}</th>
@@ -32,7 +32,7 @@
         {% endblock %}
         {% block tbody %}
             <tr>
-                <td>{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : 'Never' }}</td>
+                <td>{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : 'Never'|trans }}</td>
                 <td>{{ data_flow.createdBy }}</td>
                 <td>{{ data_flow.updatedBy }}</td>
                 <td>{{ data_flow.createdAt ? data_flow.createdAt|date('Y-m-d H:i:s') : '' }}</td>
@@ -42,7 +42,7 @@
     {% endembed %}
 
     <h2 class="h5 mt-md-5">{{ 'Flow recipe'|trans }}</h2>
-    {% embed '_table.html.twig' with {'hover': 'null'} %}
+    {% embed '_table.html.twig' with {hover: null} %}
             {% block thead %}
                 <tr>
                     <th>{{ 'Step name'|trans }}</th>
@@ -61,7 +61,7 @@
 
     <h2 class="h5 mt-md-5">{{ 'Data targets'|trans }}</h2>
     {% if data_flow.dataTargets %}
-    {% embed '_table.html.twig' with {'hover': 'null' } %}
+    {% embed '_table.html.twig' with {hover: null} %}
             {% block thead %}
                 <tr>
                     <th>{{ 'Target name'|trans }}</th>
