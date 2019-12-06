@@ -6,74 +6,82 @@
 {% block header %}{{ 'DataFlow'|trans }}{% endblock %}
 
 {% block toolbar %}
-    <a href="{{ path('data_flow_index') }}">{{ 'Back to data flow list'|trans }}</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ path('data_flow_index') }}">{{ 'Back to data flow list'|trans }}</a>
 {% endblock %}
 
 {% block content %}
-    {% embed '_table.html.twig' %}
-        {% block tbody %}
-            <tr>
-                <th>{{ 'Name'|trans }}</th>
-                <td>{{ data_flow.name }}</td>
-            </tr>
-            <tr>
-                <th>{{ 'Description'|trans }}</th>
-                <td>{{ data_flow.description }}</td>
-            </tr>
+
+    <p class="text-muted small mb-1">{{ 'Flow name'|trans }}</p>
+    <h2 class="h5">{{ data_flow.name }}</h2>
+
+    {% if data_flow.description %}
+        <div class="col-12 bg-white shadow-sm rounded-lg">
+            <p class="text-muted small mb-1">{{ 'Description'|trans }}</p>
+            <p class="lead">{{ data_flow.description }}</p>
+        </div>
+    {% endif %}
+    {% embed '_table.html.twig' with {hover: null} %}
+        {% block thead %}
             <tr>
                 <th>{{ 'Last read at'|trans }}</th>
-                <td>{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
                 <th>{{ 'Created by'|trans }}</th>
-                <td>{{ data_flow.createdBy }}</td>
-            </tr>
-            <tr>
                 <th>{{ 'Updated by'|trans }}</th>
-                <td>{{ data_flow.updatedBy }}</td>
-            </tr>
-            <tr>
                 <th>{{ 'Created at'|trans }}</th>
-                <td>{{ data_flow.createdAt ? data_flow.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
                 <th>{{ 'Updated at'|trans }}</th>
+            </tr>
+        {% endblock %}
+        {% block tbody %}
+            <tr>
+                <td>{{ data_flow.lastRunAt ? data_flow.lastRunAt|date('Y-m-d H:i:s') : 'Never'|trans }}</td>
+                <td>{{ data_flow.createdBy }}</td>
+                <td>{{ data_flow.updatedBy }}</td>
+                <td>{{ data_flow.createdAt ? data_flow.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         {% endblock %}
     {% endembed %}
 
-    <fieldset>
-        <legend>{{ 'Recipe'|trans }}</legend>
-
-        <ol>
-            {% for transform in data_flow.transforms %}
-                <li>
-                    {{ transform.transformer|transformer_name }}
-                    <pre><code>{{ transform.transformerOptions|yaml_encode(4) }}</code></pre>
-                </li>
-            {% endfor %}
-        </ol>
-    </fieldset>
-
-    <fieldset>
-        <legend>{{ 'Data targets'|trans }}</legend>
-
-        {% if data_flow.dataTargets %}
-            <ol>
-                {% for target in data_flow.dataTargets %}
-                    <li>
-                        {{ target.dataTarget|data_target_name }}
-                        <pre><code>{{ target.dataTargetOptions|yaml_encode(4) }}</code></pre>
-                    </li>
+    <h2 class="h5 mt-md-5">{{ 'Flow recipe'|trans }}</h2>
+    {% embed '_table.html.twig' with {hover: null} %}
+            {% block thead %}
+                <tr>
+                    <th>{{ 'Step name'|trans }}</th>
+                    <th>{{ 'Step options'|trans }}</th>
+                </tr>
+            {% endblock %}
+            {% block tbody %}
+                {% for transform in data_flow.transforms %}
+                    <tr>
+                        <td>{{ transform.transformer|transformer_name }}</td>
+                        <td><pre class="small"><code>{{ transform.transformerOptions|yaml_encode(4) }}</code></pre></td>
+                    </tr>
                 {% endfor %}
-            </ol>
-        {% else %}
-            <div class="alert alert-warning">{{ 'No data targets'|trans }}</div>
-        {% endif %}
-    </fieldset>
+            {% endblock %}
+    {% endembed %}
+
+    <h2 class="h5 mt-md-5">{{ 'Data targets'|trans }}</h2>
+    {% if data_flow.dataTargets %}
+    {% embed '_table.html.twig' with {hover: null} %}
+            {% block thead %}
+                <tr>
+                    <th>{{ 'Target name'|trans }}</th>
+                    <th>{{ 'Target options'|trans }}</th>
+                </tr>
+            {% endblock %}
+            {% block tbody %}
+                {% for target in data_flow.dataTargets %}
+                    <tr>
+                        <td>{{ target.dataTarget|data_target_name }}</td>
+                        <td><pre class="small"><code>{{ target.dataTargetOptions|yaml_encode(4) }}</code></pre></td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+    {% endembed %}
+    {% else %}
+        <div class="alert alert-warning">{{ 'No data targets'|trans }}</div>
+    {% endif %}
 
     {% if is_granted('edit', data_flow) %}
-        <a class="btn btn-primary" href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit data flow'|trans }}</a>
+        <a class="btn btn-primary mt-md-3 mb-md-3 pl-5 pr-5" href="{{ path('data_flow_edit', {'id': data_flow.id}) }}">{{ 'Edit data flow'|trans }}</a>
     {% endif %}
 {% endblock %}
