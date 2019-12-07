@@ -15,3 +15,5 @@ $('.login-form .form-control').on('focus', function () {
   var $field = $(this).closest('.form-group')
   $field.addClass('filled')
 })
+
+$('.login-form .form-control').trigger('blur')
