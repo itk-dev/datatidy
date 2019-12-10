@@ -20,11 +20,11 @@ use Doctrine\DBAL\Schema\Column;
 
 /**
  * @DataTransformer(
- *     name="Replace value",
- *     description="Replace value"
+ *     name="Replace values",
+ *     description="Replace values"
  * )
  */
-class ReplaceValueDataTransformer extends AbstractDataTransformer
+class ReplaceValuesDataTransformer extends AbstractDataTransformer
 {
     /**
      * @Option(type="columns", help="Choose columns")
@@ -34,18 +34,11 @@ class ReplaceValueDataTransformer extends AbstractDataTransformer
     private $columns;
 
     /**
-     * @Option(type="string", description="Value to search for")
+     * @Option(type="map", formType="App\Form\Type\Option\StringStringMapType", description="Search and replace values", default={{"from":"", "to":""}})
      *
      * @var string
      */
-    private $search;
-
-    /**
-     * @Option(type="string", description="Replacement value")
-     *
-     * @var string
-     */
-    private $replace;
+    private $replacements;
 
     /**
      * @Option(type="bool", description="If set, a partial match is done when searching. Otherwise the entire value must match. Ignored when using regular expressions.", required=false, default=false),
@@ -67,16 +60,26 @@ class ReplaceValueDataTransformer extends AbstractDataTransformer
         $columns = $this->transformColumns($input->getColumns());
         $result = $input->copy($columns->toArray())->createTable();
 
+        $search = array_column($this->replacements, 'from');
+        $replace = array_column($this->replacements, 'to');
+
+        // Use regular expression for non-partial replace on whole string.
+        if (!$this->regexp && !$this->partial) {
+            $search = array_map(static function ($s) {
+                return '/^'.preg_quote($s, '/').'$/';
+            }, $search);
+        }
+
         foreach ($input->rows() as $row) {
             foreach ($this->columns as $column) {
                 $value = $this->getValue($row, $column);
                 if ($this->regexp) {
-                    $value = preg_replace($this->search, $this->replace, $value);
+                    $value = preg_replace($search, $replace, $value);
                 } else {
                     if ($this->partial) {
-                        $value = str_replace($this->search, $this->replace, $value);
-                    } elseif (0 === strcmp($value, $this->search)) {
-                        $value = $this->replace;
+                        $value = str_replace($search, $replace, $value);
+                    } else {
+                        $value = preg_replace($search, $replace, $value);
                     }
                 }
                 $row[$column] = $value;
