@@ -47,7 +47,7 @@ window.addEventListener('beforeunload', function (e) {
     e.returnValue = ''
   }
 
-  delete e['returnValue']
+  delete e.returnValue
 })
 
 $(function () {
