@@ -34,6 +34,22 @@ imagesContext.keys().forEach(imagesContext)
 
 dom.watch()
 
+// Show alert when user is leaving a dirty form uncommitted
+let unsaved = false
+
+$(':input').change(function () {
+  unsaved = true
+})
+
+window.addEventListener('beforeunload', function (e) {
+  if (unsaved) {
+    e.preventDefault()
+    e.returnValue = ''
+  } else {
+    delete e.returnValue
+  }
+})
+
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
