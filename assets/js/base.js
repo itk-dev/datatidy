@@ -45,9 +45,9 @@ window.addEventListener('beforeunload', function (e) {
   if (unsaved) {
     e.preventDefault()
     e.returnValue = ''
+  } else {
+    delete e.returnValue
   }
-
-  delete e.returnValue
 })
 
 $(function () {
