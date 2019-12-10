@@ -49,3 +49,7 @@ window.addEventListener('beforeunload', function (e) {
 
   delete e['returnValue']
 })
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

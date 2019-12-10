@@ -32,6 +32,34 @@ Templates for custom form types.
     </div>
 {% endblock %}
 
+{% block string_string_map_widget %}
+    <div class="string-string-map-widget">
+        {{- block('collection_widget') -}}
+
+        <button type="button"
+            data-collection-add-new-widget-selector="#{{ form.vars.id }}"
+            class="btn btn-secondary">{{ 'Add another pair'|trans }}</button>
+    </div>
+{% endblock %}
+
+{% block string_string_map_item_row %}
+    <div class="row string-string-map-item" id="{{ id }}">
+        {% for child in form.children if not child.rendered %}
+            <div class="col-5 col-{{ child.vars.name }}">
+                <div class="form-group">
+                    {{ form_label(child) }}
+                    {{ form_widget(child) }}
+                    {{ form_help(child) }}
+                    {{ form_errors(child) }}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="col-2">
+            <button type="button" class="btn btn-danger btn-sm" data-collection-remove-widget-selector="#{{ id }}"><i class="fal {{ iconClass('delete') }} fa-fw mr-2"></i><span class="">{{ 'Remove item'|trans }}</span></button>
+        </div>
+    </div>
+{% endblock %}
+
 {# https://symfony.com/blog/new-in-symfony-4-3-simpler-form-theming #}
 {% block data_flow_target_widget %}
     <div class="data-flow-target-widget">
@@ -40,7 +68,7 @@ Templates for custom form types.
             <div class="col-12 text-center">
                 <button type="button"
             data-collection-add-new-widget-selector="#{{ form.vars.id }}"
-            class="btn btn-outline-secondary">{{ 'Add data target'|trans }}</button>
+            class="btn btn-outline-primary">{{ 'Add data target'|trans }}</button>
             </div>
         </div>
     </div>

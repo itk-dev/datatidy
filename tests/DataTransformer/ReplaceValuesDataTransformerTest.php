@@ -11,11 +11,11 @@
 namespace App\Tests\DataTransformer;
 
 use App\DataTransformer\Exception\InvalidColumnException;
-use App\DataTransformer\ReplaceValueDataTransformer;
+use App\DataTransformer\ReplaceValuesDataTransformer;
 
-class ReplaceValueDataTransformerTest extends AbstractDataTransformerTest
+class ReplaceValuesDataTransformerTest extends AbstractDataTransformerTest
 {
-    protected static $transformer = ReplaceValueDataTransformer::class;
+    protected static $transformer = ReplaceValuesDataTransformer::class;
 
     public function dataProvider(): array
     {
@@ -23,8 +23,12 @@ class ReplaceValueDataTransformerTest extends AbstractDataTransformerTest
             [
                 [
                     'columns' => ['id'],
-                    'search' => '',
-                    'replace' => '',
+                    'replacements' => [
+                        [
+                            'from' => '',
+                            'to' => '',
+                        ],
+                    ],
                 ],
                 $this->buildFromCSV(
                     <<<'CSV'
@@ -39,8 +43,12 @@ CSV
             [
                 [
                     'columns' => ['value'],
-                    'search' => '12',
-                    'replace' => 'low',
+                    'replacements' => [
+                        [
+                            'from' => '12',
+                            'to' => 'low',
+                        ],
+                    ],
                 ],
                 $this->buildFromCSV(
                     <<<'CSV'
@@ -61,8 +69,12 @@ CSV
             [
                 [
                     'columns' => ['value'],
-                    'search' => '12',
-                    'replace' => 'low',
+                    'replacements' => [
+                        [
+                            'from' => '12',
+                            'to' => 'low',
+                        ],
+                    ],
                     'partial' => true,
                 ],
                 $this->buildFromCSV(
@@ -84,8 +96,12 @@ CSV
             [
                 [
                     'columns' => ['value'],
-                    'search' => '/[0-9]+/',
-                    'replace' => '\0\0x',
+                    'replacements' => [
+                        [
+                            'from' => '/[0-9]+/',
+                            'to' => '\0\0x',
+                        ],
+                    ],
                     'regexp' => true,
                 ],
                 $this->buildFromCSV(

@@ -90,8 +90,8 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="col-12 text-center">
-                        <a class="btn btn-outline-secondary" href="{{ path('data_flow_transforms_index', {data_flow: data_flow.id}) }}">{{ 'Edit recipe'|trans }}</a>
+                    <div class="col-12 text-center mb-3">
+                        <a class="btn btn-outline-primary" href="{{ path('data_flow_transforms_index', {data_flow: data_flow.id}) }}">{{ 'Edit recipe'|trans }}</a>
                     </div>
                 </div>
             </div>
@@ -106,6 +106,23 @@
                         <button type="button" class="btn m-0 p-0" data-toggle="popover" title="{{ 'Data target'|trans }}" data-content="{{ 'Data targets is where you define what will happen to your recipes output.'|trans }}"><i class="fal {{ iconClass('help') }} fa-fw"></i></button>
                     </div>
                     <div class="col-12">
+                        {# TODO: Fix missing add data target btn when not showing entire form via form_widget #}
+                        {#{% for target in form.data_targets.dataTargets %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h3 class="h5">{{ 'Data target'|trans }} {{loop.index}}</h3>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    {{ form_row(target.description) }}
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    {{ form_row(target.dataTarget) }}
+                                </div>
+                                <div class="col-12 border-bottom border-white mb-3">
+                                    {{ form_row(target.dataTargetOptions) }}
+                                </div>
+                            </div>
+                        {% endfor %}#}
                         {{ form_widget(form.data_targets) }}
                     </div>
                 </div>

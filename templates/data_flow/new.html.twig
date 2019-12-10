@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="col">
                         {% if cancel_url is defined %}
-                            <a class="btn btn-link" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
+                            <a class="btn btn-outline-secondary mr-md-3" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
                         {% endif %}
                         <button class="btn btn-primary">{{ button_label|default('Create data flow') }}</button>
                     </div>
