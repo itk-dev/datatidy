@@ -41,10 +41,11 @@ $(':input').change(function () {
   unsaved = true
 })
 
-function unloadPage () {
+window.addEventListener('beforeunload', function (e) {
   if (unsaved) {
-    return 'You have unsaved changes on this page. Do you want to leave this page and discard your changes or stay on this page?'
+    e.preventDefault()
+    e.returnValue = ''
   }
-}
 
-window.onbeforeunload = unloadPage
+  delete e['returnValue']
+})
