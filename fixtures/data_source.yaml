@@ -16,3 +16,11 @@ App\Entity\DataSource:
         dataSourceOptions:
             url: https://portal.opendata.dk/api/3/action/datastore_search?resource_id=b3eeb0ff-c8a8-4824-99d6-e0a3747c8b0d
             root: result.records
+
+    'data_source_odaa-c65b055d-a020-4871-ab51-bdbc3fd73fd8':
+        name: 'ODAA c65b055d-a020-4871-ab51-bdbc3fd73fd8'
+        ttl: 3600
+        dataSource: App\DataSource\JsonDataSource
+        dataSourceOptions:
+            url: 'https://data.datatidy.srvitkphp73stg.itkdev.dk/portal.opendata.dk/api/3/action/datastore_search/resource_id/c65b055d-a020-4871-ab51-bdbc3fd73fd8.json'
+            root: result.records
