@@ -1,17 +1,8 @@
-App\Entity\DataSource:
-    data_source:
-        name: 'ODAA c65b055d-a020-4871-ab51-bdbc3fd73fd8'
-        ttl: 3600
-        dataSource: App\DataSource\JsonDataSource
-        dataSourceOptions:
-            url: 'https://data.datatidy.srvitkphp73stg.itkdev.dk/data/portal.opendata.dk/api/3/action/datastore_search/resource_id/c65b055d-a020-4871-ab51-bdbc3fd73fd8.json'
-            root: result.records
-
 App\Entity\DataFlow:
     data_flow_calculate:
         enabled: false
         name: Data flow with calculation
-        dataSource: '@data_source'
+        dataSource: '@data_source:odaa-c65b055d-a020-4871-ab51-bdbc3fd73fd8'
         frequency: 60
 
 App\Entity\DataTransform:

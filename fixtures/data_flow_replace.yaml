@@ -2,7 +2,7 @@ App\Entity\DataFlow:
     data_flow_replace:
         enabled: false
         name: Data flow with replace value
-        dataSource: '@data_source_odaa-c65b055d-a020-4871-ab51-bdbc3fd73fd8'
+        dataSource: '@data_source:odaa-c65b055d-a020-4871-ab51-bdbc3fd73fd8'
         frequency: 60
 
 App\Entity\DataTransform:
