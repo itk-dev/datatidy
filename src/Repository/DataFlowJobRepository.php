@@ -16,7 +16,6 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
  * @method DataFlowJob|null find($id, $lockMode = null, $lockVersion = null)
@@ -34,9 +33,6 @@ class DataFlowJobRepository extends ServiceEntityRepository
     /**
      * Fetches all data flow jobs that the user is either the creator or collaborator of.
      *
-     * @param User $user
-     * @param array $order
-     * @param int $limit
      * @return DataFlowJob[]
      */
     public function findByUser(User $user, array $order = [], int $limit = 100): array

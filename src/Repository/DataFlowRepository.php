@@ -30,11 +30,9 @@ class DataFlowRepository extends ServiceEntityRepository
         parent::__construct($registry, DataFlow::class);
     }
 
-
     /**
-     * @param User $user
      * @param string[] $order
-     * @param int $limit
+     *
      * @return DataFlow[]
      */
     public function findByUser(User $user, array $order = [], int $limit = 100): array
