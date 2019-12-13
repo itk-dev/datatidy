@@ -52,14 +52,15 @@ class DataTransformType extends AbstractType
             ]);
 
         // @see https://symfony.com/doc/current/form/dynamic_form_modification.html
-        $formModifier = function (FormInterface $form, string $transformer) use ($options) {
+        $formModifier = function (FormInterface $form, string $transformer, DataTransform $transform = null) use ($options) {
             $this->helper->buildForm(
                 $form,
                 $this->transformerManager->getTransformerOptions($transformer),
                 'transformerOptions',
                 [
                     'data_set_columns' => $options['data_set_columns'],
-                ]
+                ],
+                $transform
             );
         };
 
@@ -69,7 +70,7 @@ class DataTransformType extends AbstractType
                 /** @var DataTransform $transform */
                 $transform = $event->getData();
 
-                $formModifier($event->getForm(), $transform->getTransformer());
+                $formModifier($event->getForm(), $transform->getTransformer(), $transform);
             }
         );
 
