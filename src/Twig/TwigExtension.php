@@ -101,8 +101,19 @@ class TwigExtension extends AbstractExtension
                 return 'fa-list-ul';
             case 'preview':
                 return 'fa-table';
+            case 'running':
             case 'play':
                 return 'fa-play-circle';
+            case 'completed':
+                return 'fa-check-circle';
+            case 'failed':
+                return 'fa-times-circle';
+            case 'queued':
+                return 'fa-arrow-circle-right';
+            case 'created':
+                return 'fa-plus-circle';
+            case 'cancelled':
+                return 'fa-minus-circle';
             default:
                 return '';
         }

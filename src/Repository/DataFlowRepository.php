@@ -11,7 +11,10 @@
 namespace App\Repository;
 
 use App\Entity\DataFlow;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -27,32 +30,27 @@ class DataFlowRepository extends ServiceEntityRepository
         parent::__construct($registry, DataFlow::class);
     }
 
-    // /**
-    //  * @return DataFlow[] Returns an array of DataFlow objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?DataFlow
+    /**
+     * @param User $user
+     * @param string[] $order
+     * @param int $limit
+     * @return DataFlow[]
+     */
+    public function findByUser(User $user, array $order = [], int $limit = 100): array
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->createQueryBuilder('dataFlow')
+            ->where('dataFlow.createdBy = :user')
+            ->leftJoin('dataFlow.collaborators', 'data_flow_collaborators')
+            ->orWhere(':user MEMBER OF dataFlow.collaborators')
+            ->setParameter(':user', $user);
+
+        foreach ($order as $sort => $direction) {
+            $qb->orderBy('dataFlow.'.$sort, $direction);
+        }
+
+        $collection = new ArrayCollection($qb->getQuery()->getResult());
+
+        return $collection->slice(0, $limit);
     }
-    */
 }

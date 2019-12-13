@@ -14,7 +14,9 @@ use App\Entity\DataFlow;
 use App\Entity\DataFlowJob;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
  * @method DataFlowJob|null find($id, $lockMode = null, $lockVersion = null)
@@ -32,19 +34,27 @@ class DataFlowJobRepository extends ServiceEntityRepository
     /**
      * Fetches all data flow jobs that the user is either the creator or collaborator of.
      *
+     * @param User $user
+     * @param array $order
+     * @param int $limit
      * @return DataFlowJob[]
      */
-    public function findByUser(User $user, string $order = 'DESC'): array
+    public function findByUser(User $user, array $order = [], int $limit = 100): array
     {
-        return $this->createQueryBuilder('dataFlowJob')
+        $qb = $this->createQueryBuilder('dataFlowJob')
             ->leftJoin('dataFlowJob.dataFlow', 'dataFlow')
             ->andWhere('dataFlow.createdBy = :user')
             ->leftJoin('dataFlow.collaborators', 'data_flow_collaborators')
             ->orWhere(':user MEMBER OF dataFlow.collaborators')
-            ->setParameter(':user', $user)
-            ->orderBy('dataFlowJob.createdAt', $order)
-            ->getQuery()
-            ->execute();
+            ->setParameter(':user', $user);
+
+        foreach ($order as $sort => $direction) {
+            $qb->orderBy('dataFlowJob.'.$sort, $direction);
+        }
+
+        $collection = new ArrayCollection($qb->getQuery()->getResult());
+
+        return $collection->slice(0, $limit);
     }
 
     /**

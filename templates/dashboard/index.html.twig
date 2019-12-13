@@ -11,13 +11,32 @@
             <p class="text-muted">{{ 'Recently updated'|trans }}</p>
             {% embed '_table.html.twig' %}
                 {% block tbody %}
-                <tr><td>Not yet implemented</td></tr>
+                    {% for data_flow in recent_data_flows %}
+                    <tr>
+                        <td><i class="fal {{ iconClass('dataflow') }} fa-fw mr-2 text-gray-300"></i><a href="{{ path('data_flow_show', {id: data_flow.id}) }}">{{ data_flow.name }}</a></td>
+                        <td>{{ data_flow.updatedAt|date('d/m/Y') }}</td>
+                    </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ 'No recent flows'|trans }}</td>
+                        </tr>
+                    {% endfor %}
                 {% endblock %}
             {% endembed %}
             <p class="text-muted mt-md-5">{{ 'Recent jobs'|trans }}</p>
             {% embed '_table.html.twig' %}
                 {% block tbody %}
-                <tr><td>Not yet implemented</td></tr>
+                    {% for job in recent_jobs %}
+                        <tr>
+                            <td><i class="fal {{ iconClass('job') }} fa-fw mr-2 text-gray-300"></i><a href="{{ path('data_flow_job_show', {id: job.id}) }}">{{ job.id|slice(0, 8) }}</a></td>
+                            <td>{{ '%dataSource% on %dataFlow%'|trans({'%dataSource%': job.dataFlow.dataSource.name, '%dataFlow%': job.dataFlow.name}) }}</td>
+                            <td><i class="fal {{ iconClass(job.status) }}"></i> {{ job.status|capitalize|trans }} {{ job.updatedAt|date('d/m/Y') }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ 'No recent jobs'|trans }}</td>
+                        </tr>
+                    {% endfor %}
                 {% endblock %}
             {% endembed %}
         </div>
