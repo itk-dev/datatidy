@@ -11,6 +11,7 @@
 namespace App\Util;
 
 use App\DataTransformer\DataTransformerManager;
+use App\Entity\DataTransform;
 use App\Form\Type\Option\ColumnStringMapType;
 use App\Form\Type\Option\ColumnsType;
 use App\Form\Type\Option\ColumnType;
@@ -40,16 +41,20 @@ class OptionsFormHelper
         $this->transformerManager = $transformerManager;
     }
 
-    public function buildForm(FormInterface $form, array $serviceOptions, string $serviceOptionsName, array $options = [])
+    public function buildForm(FormInterface $form, array $serviceOptions, string $serviceOptionsName, array $options = [], DataTransform $transform = null)
     {
         $form->add($serviceOptionsName, FormType::class);
 
         if (!empty($serviceOptions)) {
+            $transformerOptions = null !== $transform ? $transform->getTransformerOptions() : [];
             $optionsForm = $form->get($serviceOptionsName);
             $this->options = $options;
             foreach ($serviceOptions as $name => $option) {
                 $type = $this->getFormType($option);
                 $formOptions = $this->getFormOptions($option);
+                if (\array_key_exists($name, $transformerOptions)) {
+                    $formOptions['data'] = $transformerOptions[$name];
+                }
                 $optionsForm->add($name, $type, $formOptions);
             }
             $this->options = null;

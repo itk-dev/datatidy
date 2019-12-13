@@ -2,7 +2,7 @@ App\Entity\DataFlow:
     data_flow_no_targets:
         enabled: false
         name: Flow with no data targets
-        dataSource: '@data_source_odaa'
+        dataSource: '@data_source:odaa-c65b055d-a020-4871-ab51-bdbc3fd73fd8'
         frequency: 60
 
 App\Entity\DataTransform:

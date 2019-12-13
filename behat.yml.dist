@@ -7,7 +7,7 @@ default:
     extensions:
         FriendsOfBehat\SymfonyExtension: null
         Behat\MinkExtension:
-            # show_cmd: 'chrome %s'
+            show_cmd: 'open %s'
             base_url: 'http://datatidy.local.computer/'
             sessions:
                 symfony:

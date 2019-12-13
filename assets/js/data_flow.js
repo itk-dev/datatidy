@@ -73,6 +73,7 @@ $(() => {
     // Simulate form data, but only include the selected value.
     const data = {
       [$transformer.attr('name')]: $transformer.val(),
+      'data_transform[name]': 'ajax',
       ajax: true
     }
 
