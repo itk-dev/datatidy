@@ -81,4 +81,4 @@ endelige datasæt sendes til et datamål. Hvordan datasættet sendes afhænger a
 
 ## Det store eksempel
 
-Se [Det store eksempel](TUTORIAL.da.md) for en gennemgang af brug af Datatidy.
+Se [Det store eksempel](TUTORIAL.md) for en gennemgang af brug af Datatidy.
