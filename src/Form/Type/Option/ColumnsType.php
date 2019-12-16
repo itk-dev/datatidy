@@ -11,11 +11,12 @@
 namespace App\Form\Type\Option;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ColumnsType extends ChoiceType
+class ColumnsType extends ChoiceType implements DataTransformerInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -23,7 +24,20 @@ class ColumnsType extends ChoiceType
             'choices' => $this->getChoices($options),
         ]);
 
+        $builder->addModelTransformer($this);
+
         parent::buildForm($builder, $options);
+    }
+
+    public function transform($value)
+    {
+        return $value;
+    }
+
+    public function reverseTransform($value)
+    {
+        // Make sure that we save a list (i.e. not an associative array with numerical keys).
+        return array_values($value);
     }
 
     private function getChoices(array $options)

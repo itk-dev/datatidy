@@ -22,13 +22,22 @@
                 <div class="col-12">
                     <h1 class="h4">{% block header %}{{ 'Create new flow'|trans }}{% endblock %}</h1>
                 </div>
-                <div class="col-12">
-                    {{ include('data_source/_form.html.twig', {'button_label': 'Create new flow'}) }}
-                    {% if cancel_url is defined %}
-                        <a class="btn btn-link" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
-                    {% endif %}
-                </div>
             </div>
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col">
+                        {{ form_widget(form) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {% if cancel_url is defined %}
+                            <a class="btn btn-outline-secondary mr-md-3" href="{{ cancel_url }}">{{ cancel_label|default('Cancel'|trans) }}</a>
+                        {% endif %}
+                        <button class="btn btn-primary">{{ button_label|default('Create data flow') }}</button>
+                    </div>
+                </div>
+            {{ form_end(form) }}
         </div>
     </main>
 

@@ -12,6 +12,7 @@ namespace App\DataFlow;
 
 use App\DataSet\DataSet;
 use App\Entity\DataFlow;
+use App\Entity\DataTransform;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -34,6 +35,9 @@ class DataFlowRunResult
 
     /** @var \Exception */
     private $lookaheadException;
+
+    /** @var DataTransform */
+    private $failedTransform;
 
     /** @var bool */
     private $published = false;
@@ -90,7 +94,7 @@ class DataFlowRunResult
     public function getTransformResult($index): ?DataSet
     {
         if ($index < 0) {
-            $index = $this->transformResults->count() + $index - 1;
+            $index = $this->transformResults->count() + $index;
         }
 
         return $this->transformResults[$index];
@@ -121,6 +125,18 @@ class DataFlowRunResult
     public function setLookaheadException(\Exception $lookaheadException): self
     {
         $this->lookaheadException = $lookaheadException;
+
+        return $this;
+    }
+
+    public function getFailedTransform(): ?DataTransform
+    {
+        return $this->failedTransform;
+    }
+
+    public function setFailedTransform(DataTransform $transform): self
+    {
+        $this->failedTransform = $transform;
 
         return $this;
     }

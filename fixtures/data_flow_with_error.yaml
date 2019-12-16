@@ -1,23 +1,14 @@
-App\Entity\DataSource:
-    data_source_invalid:
-        name: ODAA
-        ttl: 3600
-        dataSource: App\DataSource\JsonDataSource
-        dataSourceOptions:
-            url: https://example.com
-            root: ''
-
 App\Entity\DataFlow:
     data_flow_transform_error:
         enabled: false
         name: Flow with error (invalid columns)
-        dataSource: '@data_source_odaa'
+        dataSource: '@data_source:odaa-b3eeb0ff-c8a8-4824-99d6-e0a3747c8b0d'
         frequency: 60
 
     data_flow_source_error:
         enabled: false
         name: Flow with error (invalid source)
-        dataSource: '@data_source_invalid'
+        dataSource: '@data_source:invalid'
         frequency: 60
 
 App\Entity\DataTransform:

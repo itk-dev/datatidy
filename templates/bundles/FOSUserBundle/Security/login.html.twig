@@ -4,7 +4,7 @@
 {% block page_title 'security.login.submit'|trans %}
 
 {% block fos_user_content %}
-<form action="{{ path('fos_user_security_check') }}" method="post" id="login-form">
+<form action="{{ path('fos_user_security_check') }}" method="post" id="login-form" class="login-form">
   {% if error %}
     <div class="alert alert-danger" role="alert">
         {{ error.messageKey|trans(error.messageData, 'security') }}

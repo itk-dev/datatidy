@@ -30,8 +30,13 @@ class DataFlowJobController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
+        $jobs = $dataFlowJobRepository->findByUser(
+            $user,
+            ['createdAt' => 'desc']
+        );
+
         return $this->render('data_flow_job/index.html.twig', [
-            'data_flow_jobs' => $dataFlowJobRepository->findByUser($user),
+            'data_flow_jobs' => $jobs,
         ]);
     }
 

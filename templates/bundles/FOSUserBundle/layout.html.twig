@@ -8,13 +8,13 @@
 {% block body %}
     <div class="container-fluid">
         <main class="login d-flex align-items-center justify-content-center">
-            <div class="col-12 col-sm-6 col-lg-4">
+            <div class="col-12 col-md-6 col-lg-4" style="max-width: 500px;">
                 <div class="text-center mb-3">
                     <img src="{{ asset('build/images/datatidy-logo.svg') }}" alt="{{ site_name }}" class="text-center">
                 </div>
                 <p class="small text-muted mb-1">{{ 'Sign in'|trans }}</p>
                 {% block fos_user_content %}{% endblock %}
-                <p class="small mt-3">{{ 'Don’t have an account yet?'|trans }} <a href="/">Create new account</a></p> {# TODO: Link to create new account #}
+                {#<p class="small mt-3">{{ 'Don’t have an account yet?'|trans }} <a href="/">Create new account</a></p>#}  {#TODO: Link to create new account #}
             </div>
         </main>
     </div>

@@ -9,3 +9,4 @@ twig:
     globals:
         site_name: '%site_name%'
         site_logo_path: '%site_logo_path%'
+        bugherd_apikey: '%bugherd_apikey%'

@@ -11,8 +11,10 @@
 namespace App\Util;
 
 use App\DataTransformer\DataTransformerManager;
+use App\Entity\DataTransform;
 use App\Form\Type\Option\ColumnStringMapType;
 use App\Form\Type\Option\ColumnsType;
+use App\Form\Type\Option\ColumnType;
 use App\Form\Type\Option\FlowType;
 use App\Form\Type\Option\MapType;
 use App\Form\Type\Option\TypeType;
@@ -39,16 +41,20 @@ class OptionsFormHelper
         $this->transformerManager = $transformerManager;
     }
 
-    public function buildForm(FormInterface $form, array $serviceOptions, string $serviceOptionsName, array $options = [])
+    public function buildForm(FormInterface $form, array $serviceOptions, string $serviceOptionsName, array $options = [], DataTransform $transform = null)
     {
         $form->add($serviceOptionsName, FormType::class);
 
         if (!empty($serviceOptions)) {
+            $transformerOptions = null !== $transform ? $transform->getTransformerOptions() : [];
             $optionsForm = $form->get($serviceOptionsName);
             $this->options = $options;
             foreach ($serviceOptions as $name => $option) {
                 $type = $this->getFormType($option);
                 $formOptions = $this->getFormOptions($option);
+                if (\array_key_exists($name, $transformerOptions)) {
+                    $formOptions['data'] = $transformerOptions[$name];
+                }
                 $optionsForm->add($name, $type, $formOptions);
             }
             $this->options = null;
@@ -83,6 +89,8 @@ class OptionsFormHelper
                 return TextType::class;
             case 'text':
                 return TextareaType::class;
+            case 'column':
+                return ColumnType::class;
             case 'columns':
                 return ColumnsType::class;
             case 'map':
@@ -107,8 +115,7 @@ class OptionsFormHelper
         ];
 
         if (null !== $option['default']) {
-            // @TODO: This does not work as expected.
-            // $options['data'] = $option['default'];
+            $options['data'] = $option['default'];
         }
 
         $type = $this->getFormType($option);
@@ -120,6 +127,7 @@ class OptionsFormHelper
                 }
                 $options['choices'] = $choices;
                 break;
+            case ColumnType::class:
             case ColumnsType::class:
             case ColumnStringMapType::class:
                 $options['data_set_columns'] = $this->getOption('data_set_columns');

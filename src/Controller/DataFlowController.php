@@ -60,6 +60,7 @@ class DataFlowController extends AbstractController
 
         return $this->render('data_flow/new.html.twig', [
             'form' => $form->createView(),
+            'cancel_url' => $this->generateUrl('data_flow_index'),
         ]);
     }
 
@@ -93,10 +94,12 @@ class DataFlowController extends AbstractController
             foreach ($dataFlow->getDataTargets() as $target) {
                 $target->setDataFlow($dataFlow);
             }
+            // @TODO: This should be handled more elegantly.
+            $dataFlow->setUpdatedAt(new \DateTime());
             $this->getDoctrine()->getManager()->persist($dataFlow);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('data_flow_index');
+            return $this->redirectToRoute('data_flow_edit', ['id' => $dataFlow->getId()]);
         }
 
         return $this->render('data_flow/edit.html.twig', [
