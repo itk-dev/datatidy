@@ -1,0 +1,30 @@
+App\Entity\DataFlowJob:
+    data_flow_job_test_0:
+        dataFlow: '@data_flow_test'
+        status: 'created'
+        updatedAt: <dateTimeBetween("-1 day", "now")>
+
+    data_flow_job_test_1:
+        dataFlow: '@data_flow_test'
+        status: 'queued'
+        updatedAt: <dateTimeBetween("-2 days", "now")>
+
+    data_flow_job_test_2:
+        dataFlow: '@data_flow_test'
+        status: 'completed'
+        updatedAt: <dateTimeBetween("-3 days", "now")>
+
+    data_flow_job_test_3:
+        dataFlow: '@data_flow_test'
+        status: 'cancelled'
+        updatedAt: <dateTimeBetween("-4 days", "now")>
+
+    data_flow_job_test_4:
+        dataFlow: '@data_flow_test'
+        status: 'running'
+        updatedAt: <dateTimeBetween("-5 days", "now")>
+
+    data_flow_job_test_5:
+        dataFlow: '@data_flow_test'
+        status: 'failed'
+        updatedAt: <dateTimeBetween("-6 days", "now")>
