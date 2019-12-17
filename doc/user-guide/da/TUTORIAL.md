@@ -81,21 +81,17 @@ Nu skulle datasættet kun indeholde de tre ønskede kolonner.
 [select_columns_flow]: TUTORIAL/Screenshot_2019-12-16%20Add%20transform%20Datatidy(1).png
 [data_flow_step_1]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(2).png
 
-
-[image]: TUTORIAL/Screenshot_2019-12-16%20Add%20transform%20Datatidy(2).png
-
-
-
-[image]: TUTORIAL/Screenshot_2019-12-16%20Add%20transform%20Datatidy.png
-[image]: TUTORIAL/Screenshot_2019-12-16%20Create%20new%20flow%20Datatidy(1).png
-[image]: TUTORIAL/Screenshot_2019-12-16%20Create%20new%20flow%20Datatidy.png
-[image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(1).png
-[image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(2).png
-[image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(3).png
-[image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(4).png
-[image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(5).png
-[image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy.png
-[image]: TUTORIAL/Screenshot_2019-12-16%20Edit%20Data%20flow%20Datatidy.png
-[image]: TUTORIAL/Screenshot_2019-12-16%20New%20data%20source%20Datatidy(1).png
-[image]: TUTORIAL/Screenshot_2019-12-16%20New%20data%20source%20Datatidy(2).png
-[image]: TUTORIAL/Screenshot_2019-12-16%20New%20data%20source%20Datatidy.png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Add%20transform%20Datatidy(2).png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Add%20transform%20Datatidy.png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Create%20new%20flow%20Datatidy(1).png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Create%20new%20flow%20Datatidy.png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(1).png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(2).png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(3).png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(4).png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy(5).png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Data%20flow%20recipe%20step%20Datatidy.png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20Edit%20Data%20flow%20Datatidy.png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20New%20data%20source%20Datatidy(1).png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20New%20data%20source%20Datatidy(2).png
+[not_used_image]: TUTORIAL/Screenshot_2019-12-16%20New%20data%20source%20Datatidy.png

@@ -70,15 +70,16 @@ transformation.
 
 @TODO Transformer options
 
-### Eksempler
-
-@TODO
-
 ## Datamål
 
 Når et datasæt har været udsat for alle transformationerne i en dataflow kan det
 endelige datasæt sendes til et datamål. Hvordan datasættet sendes afhænger af datamålet.
 
-## Det store eksempel
+## Eksempler
 
 Se [Det store eksempel](TUTORIAL.md) for en gennemgang af brug af Datatidy.
+
+Eksempler på transformationer:
+
+* [Filter](examples/filter.md)
+* [Beregning](examples/calculation.md)
