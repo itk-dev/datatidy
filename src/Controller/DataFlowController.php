@@ -77,7 +77,7 @@ class DataFlowController extends AbstractController
     /**
      * @Route("/{id}/edit", name="data_flow_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, DataFlow $dataFlow, DataFlowJobRepository $dataFlowJobRepository): Response
+    public function edit(Request $request, DataFlow $dataFlow): Response
     {
         // We disable the DataFlow so no jobs are created and queued while editing the DataFlow.
         $dataFlow->setEnabled(false);
