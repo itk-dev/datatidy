@@ -34,9 +34,7 @@ class TypeType extends ChoiceType
         $names = DataTypes::getTypeNames();
 
         return array_combine(
-            array_map(static function ($name) {
-                return 'data_type.'.$name;
-            }, $names),
+            $names,
             $names
         );
     }
