@@ -14,8 +14,17 @@
     "behat/mink-extension": {
         "version": "2.3.1"
     },
+    "behat/mink-goutte-driver": {
+        "version": "v1.2.1"
+    },
+    "behat/mink-selenium2-driver": {
+        "version": "v1.3.1"
+    },
     "behat/transliterator": {
         "version": "v1.2.0"
+    },
+    "behatch/contexts": {
+        "version": "3.2.0"
     },
     "composer/semver": {
         "version": "1.5.0"
@@ -123,6 +132,9 @@
     "egulias/email-validator": {
         "version": "2.1.11"
     },
+    "fabpot/goutte": {
+        "version": "v3.3.0"
+    },
     "felixfbecker/advanced-json-rpc": {
         "version": "v3.0.4"
     },
@@ -165,6 +177,15 @@
     "gedmo/doctrine-extensions": {
         "version": "v2.4.37"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.0"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.6.1"
+    },
     "hautelook/alice-bundle": {
         "version": "2.1",
         "recipe": {
@@ -179,11 +200,17 @@
             "fixtures/.gitignore"
         ]
     },
+    "instaclick/php-webdriver": {
+        "version": "1.4.6"
+    },
     "itk-dev/user-bundle": {
         "version": "v0.1.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "justinrainbow/json-schema": {
+        "version": "5.2.9"
     },
     "league/csv": {
         "version": "9.4.1"
@@ -246,11 +273,17 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/link": {
         "version": "1.0.0"
     },
     "psr/log": {
         "version": "1.1.0"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "sabre/event": {
         "version": "5.0.3"

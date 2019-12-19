@@ -3,12 +3,69 @@ default:
         default:
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
+                - Behatch\Context\BrowserContext
+                - Behatch\Context\DebugContext
+                - App\Tests\Behat\AppContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension: null
+        Behatch\Extension: ~
         Behat\MinkExtension:
             show_cmd: 'open %s'
-            base_url: 'http://datatidy.local.computer/'
+            # base_url: 'http://datatidy.local.computer/'
+            base_url: 'https://127.0.0.1:8000/'
+            goutte: ~
+            browser_name: 'chrome'
+
+            selenium2: ~
+                # wd_host: "http://127.0.0.1:4444/wd/hub"
+                # capabilities:
+                #     marionette: true
+                #     browser: chrome
+                #     version: 2.9
+
+            javascript_session: chrome
+
             sessions:
                 symfony:
                     symfony: ~
+
+                chrome:
+                    selenium2:
+                        browser: chrome
+                        capabilities:
+                            # browserName: chrome
+                            browser: chrome
+                            version: "*"
+                            # marionette: true
+                            extra_capabilities:
+                                chromeOptions:
+                                    w3c: false
+                                    args:
+                                        # - '--headless'
+                                        - '--disable-gpu'
+                                        - '--start-maximized'
+                            # chrome:
+                            #     switches:
+                            #         # - "start-fullscreen"
+                            #         - "start-maximized"
+                            #         # - "no-sandbox"
+
+                            # https://medium.com/@alex.designworks/chromedriver-75-enforces-w3c-standard-breaking-behat-tests-460cad435545
+
+                firefox:
+                    selenium2:
+                        browser: firefox
+                        capabilities:
+                            browserName: firefox
+                            browser: firefox
+                        #     version: ""
+                        #     chrome:
+                        #         switches:
+                        #             # - "start-fullscreen"
+                        #             - "start-maximized"
+                        #             # - "no-sandbox"
+
+
+# https://selenium.dev/downloads/
+# https://chromedriver.storage.googleapis.com/index.html?path=79.0.3945.36/
