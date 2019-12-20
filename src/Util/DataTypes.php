@@ -16,7 +16,7 @@ use Doctrine\DBAL\Types\Type;
 class DataTypes
 {
     public static $types = [
-        'bool' => BooleanType::class,
+        'boolean' => BooleanType::class,
         'int' => IntegerType::class,
         'float' => FloatType::class,
         'string' => StringType::class,
