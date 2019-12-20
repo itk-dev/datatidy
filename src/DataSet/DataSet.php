@@ -224,7 +224,7 @@ class DataSet
             foreach ($row as $name => $value) {
                 /** @var Type $type */
                 $type = $types[$name];
-                if (is_array($value)) {
+                if (\is_array($value)) {
                     $value = json_encode($value);
                 }
                 $statement->bindValue($index + 1, $type->convertToPHPValue($value, $this->platform), $type);
