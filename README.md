@@ -75,6 +75,7 @@ flows.
 ## UI tests
 
 ```sh
+docker-compose exec -e APP_ENV=test phpfpm composer install
 docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
 docker-compose exec -e APP_ENV=test phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
 docker-compose exec phpfpm vendor/bin/behat

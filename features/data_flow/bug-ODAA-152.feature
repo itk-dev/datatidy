@@ -73,11 +73,3 @@ Feature:
         And press "Save step"
         Then the url should match "/data/flow/[^/]+/transforms/[^/]+"
         And I save a screenshot in "final.png"
-
-
-# ```sh
-# brew install selenium-server-standalone
-# brew install geckodriver
-# brew cask install chromedriver
-# selenium-server -port 4444
-# ```
