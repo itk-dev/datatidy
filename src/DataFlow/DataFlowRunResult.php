@@ -24,14 +24,14 @@ class DataFlowRunResult
     /** @var array */
     private $options;
 
-    /** @var ArrayCollection */
+    /** @var Collection|DataSet[] */
     private $transformResults;
 
-    /** @var ArrayCollection */
+    /** @var Collection|\Exception[] */
     private $transformExceptions;
 
-    /** @var DataSet */
-    private $lookahead;
+    /** @var Collection|DataSet[] */
+    private $lookaheadResults;
 
     /** @var \Exception */
     private $lookaheadException;
@@ -62,6 +62,7 @@ class DataFlowRunResult
         $this->transformExceptions = new ArrayCollection();
         $this->publishResults = new ArrayCollection();
         $this->publishExceptions = new ArrayCollection();
+        $this->lookaheadResults = new ArrayCollection();
 
         $this->numberOfSteps = 0;
         $this->totalNumberOfSteps = $this->dataFlow->getTransforms()->count() + 1;
@@ -105,14 +106,19 @@ class DataFlowRunResult
         return $this->isSuccess() ? $this->transformResults->last() : null;
     }
 
-    public function getLookahead(): ?DataSet
+    public function getLookaheadResult(): ?DataSet
     {
-        return $this->lookahead;
+        return $this->getLookaheadResults()->first() ?: null;
     }
 
-    public function setLookahead(DataSet $lookahead): self
+    public function getLookaheadResults(): Collection
     {
-        $this->lookahead = $lookahead;
+        return $this->lookaheadResults;
+    }
+
+    public function addLookaheadResult(DataSet $lookaheadResult): self
+    {
+        $this->lookaheadResults[] = $lookaheadResult;
 
         return $this;
     }
@@ -160,7 +166,7 @@ class DataFlowRunResult
 
     public function getTransformException(): ?\Exception
     {
-        return $this->hasTransformException() ? $this->getTransformExceptions()->first() : null;
+        return $this->getTransformExceptions()->first() ?: null;
     }
 
     public function hasTransformException(): bool
@@ -217,7 +223,7 @@ class DataFlowRunResult
 
     public function getPublishException(): ?\Exception
     {
-        return $this->hasPublishException() ? $this->getPublishExceptions()->first() : null;
+        return $this->getPublishExceptions()->first() ?: null;
     }
 
     public function hasPublishException(): bool

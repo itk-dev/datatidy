@@ -144,22 +144,27 @@ class DataFlowManager
 
         // Lookahead.
         if ($result->isSuccess() && $numberOfSteps < $transforms->count()) {
-            $transform = $transforms[$numberOfSteps];
-            try {
-                $transformer = $this->transformerManager->getTransformer(
-                    $transform->getTransformer(),
-                    $transform->getTransformerOptions()
-                );
-                $dataSet = $transformer->transform($dataSet)->setTransform($transform);
-                $result->setLookahead($dataSet);
-            } catch (\Exception $exception) {
-                $result->setFailedTransform($transform);
-                $result->setLookaheadException($exception);
+            for ($index = $numberOfSteps; $index < $transforms->count(); ++$index) {
+                $transform = $transforms[$index];
+                try {
+                    $transformer = $this->transformerManager->getTransformer(
+                        $transform->getTransformer(),
+                        $transform->getTransformerOptions()
+                    );
+                    $dataSet = $transformer->transform($dataSet)->setTransform($transform);
+                    $result->addLookaheadResult($dataSet);
+                } catch (\Exception $exception) {
+                    // Only store the first failed transform and exception.
+                    if (null === $result->getFailedTransform()) {
+                        $result->setFailedTransform($transform);
+                        $result->setLookaheadException($exception);
+                    }
+                }
             }
         }
 
         // Publish result only if all transforms ran successfully.
-        if ($options['publish'] && $result->isComplete()) {
+        if ($options['publish'] && $result->isComplete() && $result->isSuccess()) {
             $dataSet = $result->getLastTransformResult();
             $this->publish($result, $dataSet, $dataFlow->getDataTargets());
             if ($result->isPublished()) {

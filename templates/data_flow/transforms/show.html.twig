@@ -61,7 +61,7 @@
                             <a class="btn text-success" href="{{ path('data_flow_transforms_index', {data_flow: data_flow.id}) }}">
                                 <i class="fas {{ iconClass('play') }} fa-fw mr-1"></i>
                                 <span class="sr-only">{{ 'First step'|trans }}</span>
-                                <span class="mr-1">{{ 0 + 1 }}</span>
+                                <span class="mr-1">{{ _self.transform_number(0) }}</span>
                                 <span>{{ 'Raw data from source'|trans }}</span>
                             </a>
                         </div>
@@ -72,7 +72,7 @@
                                 <a class="btn {{ _self.render_transform_status(loop, result, transform) }}" href="{{ path('data_flow_transforms_show', {data_flow: data_flow.id, id: transform.id}) }}">
                                     <i class="fas {{ iconClass('play') }} fa-fw mr-1"></i>
                                     <span class="sr-only">{{ 'Run to this step'|trans }}</span>
-                                    <span class="mr-1">{{ loop.index + 1 }}</span>
+                                    <span class="mr-1">{{ _self.transform_number(transform.position) }}</span>
                                     <span>{{ transform.name }}</span>
                                 </a>
                             </div>
@@ -86,32 +86,38 @@
                             </div>
                         </div>
                     {% endfor %}
-                    {% if transformers|default(false) %}
+
                     <div class="row">
                         <div class="col-12 mt-5">
-                            <form method="get" action="{{ path('data_flow_transforms_new', {data_flow: data_flow.id}) }}" class="form">
-                                <div class="form-row">
-                                    <div class="col-12">
-                                        <label for="new-tranform-transformer">Add new step</label>
+                            {% if transformers|default(false) %}
+                                <form method="get" action="{{ path('data_flow_transforms_new', {data_flow: data_flow.id}) }}" class="form">
+                                    <div class="form-row">
+                                        <div class="col-12">
+                                            <label for="new-tranform-transformer">Add new step</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <select id="new-tranform-transformer" name="transformer" required class="form-control">
-                                            <option></option>
-                                            {% for transformer in transformers %}
-                                                <option value="{{ transformer.class }}">{{ transformer.name|trans }}</option>
-                                            {% endfor %}
-                                        </select>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <select id="new-tranform-transformer" name="transformer" required class="form-control" disabled="{{ result.failedTransform is not empty }}">
+                                                <option></option>
+                                                {% for transformer in transformers %}
+                                                    <option value="{{ transformer.class }}">{{ transformer.name|trans }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <button type="submit" class="btn btn-success btn-sm" disabled="{{ result.failedTransform is not empty }}">{{ 'Add transform'|trans }}</button>
+                                        </div>
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <button type="submit" class="btn btn-success btn-sm">{{ 'Add transform'|trans }}</button>
-                                    </div>
-                                </div>
-                            </form>
+                                    {% if result.failedTransform %}
+                                        <div class="alert alert-danger">
+                                            {{ 'You must fix step %step% before you can add a new transform'|trans({'%step%': _self.transform_number(result.failedTransform.position)}) }}
+                                        </div>
+                                    {% endif %}
+                                </form>
+                            {% endif %}
                         </div>
                     </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
@@ -168,4 +174,8 @@
     {% else %}
         text-primary
     {% endif %}
+{% endmacro %}
+
+{% macro transform_number(index) %}
+    {{ index + 1 }}
 {% endmacro %}
