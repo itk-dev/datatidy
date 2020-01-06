@@ -3,6 +3,8 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     exception_controller: null
+    date:
+        timezone: '%env(DISPLAY_TIMEZONE)%'
     form_themes:
         - 'form/custom_types.html.twig'
         - 'bootstrap_4_layout.html.twig'
