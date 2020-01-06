@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/data/source")
@@ -91,12 +92,23 @@ class DataSourceController extends AbstractController
     /**
      * @Route("/{id}", name="data_source_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, DataSource $dataSource): Response
+    public function delete(Request $request, DataSource $dataSource, TranslatorInterface $translator): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$dataSource->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($dataSource);
-            $entityManager->flush();
+        try {
+            if ($this->isCsrfTokenValid('delete'.$dataSource->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($dataSource);
+                $entityManager->flush();
+            }
+            $this->addFlash('success', $translator->trans('Data source %name% succesfully deleted', [
+                '%name%' => $dataSource->getName(),
+            ]));
+        } catch (\Exception $exception) {
+            $this->addFlash('danger', $translator->trans('Error deleting data source %name%', [
+                '%name%' => $dataSource->getName(),
+            ]));
+
+            return $this->redirectToRoute('data_source_edit', ['id' => $dataSource->getId()]);
         }
 
         return $this->redirectToRoute('data_source_index');
