@@ -11,10 +11,13 @@
 namespace App\Controller;
 
 use App\DataFlow\DataFlowManager;
+use App\DataTransformer\MergeFlowsDataTransformer;
 use App\Entity\DataFlow;
+use App\Entity\DataTransform;
 use App\Form\Type\DataFlowCreateType;
 use App\Form\Type\DataFlowType;
 use App\Repository\DataFlowRepository;
+use App\Repository\DataTransformRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -103,12 +106,38 @@ class DataFlowController extends AbstractController
     /**
      * @Route("/{id}", name="data_flow_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, DataFlow $dataFlow): Response
+    public function delete(Request $request, DataFlow $dataFlow, DataTransformRepository $dataTransformRepository, TranslatorInterface $translator): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$dataFlow->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($dataFlow);
-            $entityManager->flush();
+        try {
+            // Check that flow is not used by merge in another flow.
+            // @TODO: Move this to a service/helper.
+            $transforms = $dataTransformRepository->findBy(['transformer' => MergeFlowsDataTransformer::class]);
+            /** @var DataTransform $transform */
+            foreach ($transforms as $transform) {
+                $flowId = $transform->getTransformerOptions()['dataFlow'] ?? null;
+                if ($dataFlow->getId() === $flowId) {
+                    $errorMessage = $translator->trans('Cannot delete data flow %name% because it is used in the data flow %other_name%.', [
+                        '%name%' => $dataFlow->getName(),
+                        '%other_name%' => $transform->getDataFlow()->getName(),
+                    ]);
+                    throw new \RuntimeException('Flow is used by another flow');
+                }
+            }
+
+            if ($this->isCsrfTokenValid('delete'.$dataFlow->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($dataFlow);
+                $entityManager->flush();
+            }
+            $this->addFlash('success', $translator->trans('Data flow %name% succesfully deleted', [
+                '%name%' => $dataFlow->getName(),
+            ]));
+        } catch (\Exception $exception) {
+            $this->addFlash('danger', $errorMessage ?? $translator->trans('Error deleting data flow %name%', [
+                '%name%' => $dataFlow->getName(),
+            ]));
+
+            return $this->redirectToRoute('data_flow_edit', ['id' => $dataFlow->getId()]);
         }
 
         return $this->redirectToRoute('data_flow_index');

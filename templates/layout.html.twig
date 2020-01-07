@@ -75,7 +75,7 @@
 
 
             <main role="main" class="col-12 col-md-9 col-xl-10 py-md-3 px-xl-5">
-                {% for label, messages in app.flashes(['success', 'warning']) %}
+                {% for label, messages in app.flashes(['danger', 'success', 'warning']) %}
                     {% for message in messages %}
                         <div class="alert alert-{{ label }}" role="alert">
                             {{ message }}

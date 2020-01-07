@@ -131,10 +131,17 @@
                 <div class="settings-drawer collapse col-12 col-md-4 bg-body shadow-lg pt-md-5" id="settingsDrawer">
                     <p class="h6">{{ 'Flow settings'|trans }}</p>
                     {{ form_widget(form.settings) }}
-                    {# @TODO Nested forms! #}
-                    {# {{ include('data_flow/_delete_form.html.twig') }} #}
+                    {# We cannot nest forms, so the actual delete form is detached from the delete button #}
+                    <button type="button" class="btn text-danger pl-0" onclick="confirm('{{ 'Are you sure you want to delete this item?'|trans }}') && document.getElementById('delete-data-flow-form').submit()">
+                        <i class="fal {{ iconClass('delete') }} fa-fw mr-2"></i>{{ 'Delete flow'|trans }}
+                    </button>
                 </div>
             </div>
         </main>
     {{ form_end(form) }}
+
+    <form method="post" id="delete-data-flow-form" action="{{ path('data_flow_delete', {'id': data_flow.id}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ data_flow.id) }}">
+    </form>
 {% endblock %}
