@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <select id="new-tranform-transformer" name="transformer" required class="form-control" disabled="{{ result.failedTransform is not empty }}">
+                                            <select id="new-tranform-transformer" name="transformer" required class="form-control" {{ result.failedTransform is not empty ? 'disabled' }}">
                                                 <option></option>
                                                 {% for transformer in transformers %}
                                                     <option value="{{ transformer.class }}">{{ transformer.name|trans }}</option>
@@ -106,7 +106,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <button type="submit" class="btn btn-success btn-sm" disabled="{{ result.failedTransform is not empty }}">{{ 'Add transform'|trans }}</button>
+                                            <button type="submit" class="btn btn-success btn-sm" {{ result.failedTransform is not empty ? 'disabled' }}>{{ 'Add transform'|trans }}</button>
                                         </div>
                                     </div>
                                     {% if result.failedTransform %}
