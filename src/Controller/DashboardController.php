@@ -13,7 +13,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\DataFlowJobRepository;
 use App\Repository\DataFlowRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController

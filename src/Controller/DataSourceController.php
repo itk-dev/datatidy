@@ -14,7 +14,6 @@ use App\Entity\DataSource;
 use App\Form\Type\DataSourceType;
 use App\Repository\DataSourceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -104,9 +103,15 @@ class DataSourceController extends AbstractController
                 '%name%' => $dataSource->getName(),
             ]));
         } catch (\Exception $exception) {
-            $this->addFlash('danger', $translator->trans('Error deleting data source %name%', [
-                '%name%' => $dataSource->getName(),
-            ]));
+            $this->addFlashData(
+                'danger',
+                [
+                    'message' => $translator->trans('Error deleting data source %name%', [
+                        '%name%' => $dataSource->getName(),
+                    ]),
+                    'details' => $exception->getMessage(),
+                ]
+            );
 
             return $this->redirectToRoute('data_source_edit', ['id' => $dataSource->getId()]);
         }

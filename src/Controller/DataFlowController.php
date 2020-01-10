@@ -18,7 +18,6 @@ use App\Form\Type\DataFlowCreateType;
 use App\Form\Type\DataFlowType;
 use App\Repository\DataFlowRepository;
 use App\Repository\DataTransformRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -120,7 +119,7 @@ class DataFlowController extends AbstractController
                         '%name%' => $dataFlow->getName(),
                         '%other_name%' => $transform->getDataFlow()->getName(),
                     ]);
-                    throw new \RuntimeException('Flow is used by another flow');
+                    throw new \RuntimeException($errorMessage);
                 }
             }
 
@@ -133,9 +132,12 @@ class DataFlowController extends AbstractController
                 '%name%' => $dataFlow->getName(),
             ]));
         } catch (\Exception $exception) {
-            $this->addFlash('danger', $errorMessage ?? $translator->trans('Error deleting data flow %name%', [
-                '%name%' => $dataFlow->getName(),
-            ]));
+            $this->addFlashData('danger', [
+                'message' => $translator->trans('Error deleting data flow %name%', [
+                        '%name%' => $dataFlow->getName(),
+                    ]),
+                'details' => $exception->getMessage(),
+            ]);
 
             return $this->redirectToRoute('data_flow_edit', ['id' => $dataFlow->getId()]);
         }
