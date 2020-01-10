@@ -12,9 +12,9 @@
                     {% if message.details|default(false) %}
                         {% set number_of_lines = message.details|split('\n')|length %}
                         {% if number_of_lines > 1 %}
-                            {% set message_id = 'flash-message-'~type~'-'~loop.index %}
-                            <button class="btn btn-light btn-sm" type="button" data-toggle="collapse" data-target="#{{ message_id }}" aria-expanded="false" aria-controls="{{ message_id }}">
-                                {{ 'Message details'|trans }}
+                            {% set message_id = 'flash-message-' ~ type ~ '-' ~ loop.index %}
+                            <button class="btn btn-{{ type }} btn-sm" type="button" data-toggle="collapse" data-target="#{{ message_id }}" aria-expanded="false" aria-controls="{{ message_id }}">
+                                {{ 'Details'|trans }}
                             </button>
                             <div class="collapse" id="{{ message_id }}">
                                 <div class="flash-message-details small"><pre>{{ message.details }}</pre></div>
