@@ -272,7 +272,7 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
         $result = $this->dataFlowManager->run($this->getDataFlow());
 
         if ($result->hasTransformException()) {
-            $exception = $result->getException();
+            $exception = $result->getTransformException();
             throw new TransformerRuntimeException($exception->getMessage(), $exception->getCode(), $exception);
         }
 

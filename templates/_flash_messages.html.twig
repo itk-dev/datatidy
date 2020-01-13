@@ -1,0 +1,34 @@
+{% for type, messages in app.flashes(['danger', 'success', 'warning']) %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }}" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {% if message is iterable %}
+                {% if message.raw|default(false) %}
+                    {{ message.raw|raw }}
+                {% elseif message.message|default(false) %}
+                    <div class="flash-message">{{ message.message }}</div>
+                    {% if message.details|default(false) %}
+                        {% set number_of_lines = message.details|split('\n')|length %}
+                        {% if number_of_lines > 1 %}
+                            {% set message_id = 'flash-message-' ~ type ~ '-' ~ loop.index %}
+                            <button class="btn btn-{{ type }} btn-sm" type="button" data-toggle="collapse" data-target="#{{ message_id }}" aria-expanded="false" aria-controls="{{ message_id }}">
+                                {{ 'Details'|trans }}
+                            </button>
+                            <div class="collapse" id="{{ message_id }}">
+                                <div class="flash-message-details small"><pre>{{ message.details }}</pre></div>
+                            </div>
+                        {% else %}
+                            <div class="flash-message-details small">{{ message.details }}</div>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <pre>{{ message|json_encode }}</pre>
+                {% endif %}
+            {% else %}
+                {{ message }}
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endfor %}

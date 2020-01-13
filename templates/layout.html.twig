@@ -75,17 +75,7 @@
 
 
             <main role="main" class="col-12 col-md-9 col-xl-10 py-md-3 px-xl-5">
-                {% for label, messages in app.flashes(['danger', 'success', 'warning']) %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ label }}" role="alert">
-                            {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-
+                {% include '_flash_messages.html.twig' %}
 
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
                     <h1 class="h4">{% block header %}{% endblock %}</h1>
