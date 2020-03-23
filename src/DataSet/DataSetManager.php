@@ -10,21 +10,21 @@
 
 namespace App\DataSet;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 
 class DataSetManager
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var Connection */
+    private $connection;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $dataTransformsConnection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $dataTransformsConnection;
     }
 
     public function createDataSet(string $name, array $columns, array $items = []): DataSet
     {
-        $dataSet = new DataSet($name, $this->entityManager->getConnection(), $columns);
+        $dataSet = new DataSet($name, $this->connection, $columns);
         if (null !== $items) {
             $dataSet->createTable()->loadData($items);
         }
@@ -34,7 +34,7 @@ class DataSetManager
 
     public function createDataSetFromData(string $name, array $items, array $columns = null): DataSet
     {
-        $dataSet = new DataSet($name, $this->entityManager->getConnection());
+        $dataSet = new DataSet($name, $this->connection);
         $dataSet->buildFromData($items, $columns);
 
         return $dataSet;

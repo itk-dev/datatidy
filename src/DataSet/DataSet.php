@@ -392,7 +392,7 @@ class DataSet
     public function clearTable()
     {
         $sql = sprintf(
-            'TRUNCATE %s;',
+            'DELETE FROM %s;',
             $this->getQuotedTableName()
         );
 
