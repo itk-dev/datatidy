@@ -170,7 +170,7 @@ class DataSet
     /**
      * Get table columns indexed by their real name (and not a normalized (e.g. down cased) name).
      *
-     * @return ArrayCollection<Column>
+     * @return ArrayCollection<Column>|Column[]
      */
     public function getColumns()
     {
@@ -222,6 +222,9 @@ class DataSet
         foreach ($rows as $row) {
             $index = 0;
             foreach ($row as $name => $value) {
+                if (!isset($types[$name])) {
+                    throw new \RuntimeException(sprintf('Unknown type for column %s', $name));
+                }
                 /** @var Type $type */
                 $type = $types[$name];
                 if (\is_array($value)) {
@@ -432,13 +435,9 @@ class DataSet
     /**
      * Guess type of a column.
      *
-     * @param string $name
-     *                     The column name
-     *
-     * @return string
-     *                The type
+     * @return array The type
      */
-    private function guessTypes(array $items)
+    public function guessTypes(array $items)
     {
         $item = reset($items);
 

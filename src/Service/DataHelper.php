@@ -14,7 +14,7 @@ use RuntimeException;
 
 class DataHelper
 {
-    public function expand(array $data, string $key): array
+    public function expand(array $data, string $key, array $options = []): array
     {
         if (empty($data)) {
             throw new RuntimeException('Cannot expand empty data');
@@ -32,15 +32,15 @@ class DataHelper
         }
         switch ($types[$key]) {
             case self::TYPE_ARRAY:
-                return $this->expandArray($data, $key);
+                return $this->expandArray($data, $key, $options);
             case self::TYPE_OBJECT:
-                return $this->expandObject($data, $key);
+                return $this->expandObject($data, $key, $options);
             default:
                 throw new RuntimeException(sprintf('Cannot expand data of type %s', $types[$key]));
         }
     }
 
-    public function collapse(array $data, string $key): array
+    public function collapse(array $data, string $key, array $options = []): array
     {
         if (empty($data)) {
             throw new RuntimeException('Cannot collapse empty data');
@@ -63,7 +63,7 @@ class DataHelper
         }, ARRAY_FILTER_USE_KEY), JSON_THROW_ON_ERROR, 512);
     }
 
-    public function collapseArray(array $data, string $key, bool $includeNullValues = false): array
+    public function collapseArray(array $data, string $key, array $options = []): array
     {
         $collapsed = [];
         foreach ($data as &$row) {
@@ -78,12 +78,20 @@ class DataHelper
         return array_values($collapsed);
     }
 
-    public function collapseObject(array $data, string $key, bool $includeNullValues = false): array
+    public function collapseObject(array $data, string $key, array $options = []): array
     {
+        $delimiter = $options['delimiter'] ?? '.';
+        $missingValue = $options['missingValue'] ?? null;
+        $includeMissingValues = $options['includeMissingValues'] ?? false;
+
+        $pattern = '/^'.preg_quote($key, '/')
+            .preg_quote($delimiter, '/')
+            .'(?<name>.+)/';
+
         foreach ($data as &$row) {
             foreach ($row as $name => $value) {
-                if (preg_match('/^'.preg_quote($key, '/').'\.(?<name>.+)/', $name, $matches)) {
-                    if ($includeNullValues || null !== $value) {
+                if (preg_match($pattern, $name, $matches)) {
+                    if ($includeMissingValues || null !== $value) {
                         $row[$key][$matches['name']] = $value;
                     }
                     unset($row[$name]);
@@ -94,7 +102,7 @@ class DataHelper
         return $data;
     }
 
-    public function expandArray(array $data, string $key): array
+    public function expandArray(array $data, string $key, array $options = []): array
     {
         $expanded = [];
 
@@ -112,8 +120,11 @@ class DataHelper
         return $expanded;
     }
 
-    public function expandObject(array $data, string $key): array
+    public function expandObject(array $data, string $key, array $options = []): array
     {
+        $delimiter = $options['delimiter'] ?? '.';
+        $missingValue = $options['missingValue'] ?? null;
+
         // Keep track of expanded to make sure that all rows have the same keys
         $expandedKeys = [];
 
@@ -124,8 +135,8 @@ class DataHelper
             }
             unset($row[$key]);
             foreach ($value as $k => $v) {
-                $row[$key.'.'.$k] = $v;
-                $expandedKeys[$key.'.'.$k] = null;
+                $row[$key.$delimiter.$k] = $v;
+                $expandedKeys[$key.$delimiter.$k] = $missingValue;
             }
         }
 
