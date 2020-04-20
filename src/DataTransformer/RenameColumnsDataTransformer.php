@@ -33,7 +33,7 @@ class RenameColumnsDataTransformer extends AbstractDataTransformer
 
     public function transform(DataSet $input): DataSet
     {
-        $columns = $this->transformColumns($input->getColumns());
+        $columns = $this->transformColumns($input);
         $output = $input->copy($columns->toArray())
             ->createTable();
 
@@ -48,8 +48,9 @@ class RenameColumnsDataTransformer extends AbstractDataTransformer
         return $output->buildFromSQL($sql);
     }
 
-    public function transformColumns(ArrayCollection $columns): ArrayCollection
+    public function transformColumns(DataSet $dataSet): ArrayCollection
     {
+        $columns = $dataSet->getColumns();
         $map = [];
         foreach ($this->renames as $item) {
             $map[$item['from']] = $item['to'];

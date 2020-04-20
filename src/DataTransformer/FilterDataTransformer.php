@@ -13,7 +13,6 @@ namespace App\DataTransformer;
 use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\Column;
 
 /**
@@ -68,7 +67,7 @@ class FilterDataTransformer extends AbstractDataTransformer
 
     public function transform(DataSet $input): DataSet
     {
-        $columns = $this->transformColumns($input->getColumns());
+        $columns = $this->transformColumns($input);
         $output = $input->copy($columns->toArray())->createTable();
 
         foreach ($input->rows() as $row) {
@@ -97,10 +96,5 @@ class FilterDataTransformer extends AbstractDataTransformer
         }
 
         return $output;
-    }
-
-    public function transformColumns(ArrayCollection $columns): ArrayCollection
-    {
-        return $columns;
     }
 }

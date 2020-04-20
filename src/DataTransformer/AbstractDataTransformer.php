@@ -28,7 +28,10 @@ abstract class AbstractDataTransformer
     /**
      * Transform columns.
      */
-    abstract public function transformColumns(ArrayCollection $columns): ArrayCollection;
+    public function transformColumns(DataSet $dataSet): ArrayCollection
+    {
+        return $dataSet->getColumns();
+    }
 
     /**
      * Rename a column.

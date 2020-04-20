@@ -90,7 +90,7 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
             $this->getJoinColumns($leftColumns, $rightColumns)
         );
 
-        $newColumns = $this->transformColumns($input->getColumns());
+        $newColumns = $this->transformColumns($input);
 
         $output = $input->copy($newColumns->toArray())->createTable();
 
@@ -187,8 +187,9 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
         return $output->buildFromSQL($sql);
     }
 
-    public function transformColumns(ArrayCollection $columns): ArrayCollection
+    public function transformColumns(DataSet $dataSet): ArrayCollection
     {
+        $columns = $dataSet->getColumns();
         $leftColumns = $columns;
         $columns = new ArrayCollection();
         $rightColumns = $this->getRightColumns();

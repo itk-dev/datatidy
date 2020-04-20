@@ -15,7 +15,6 @@ use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
 use App\DataTransformer\Exception\InvalidColumnException;
 use App\Util\DataTypes;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\Column;
 
 /**
@@ -67,10 +66,5 @@ class ChangeColumnTypeDataTransformer extends AbstractDataTransformer
         );
 
         return $output->buildFromSQL($sql);
-    }
-
-    public function transformColumns(ArrayCollection $columns): ArrayCollection
-    {
-        return $columns;
     }
 }

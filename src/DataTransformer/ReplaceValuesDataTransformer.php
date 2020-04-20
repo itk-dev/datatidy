@@ -57,7 +57,7 @@ class ReplaceValuesDataTransformer extends AbstractDataTransformer
 
     public function transform(DataSet $input): DataSet
     {
-        $columns = $this->transformColumns($input->getColumns());
+        $columns = $this->transformColumns($input);
         $result = $input->copy($columns->toArray())->createTable();
 
         $search = array_column($this->replacements, 'from');
@@ -91,8 +91,9 @@ class ReplaceValuesDataTransformer extends AbstractDataTransformer
         return $result;
     }
 
-    public function transformColumns(ArrayCollection $columns): ArrayCollection
+    public function transformColumns(DataSet $dataSet): ArrayCollection
     {
+        $columns = $dataSet->getColumns();
         $names = $columns->getKeys();
         $diff = array_diff($this->columns, $names);
         if (!empty($diff)) {
