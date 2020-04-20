@@ -11,6 +11,7 @@
 namespace App\Tests\DataFlow;
 
 use App\DataSource\CsvDataSource;
+use App\DataSource\GeoJsonDataSource;
 use App\DataSource\JsonDataSource;
 use App\DataTarget\CsvHttpDataTarget;
 use App\DataTarget\JsonHttpDataTarget;

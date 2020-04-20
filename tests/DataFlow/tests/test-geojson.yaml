@@ -1,0 +1,39 @@
+fixtures:
+    App\Entity\DataSource:
+        data_source:
+            name: geojson
+            ttl: 3600
+            dataSource: App\DataSource\GeoJsonDataSource
+            dataSourceOptions:
+                url: http://test/test-geojson/data.geojson
+
+    App\Entity\DataFlow:
+        data_flow:
+            name: test
+            dataSource: '@data_source'
+            frequency: 60
+
+    App\Entity\DataTransform:
+        data_transform_0:
+            data_flow: '@data_flow'
+            name: Expand features (array -> rows)
+            transformer: App\DataTransformer\ExpandColumnDataTransformer
+            transformerOptions:
+                columns: ['features']
+
+        data_transform_1:
+            data_flow: '@data_flow'
+            name: Expand features (object -> columns)
+            transformer: App\DataTransformer\ExpandColumnDataTransformer
+            transformerOptions:
+                columns: ['features']
+
+        data_transform_2:
+            data_flow: '@data_flow'
+            name: Expand features properties
+            transformer: App\DataTransformer\ExpandColumnDataTransformer
+            transformerOptions:
+                columns: ['features/properties']
+
+expected:
+    filename: test-geojson/expected.json
