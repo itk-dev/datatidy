@@ -66,4 +66,5 @@ fixtures:
                 asObject: true
 
 expected:
-    filename: test-geojson/data-list.json
+    filename: test-geojson/expected.geojson
+    actual_filename: test-geojson/result.json

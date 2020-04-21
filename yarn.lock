@@ -4376,6 +4376,11 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
+jquery.json-viewer@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/jquery.json-viewer/-/jquery.json-viewer-1.4.0.tgz#6e0ede8ae3239cb20ac359f663b9aae4ec8a9d94"
+  integrity sha512-6H1U/w+/8vMwDH5Im0OveuKPZ1fZWy7hgvR3Cn+HeamQIoWrVqBuRaE2TF/xEc6Hmi3vhQVRqZBmYGKTdOo2tw==
+
 jquery@^3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"

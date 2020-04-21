@@ -12,6 +12,7 @@ namespace App\Util;
 
 use App\DataTransformer\DataTransformerManager;
 use App\Entity\DataTransform;
+use App\Form\Type\Option\CollapseColumnsType;
 use App\Form\Type\Option\ColumnStringMapType;
 use App\Form\Type\Option\ColumnsType;
 use App\Form\Type\Option\ColumnType;
@@ -99,6 +100,8 @@ class OptionsFormHelper
                 return TypeType::class;
             case 'data_flow':
                 return FlowType::class;
+            case 'collapse_columns':
+                return CollapseColumnsType::class;
             default:
                 throw new \RuntimeException(sprintf('Invalid type: %s', $type));
         }
@@ -130,6 +133,7 @@ class OptionsFormHelper
             case ColumnType::class:
             case ColumnsType::class:
             case ColumnStringMapType::class:
+            case CollapseColumnsType::class:
                 $options['data_set_columns'] = $this->getOption('data_set_columns');
                 break;
         }

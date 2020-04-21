@@ -157,7 +157,7 @@ JSON, true, 512, JSON_THROW_ON_ERROR);
         $this->assertSame($expected, $actual);
 
         $data = $actual;
-        $actual = $this->dataHelper->expand($data, 'features', 'type');
+        $actual = $this->dataHelper->expand($data, 'features');
         $expected = json_decode(<<<'JSON'
 [
     {

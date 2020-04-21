@@ -20,23 +20,18 @@ use Doctrine\DBAL\Types\Type;
 
 /**
  * @DataTransformer(
- *     name="Expand columns",
- *     description="Expands columns",
+ *     name="Collapse columns",
+ *     description="Collapse columns",
  * )
  */
-class ExpandColumnDataTransformer extends AbstractDataTransformer
+class CollapseColumnDataTransformer extends AbstractDataTransformer
 {
-    public const DELIMITER = '/';
-
     /**
-     * @Option(type="columns", help="Choose columns")
+     * @Option(type="collapse_columns", help="Choose columns")
      *
      * @var array
      */
     private $columns;
-
-    /** @var array */
-    private $types;
 
     /** @var DataHelper */
     private $dataHelper;
@@ -53,7 +48,7 @@ class ExpandColumnDataTransformer extends AbstractDataTransformer
 
         $rows = $input->getRows();
         foreach ($this->columns as $column) {
-            $rows = $this->dataHelper->expand($rows, $column, ['delimiter' => self::DELIMITER]);
+            $rows = $this->dataHelper->collapse($rows, $column, ['delimiter' => ExpandColumnDataTransformer::DELIMITER]);
         }
         $output->insertRows($rows);
 
@@ -63,17 +58,20 @@ class ExpandColumnDataTransformer extends AbstractDataTransformer
     public function transformColumns(DataSet $dataSet): ArrayCollection
     {
         $columns = $dataSet->getColumns();
-        $allColumnNames = [];
+
+        $transformedColumnNames = [];
         $rows = $dataSet->getRows();
         foreach ($this->columns as $column) {
-            $rows = $this->dataHelper->expand($rows, $column, ['delimiter' => self::DELIMITER]);
-            $allColumnNames += array_flip(array_keys(reset($rows)));
-            if (!isset($allColumnNames[$column])) {
-                unset($columns[$column]);
-            }
+            $rows = $this->dataHelper->collapse($rows, $column, ['delimiter' => ExpandColumnDataTransformer::DELIMITER]);
+            $transformedColumnNames = array_keys(reset($rows));
         }
 
-        $newColumnNames = array_values(array_diff(array_keys($allColumnNames), $columns->getKeys()));
+        $columnsToRemove = array_diff($columns->getKeys(), $transformedColumnNames);
+        foreach ($columnsToRemove as $column) {
+            $columns->remove($column);
+        }
+
+        $newColumnNames = array_values(array_diff($transformedColumnNames, $columns->getKeys()));
         if (!empty($newColumnNames)) {
             $types = $dataSet->guessTypes($rows);
 

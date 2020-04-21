@@ -237,6 +237,7 @@ trait OptionsTrait
                     }
                     break;
                 case 'columns':
+                case 'collapse_columns':
                     if (!$this->isArray($value)) {
                         throw new InvalidTypeException(sprintf('Must be an array: %s', $name));
                     }

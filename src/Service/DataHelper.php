@@ -52,8 +52,8 @@ class DataHelper
         $row = reset($data);
 
         return \array_key_exists($key, $row)
-            ? $this->collapseArray($data, $key)
-            : $this->collapseObject($data, $key);
+            ? $this->collapseArray($data, $key, $options)
+            : $this->collapseObject($data, $key, $options);
     }
 
     private function getRowId(array $row, string $excludeKey): string
@@ -91,7 +91,7 @@ class DataHelper
         foreach ($data as &$row) {
             foreach ($row as $name => $value) {
                 if (preg_match($pattern, $name, $matches)) {
-                    if ($includeMissingValues || null !== $value) {
+                    if ($includeMissingValues || $missingValue !== $value) {
                         $row[$key][$matches['name']] = $value;
                     }
                     unset($row[$name]);

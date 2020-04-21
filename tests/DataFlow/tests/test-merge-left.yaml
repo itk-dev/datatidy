@@ -46,6 +46,7 @@ fixtures:
             dataTarget: App\DataTarget\JsonHttpDataTarget
             dataTargetOptions:
                 url: http://test/test-merge/result.json
+                asObject: false
 
 expected:
     filename: test-merge/expected-left.json

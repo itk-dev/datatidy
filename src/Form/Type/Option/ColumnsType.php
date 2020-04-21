@@ -40,7 +40,7 @@ class ColumnsType extends ChoiceType implements DataTransformerInterface
         return array_values($value);
     }
 
-    private function getChoices(array $options)
+    protected function getChoices(array $options)
     {
         /** @var ArrayCollection $columns */
         $columns = $options['data_set_columns'];

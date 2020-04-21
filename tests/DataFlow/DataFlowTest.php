@@ -11,7 +11,6 @@
 namespace App\Tests\DataFlow;
 
 use App\DataSource\CsvDataSource;
-use App\DataSource\GeoJsonDataSource;
 use App\DataSource\JsonDataSource;
 use App\DataTarget\CsvHttpDataTarget;
 use App\DataTarget\JsonHttpDataTarget;
@@ -129,6 +128,7 @@ class DataFlowTest extends ContainerTestCase
         $serializer = $this->get('serializer');
 
         switch ($extension) {
+            case 'geojson':
             case 'json':
                 return $serializer->decode($content, 'json');
             case 'yaml':

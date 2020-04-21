@@ -228,7 +228,7 @@ class DataSet
                 /** @var Type $type */
                 $type = $types[$name];
                 if (\is_array($value)) {
-                    $value = json_encode($value);
+                    $value = json_encode($value, JSON_THROW_ON_ERROR, 512);
                 }
                 $statement->bindValue($index + 1, $type->convertToPHPValue($value, $this->platform), $type);
                 ++$index;
@@ -439,12 +439,14 @@ class DataSet
      */
     public function guessTypes(array $items)
     {
-        $item = reset($items);
-
         $types = [];
-        foreach ($item as $name => $value) {
-            $values = array_column($items, $name);
-            $types[$name] = $this->guessType($values);
+
+        $item = reset($items);
+        if (\is_array($item)) {
+            foreach ($item as $name => $value) {
+                $values = array_column($items, $name);
+                $types[$name] = $this->guessType($values);
+            }
         }
 
         return $types;
@@ -460,11 +462,16 @@ class DataSet
             Type::JSON => 0,
         ];
         $maxLength = 0;
+        $numberOfValues = 0;
         foreach ($values as $value) {
-            if (filter_var($value, FILTER_VALIDATE_INT)) {
+            // Null values should not count.
+            if (null === $value) {
+                continue;
+            }
+            if (false !== filter_var($value, FILTER_VALIDATE_INT)) {
                 ++$votes[Type::INTEGER];
             }
-            if (filter_var($value, FILTER_VALIDATE_FLOAT)) {
+            if (false !== filter_var($value, FILTER_VALIDATE_FLOAT)) {
                 ++$votes[Type::FLOAT];
             }
             if (!is_scalar($value)) {
@@ -476,11 +483,15 @@ class DataSet
                     $maxLength = $length;
                 }
             }
+
+            ++$numberOfValues;
         }
 
-        foreach ($votes as $type => $count) {
-            if (\count($values) === $count) {
-                return $type;
+        if ($numberOfValues > 0) {
+            foreach ($votes as $type => $count) {
+                if ($numberOfValues === $count) {
+                    return $type;
+                }
             }
         }
 
