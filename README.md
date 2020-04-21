@@ -13,6 +13,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
+See [Development on Mac](#development-on-mac) if you're developing on a Mac.
+
 ```bash
 docker-compose pull
 docker-compose up --detach
@@ -215,4 +217,28 @@ The `datatidy:data-flow:run` console command can run a data flow by name or id:
 
 ```sh
 docker-compose exec phpfpm bin/console datatidy:data-flow:run --help
+```
+
+## Development on Mac
+
+Too speed up development on a Mac, you can use the [Symfony Local Web
+Server](https://symfony.com/doc/current/setup/symfony_server.html).
+
+Install the [`symfony` binary](https://symfony.com/download) to get started.
+
+### Starting the show
+
+```sh
+docker-compose up -d
+symfony composer install
+symfony console doctrine:migrations:migrate --no-interaction
+symfony console hautelook:fixtures:load --no-interaction
+symfony local:server:start --daemon
+symfony open:local
+```
+
+### Running tests
+
+```sh
+symfony php bin/phpunit
 ```
