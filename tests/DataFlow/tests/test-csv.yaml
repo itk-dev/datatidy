@@ -1,0 +1,47 @@
+fixtures:
+    App\Entity\DataSource:
+        data_source:
+            name: csv
+            ttl: 3600
+            dataSource: App\DataSource\CsvDataSource
+            dataSourceOptions:
+                url: http://test/test-csv/data.csv
+
+    App\Entity\DataFlow:
+        data_flow:
+            name: csv
+            dataSource: '@data_source'
+            frequency: 60
+
+    App\Entity\DataTransform:
+        data_transform_0:
+            data_flow: '@data_flow'
+            name: Select columns
+            transformer: App\DataTransformer\SelectColumnsDataTransformer
+            transformerOptions:
+                columns: ['OBJECTID', 'P_PLADS_NR']
+                include: true
+
+        data_transform_1:
+            data_flow: '@data_flow'
+            name: Filter (BO)
+            transformer: App\DataTransformer\FilterDataTransformer
+            transformerOptions:
+                column: P_PLADS_NR
+                match: BO
+                partial: true
+                ignoreCase: false
+                regexp: false
+                include: true
+
+    App\Entity\DataTarget:
+        data_target:
+            dataFlow: '@data_flow'
+            description: csv
+            dataTarget: App\DataTarget\CsvHttpDataTarget
+            dataTargetOptions:
+                url: http://test/test-csv/result.csv
+
+expected:
+    filename: test-csv/result-expected.csv
+    actual_filename: test-csv/result.csv

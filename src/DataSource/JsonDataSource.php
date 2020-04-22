@@ -16,6 +16,7 @@ use App\DataSource\Exception\DataSourceRuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPathBuilder;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -30,9 +31,9 @@ class JsonDataSource extends AbstractHttpDataSource implements DataSourceInterfa
 
     private $propertyAccessor;
 
-    public function __construct(HttpClientInterface $httpClient, PropertyAccessorInterface $propertyAccessor)
+    public function __construct(HttpClientInterface $httpClient, SerializerInterface $serializer, PropertyAccessorInterface $propertyAccessor)
     {
-        parent::__construct($httpClient);
+        parent::__construct($httpClient, $serializer);
         $this->propertyAccessor = $propertyAccessor;
     }
 
