@@ -1,0 +1,33 @@
+App\Entity\DataSource:
+    csv_data_source:
+        name: csv
+        ttl: 3600
+        dataSource: App\DataSource\CsvDataSource
+        dataSourceOptions:
+            url: 'https://data.datatidy.srvitkphp73stg.itkdev.dk/geohub.rksk.dk/datasets/fb682b6ff76b4edfbfc4883966ad945a_275.csv/outSR///22latestWkid/22/25832//22wkid/22/25832/.csv'
+
+App\Entity\DataFlow:
+    csv_data_flow:
+        name: csv
+        dataSource: '@csv_data_source'
+        frequency: 60
+
+App\Entity\DataTransform:
+    csv_data_transform_0:
+        data_flow: '@csv_data_flow'
+        name: Select columns
+        transformer: App\DataTransformer\SelectColumnsDataTransformer
+        transformerOptions:
+            columns: ['OBJECTID', 'P_PLADS_NR']
+
+    csv_data_transform_1:
+        data_flow: '@csv_data_flow'
+        name: Filter (BO)
+        transformer: App\DataTransformer\FilterDataTransformer
+        transformerOptions:
+            column: P_PLADS_NR
+            match: BO
+            partial: true
+            ignoreCase: false
+            regexp: false
+            include: true

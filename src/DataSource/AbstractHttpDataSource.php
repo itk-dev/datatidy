@@ -11,6 +11,7 @@
 namespace App\DataSource;
 
 use App\Annotation\DataSource\Option;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 abstract class AbstractHttpDataSource extends AbstractDataSource
@@ -20,11 +21,16 @@ abstract class AbstractHttpDataSource extends AbstractDataSource
      */
     protected $url;
 
+    /** @var HttpClientInterface */
     protected $httpClient;
 
-    public function __construct(HttpClientInterface $httpClient)
+    /** @var SerializerInterface */
+    protected $serializer;
+
+    public function __construct(HttpClientInterface $httpClient, SerializerInterface $serializer)
     {
         $this->httpClient = $httpClient;
+        $this->serializer = $serializer;
     }
 
     protected function getResponse()

@@ -10,6 +10,7 @@
 
 namespace App\Tests\DataFlow;
 
+use App\DataSource\CsvDataSource;
 use App\DataSource\JsonDataSource;
 use App\DataTarget\CsvHttpDataTarget;
 use App\DataTarget\JsonHttpDataTarget;
@@ -22,7 +23,7 @@ use Nelmio\Alice\DataLoaderInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DataFlowTest extends ContainerTestCase
 {
@@ -32,7 +33,7 @@ class DataFlowTest extends ContainerTestCase
     {
         // Break open data sources and targets and inject our mock http client.
         $httpClient = new DataSourceMockHttpClient();
-        foreach ([JsonDataSource::class, JsonHttpDataTarget::class, CsvHttpDataTarget::class] as $serviceClass) {
+        foreach ([CsvDataSource::class, JsonDataSource::class, JsonHttpDataTarget::class, CsvHttpDataTarget::class] as $serviceClass) {
             $service = $this->getContainer()->get($serviceClass);
             $property = new \ReflectionProperty($service, 'httpClient');
             $property->setAccessible(true);
@@ -57,8 +58,7 @@ class DataFlowTest extends ContainerTestCase
         $this->debug('Running test in {filename}', ['filename' => $filename]);
 
         $this->debug('Loading test data');
-        $content = file_get_contents($filename);
-        $data = Yaml::parse($content);
+        $data = $this->loadData($filename);
 
         $expected = $this->buildExpected($filename, $data['expected'] ?? []);
 
@@ -90,11 +90,9 @@ class DataFlowTest extends ContainerTestCase
             $this->assertTrue($result->isPublished());
         }
 
-        if (isset($data['expected']['filename'], $data['expected']['actual_filename'])) {
-            $this->assertJsonFileEqualsJsonFile(
-                $this->getFilename($data['expected']['filename']),
-                $this->getFilename($data['expected']['actual_filename'])
-            );
+        if (isset($data['expected']['actual_filename'])) {
+            $actual = $this->loadData($this->getFilename($data['expected']['actual_filename']));
+            $this->assertEquals($expected, $actual);
         } else {
             $actual = $result->getLastTransformResult()->getRows();
             $this->assertEquals($expected, $actual);
@@ -119,17 +117,22 @@ class DataFlowTest extends ContainerTestCase
             throw new \RuntimeException(sprintf('Expected file "%s" does not exist', $expectedFilename));
         }
 
-        $content = file_get_contents($expectedFilename);
-        $extension = pathinfo($expectedFilename, PATHINFO_EXTENSION);
+        return $this->loadData($expectedFilename);
+    }
+
+    private function loadData(string $filename): array
+    {
+        $content = file_get_contents($filename);
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        /** @var SerializerInterface $serializer */
+        $serializer = $this->get('serializer');
 
         switch ($extension) {
             case 'json':
-                return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+                return $serializer->decode($content, 'json');
             case 'yaml':
-                return Yaml::parse($content);
+                return $serializer->decode($content, 'yaml');
             case 'csv':
-                $serializer = $this->get('serializer');
-
                 return $serializer->decode($content, 'csv', [
                     'as_collection' => true,
                 ]);
