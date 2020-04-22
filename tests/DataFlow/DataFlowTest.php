@@ -15,13 +15,19 @@ use App\DataTarget\CsvHttpDataTarget;
 use App\DataTarget\JsonHttpDataTarget;
 use App\Entity\DataFlow;
 use App\Tests\ContainerTestCase;
+use App\Traits\LogTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Nelmio\Alice\DataLoaderInterface;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 class DataFlowTest extends ContainerTestCase
 {
+    use LogTrait;
+
     protected function setUp(): void
     {
         // Break open data sources and targets and inject our mock http client.
@@ -32,15 +38,25 @@ class DataFlowTest extends ContainerTestCase
             $property->setAccessible(true);
             $property->setValue($service, $httpClient);
         }
+
+        $output = new ConsoleOutput();
+        // @TODO Get verbosity from command line arguments or PHPUnit configuration.
+        $output->setVerbosity($output::VERBOSITY_DEBUG);
+        $this->setLogger(new ConsoleLogger($output));
     }
 
     /**
      * @dataProvider dataProvider
      *
      * @param $filename
+     *
+     * @throws Exception
      */
     public function test($filename): void
     {
+        $this->debug('Running test in {filename}', ['filename' => $filename]);
+
+        $this->debug('Loading test data');
         $content = file_get_contents($filename);
         $data = Yaml::parse($content);
 
@@ -53,16 +69,26 @@ class DataFlowTest extends ContainerTestCase
         }
 
         $dataFlow = $this->buildDataFlow($data['fixtures']);
+        $publish = $dataFlow->getDataTargets()->count() > 0;
 
-        $result = $expectedData = $this->dataFlowManager()->run($dataFlow, [
-            'publish' => $dataFlow->getDataTargets()->count() > 0,
+        $this->debug('Running data flow (publish: {publish})', ['publish' => $publish ? 'yes' : 'no']);
+        $result = $this->dataFlowManager()->run($dataFlow, [
+            'publish' => $publish,
         ]);
 
         if ($result->hasTransformException()) {
-            throw $result->getException();
+            throw $result->getTransformException();
         }
 
         $this->assertTrue($result->isSuccess());
+
+        if ($publish) {
+            if ($result->hasPublishException()) {
+                throw $result->getPublishException();
+            }
+
+            $this->assertTrue($result->isPublished());
+        }
 
         if (isset($data['expected']['filename'], $data['expected']['actual_filename'])) {
             $this->assertJsonFileEqualsJsonFile(
@@ -71,7 +97,6 @@ class DataFlowTest extends ContainerTestCase
             );
         } else {
             $actual = $result->getLastTransformResult()->getRows();
-
             $this->assertEquals($expected, $actual);
         }
     }
@@ -89,6 +114,7 @@ class DataFlowTest extends ContainerTestCase
                 throw new \RuntimeException(sprintf('Cannot find expected file matching patterns "%s"', $pattern));
             }
         }
+        $this->debug('Loading expected data from {expectedFilename}', ['expectedFilename' => $expectedFilename]);
         if (!is_file($expectedFilename)) {
             throw new \RuntimeException(sprintf('Expected file "%s" does not exist', $expectedFilename));
         }
@@ -98,7 +124,7 @@ class DataFlowTest extends ContainerTestCase
 
         switch ($extension) {
             case 'json':
-                return json_decode($content, true);
+                return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             case 'yaml':
                 return Yaml::parse($content);
             case 'csv':
@@ -114,6 +140,7 @@ class DataFlowTest extends ContainerTestCase
 
     private function buildDataFlow(array $data)
     {
+        $this->debug('Building data flow');
         /** @var DataLoaderInterface $loader */
         $loader = $this->get('nelmio_alice.data_loader');
 
