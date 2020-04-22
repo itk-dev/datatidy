@@ -12,8 +12,10 @@ namespace App\Tests\DataFlow;
 
 use App\DataSource\CsvDataSource;
 use App\DataSource\JsonDataSource;
+use App\DataSource\XmlDataSource;
 use App\DataTarget\CsvHttpDataTarget;
 use App\DataTarget\JsonHttpDataTarget;
+use App\DataTarget\XmlHttpDataTarget;
 use App\Entity\DataFlow;
 use App\Tests\ContainerTestCase;
 use App\Traits\LogTrait;
@@ -33,7 +35,14 @@ class DataFlowTest extends ContainerTestCase
     {
         // Break open data sources and targets and inject our mock http client.
         $httpClient = new DataSourceMockHttpClient();
-        foreach ([CsvDataSource::class, JsonDataSource::class, JsonHttpDataTarget::class, CsvHttpDataTarget::class] as $serviceClass) {
+        foreach ([
+                     CsvDataSource::class,
+                     JsonDataSource::class,
+                     XmlDataSource::class,
+                     CsvHttpDataTarget::class,
+                     JsonHttpDataTarget::class,
+                     XmlHttpDataTarget::class,
+                 ] as $serviceClass) {
             $service = $this->getContainer()->get($serviceClass);
             $property = new \ReflectionProperty($service, 'httpClient');
             $property->setAccessible(true);
@@ -133,6 +142,8 @@ class DataFlowTest extends ContainerTestCase
                 return $serializer->decode($content, 'json');
             case 'yaml':
                 return $serializer->decode($content, 'yaml');
+            case 'xml':
+                return $serializer->decode($content, 'xml');
             case 'csv':
                 return $serializer->decode($content, 'csv', [
                     'as_collection' => true,
