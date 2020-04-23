@@ -10,7 +10,7 @@
 
 namespace App\Form\Type\Option;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use App\DataSet\DataSetColumnList;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -57,7 +57,7 @@ class ColumnStringMapType extends CollectionType implements DataTransformerInter
         parent::configureOptions($resolver);
         $resolver
             ->setRequired('data_set_columns')
-            ->setAllowedTypes('data_set_columns', ArrayCollection::class);
+            ->setAllowedTypes('data_set_columns', DataSetColumnList::class);
     }
 
     public function getBlockPrefix()

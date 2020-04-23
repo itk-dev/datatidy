@@ -10,7 +10,7 @@
 
 namespace App\Form\Type\Option;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use App\DataSet\DataSetColumnList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,11 +26,9 @@ class ColumnType extends ChoiceType
         parent::buildForm($builder, $options);
     }
 
-    private function getChoices(array $options)
+    protected function getChoices(array $options)
     {
-        /** @var ArrayCollection $columns */
-        $columns = $options['data_set_columns'];
-        $names = $columns->getKeys();
+        $names = $options['data_set_columns']->getNames();
 
         return array_combine($names, $names);
     }
@@ -40,6 +38,6 @@ class ColumnType extends ChoiceType
         parent::configureOptions($resolver);
         $resolver
             ->setRequired('data_set_columns')
-            ->setAllowedTypes('data_set_columns', ArrayCollection::class);
+            ->setAllowedTypes('data_set_columns', DataSetColumnList::class);
     }
 }

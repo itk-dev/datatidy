@@ -13,9 +13,9 @@ namespace App\DataTransformer;
 use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
+use App\DataSet\DataSetColumn;
 use App\DataTransformer\Exception\InvalidColumnException;
 use App\Util\DataTypes;
-use Doctrine\DBAL\Schema\Column;
 
 /**
  * @DataTransformer(
@@ -51,11 +51,10 @@ class ChangeColumnTypeDataTransformer extends AbstractDataTransformer
             if (!isset($newColumns[$column])) {
                 throw new InvalidColumnException($column);
             }
-            $newColumns[$column] = new Column($column, $type);
+            $newColumns[$column] = new DataSetColumn($column, $type);
         }
 
-        $output = $input->copy($newColumns->toArray())
-            ->createTable();
+        $output = $input->copy($newColumns)->createTable();
 
         $sql = sprintf(
             'INSERT INTO %s(%s) SELECT %s FROM %s;',

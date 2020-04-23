@@ -11,25 +11,15 @@
 namespace App\DataSet;
 
 use App\Data\Exception\InvalidTableNameException;
-use App\DataTransformer\Exception\InvalidColumnException;
 use App\Entity\DataTransform;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Service\DataHelper;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
 
 class DataSet
 {
-    public static $columnTypes = [
-        'int' => Type::INTEGER,
-        'float' => Type::FLOAT,
-        'datetime' => Type::DATETIME,
-        'date' => Type::DATE,
-        'json' => Type::JSON,
-    ];
-
     /** @var Connection */
     private $connection;
 
@@ -57,7 +47,7 @@ class DataSet
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function __construct(string $name, Connection $connection, array $columns = null)
+    public function __construct(string $name, Connection $connection, DataSetColumnList $columns = null)
     {
         if (empty($name)) {
             throw new \RuntimeException('Data set name cannot be empty');
@@ -97,11 +87,11 @@ class DataSet
         return $this->name.'_'.sprintf($format, 0);
     }
 
-    public function copy(array $columns = null)
+    public function copy(DataSetColumnList $columns = null)
     {
         $name = $this->getNewName();
 
-        return new static($name, $this->connection, $columns ?? $this->getColumns()->toArray());
+        return new static($name, $this->connection, $columns ?? $this->getColumns());
     }
 
     public function buildFromData(array $items, array $columns = null): self
@@ -150,14 +140,9 @@ class DataSet
         return $this->quoteName($this->getTableName());
     }
 
-    public function getColumnNames()
-    {
-        return $this->getColumns()->getKeys();
-    }
-
     public function getQuotedColumnNames()
     {
-        $names = $this->getColumnNames();
+        $names = $this->getColumns()->getSqlNames();
 
         return array_combine($names, array_map([$this, 'quoteName'], $names));
     }
@@ -169,17 +154,10 @@ class DataSet
 
     /**
      * Get table columns indexed by their real name (and not a normalized (e.g. down cased) name).
-     *
-     * @return ArrayCollection<Column>|Column[]
      */
-    public function getColumns()
+    public function getColumns(): DataSetColumnList
     {
-        $columns = new ArrayCollection();
-        foreach ($this->table->getColumns() as $column) {
-            $columns[$column->getName()] = $column;
-        }
-
-        return $columns;
+        return DataSetColumnList::createFromTable($this->table);
     }
 
     public function getRows(): array
@@ -193,45 +171,43 @@ class DataSet
         $rowsStatement = $this->prepare($statement);
         $rowsStatement->execute();
         $columns = $this->getColumns();
+        $displayNames = $columns->getDisplayNames();
 
+        // @TODO Can we improve this by aliasing column names in the select?
+        // Aliases have a max length of 256 characters (and are silently truncated).
         while ($row = $rowsStatement->fetch()) {
-            array_walk($row, function (&$value, $name) use ($columns) {
-                $value = $columns[$name]->getType()->convertToPHPValue($value, $this->platform);
-            });
-            yield $row;
+            yield DataHelper::remap(function ($key, $value) use ($columns, $displayNames) {
+                $displayName = $displayNames[$key];
+
+                return [$displayName => $columns[$displayName]->getType()->convertToPHPValue($value, $this->platform)];
+            }, $row);
         }
     }
 
     public function insertRows(array $rows)
     {
         $columns = $this->getColumns();
+        $sqlNames = $columns->getSqlNames();
 
         $sql = sprintf(
             'INSERT INTO %s(%s) VALUES (%s);',
             $this->getQuotedTableName(),
-            implode(',', $columns->map(function (Column $column) {
-                return $this->quoteName($column->getName());
-            })->getValues()),
-            implode(',', array_fill(0, $columns->count(), '?'))
+            implode(',', array_map([$this, 'quoteName'], $sqlNames)),
+            implode(',', array_map(static function ($name) {
+                return ':'.$name;
+            }, $sqlNames))
         );
         $statement = $this->prepare($sql);
-        $types = $columns->map(static function (Column $column) {
-            return $column->getType();
-        });
 
         foreach ($rows as $row) {
-            $index = 0;
             foreach ($row as $name => $value) {
-                if (!isset($types[$name])) {
-                    throw new \RuntimeException(sprintf('Unknown type for column %s', $name));
-                }
                 /** @var Type $type */
-                $type = $types[$name];
+                $type = $columns[$name]->getType();
+
                 if (\is_array($value)) {
                     $value = json_encode($value, JSON_THROW_ON_ERROR, 512);
                 }
-                $statement->bindValue($index + 1, $type->convertToPHPValue($value, $this->platform), $type);
-                ++$index;
+                $statement->bindValue($sqlNames[$name], $type->convertToPHPValue($value, $this->platform), $type);
             }
 
             $result = $statement->execute();
@@ -262,33 +238,6 @@ class DataSet
         }
 
         return $this->connection->prepare($statement);
-    }
-
-    /**
-     * Join this Table with another Table.
-     *
-     * @param string  $name
-     *                      The name to join on
-     * @param DataSet $that
-     *                      The other table
-     *
-     * @return DataSet
-     *                 The resulting Table
-     */
-    public function join(string $name, self $that)
-    {
-        if (!\array_key_exists($name, $this->columns) || !\array_key_exists($name, $that->columns)) {
-            throw new InvalidColumnException(sprintf('Column named "%s" does not exist both tables', $name));
-        }
-
-        $thoseItems = array_column($that->items, null, $name);
-
-        $items = [];
-        foreach ($this->items as $item) {
-            $items[] = $item + $thoseItems[$item[$name]];
-        }
-
-        return new static($items);
     }
 
     /**
@@ -335,13 +284,13 @@ class DataSet
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function buildTable(array $columns)
+    private function buildTable(DataSetColumnList $columns)
     {
         $tableName = $this->quoteName($this->tableNamePrefix.$this->getName());
         $table = new Table($tableName);
         foreach ($columns as $column) {
-            $name = $column instanceof Column ? $column->getName() : $column['name'];
-            $type = $column instanceof Column ? $column->getType()->getName() : $column['type'];
+            $name = $column->getSqlName();
+            $type = $column->getType()->getName();
             $table->addColumn($this->quoteName($name), $type, [
                 'notnull' => false,
             ]);
@@ -402,22 +351,18 @@ class DataSet
         return $this->prepare($sql)->execute();
     }
 
-    private function buildColumns(array $items): array
+    private function buildColumns(array $items): DataSetColumnList
     {
-        if (empty($items)) {
-            return [];
+        $columns = new DataSetColumnList();
+        if (!empty($items)) {
+            $names = array_keys(reset($items));
+            $types = $this->guessTypes($items);
+            foreach ($names as $name) {
+                $columns->add(new DataSetColumn($name, Type::getType($types[$name])));
+            }
         }
 
-        $names = array_keys(reset($items));
-        $types = $this->guessTypes($items);
-        $columns = array_map(static function ($name) use ($types) {
-            return [
-                'name' => $name,
-                'type' => $types[$name],
-            ];
-        }, $names);
-
-        return array_column($columns, null, 'name');
+        return $columns;
     }
 
     private static function getValue($value, Type $type)
@@ -452,6 +397,11 @@ class DataSet
         return $types;
     }
 
+    /**
+     * Guess type of a list of values. Data from non-json sources are always strings, but we want to work with real values.
+     *
+     * @return int|string
+     */
     private function guessType(array $values)
     {
         $votes = [

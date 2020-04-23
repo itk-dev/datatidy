@@ -13,9 +13,9 @@ namespace App\DataTransformer;
 use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
+use App\DataSet\DataSetColumn;
+use App\DataSet\DataSetColumnList;
 use App\Service\DataHelper;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
 /**
@@ -44,7 +44,7 @@ class CollapseColumnDataTransformer extends AbstractDataTransformer
     public function transform(DataSet $input): DataSet
     {
         $newColumns = $this->transformColumns($input);
-        $output = $input->copy($newColumns->toArray())->createTable();
+        $output = $input->copy($newColumns)->createTable();
 
         $rows = $input->getRows();
         foreach ($this->columns as $column) {
@@ -55,7 +55,7 @@ class CollapseColumnDataTransformer extends AbstractDataTransformer
         return $output;
     }
 
-    public function transformColumns(DataSet $dataSet): ArrayCollection
+    public function transformColumns(DataSet $dataSet): DataSetColumnList
     {
         $columns = $dataSet->getColumns();
 
@@ -66,17 +66,17 @@ class CollapseColumnDataTransformer extends AbstractDataTransformer
             $transformedColumnNames = array_keys(reset($rows));
         }
 
-        $columnsToRemove = array_diff($columns->getKeys(), $transformedColumnNames);
+        $columnsToRemove = array_diff($columns->getDisplayNames(), $transformedColumnNames);
         foreach ($columnsToRemove as $column) {
             $columns->remove($column);
         }
 
-        $newColumnNames = array_values(array_diff($transformedColumnNames, $columns->getKeys()));
+        $newColumnNames = array_values(array_diff($transformedColumnNames, $columns->getDisplayNames()));
         if (!empty($newColumnNames)) {
             $types = $dataSet->guessTypes($rows);
 
             foreach ($newColumnNames as $name) {
-                $columns[$name] = new Column($name, Type::getType($types[$name]));
+                $columns[] = new DataSetColumn($name, Type::getType($types[$name]));
             }
         }
 

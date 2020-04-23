@@ -13,9 +13,9 @@ namespace App\DataTransformer;
 use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
+use App\DataSet\DataSetColumn;
+use App\DataSet\DataSetColumnList;
 use App\DataTransformer\Exception\InvalidColumnException;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Schema\Column;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -51,13 +51,13 @@ class SelectColumnsDataTransformer extends AbstractDataTransformer
     {
         $newColumns = $this->transformColumns($input);
 
-        $output = $input->copy($newColumns->toArray())->createTable();
+        $output = $input->copy($newColumns)->createTable();
 
         $sql = sprintf(
             'INSERT INTO %s SELECT %s FROM %s;',
             $output->getQuotedTableName(),
-            implode(',', $newColumns->map(static function (Column $column) use ($input) {
-                return $input->getQuotedColumnName($column->getName());
+            implode(',', $newColumns->map(static function (DataSetColumn $column) use ($input) {
+                return $input->getQuotedColumnName($column->getSqlName());
             })->getValues()),
             $input->getQuotedTableName()
         );
@@ -65,10 +65,10 @@ class SelectColumnsDataTransformer extends AbstractDataTransformer
         return $output->buildFromSQL($sql);
     }
 
-    public function transformColumns(DataSet $dataSet): ArrayCollection
+    public function transformColumns(DataSet $dataSet): DataSetColumnList
     {
         $columns = $dataSet->getColumns();
-        $names = $columns->getKeys();
+        $names = $columns->getDisplayNames();
         $diff = array_diff($this->columns, $names);
         if (!empty($diff)) {
             throw new InvalidColumnException(sprintf('invalid columns: %s', implode(', ', $diff)));
@@ -76,8 +76,8 @@ class SelectColumnsDataTransformer extends AbstractDataTransformer
 
         $namesToKeep = $this->include ? $this->columns : array_diff($names, $this->columns);
 
-        return $columns->filter(static function ($value, $name) use ($namesToKeep) {
-            return \in_array($name, $namesToKeep, true);
+        return $columns->filter(static function (DataSetColumn $column) use ($namesToKeep) {
+            return \in_array($column->getName(), $namesToKeep, true);
         });
     }
 }

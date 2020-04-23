@@ -10,7 +10,7 @@
 
 namespace App\Form\Type\Option;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use App\DataSet\DataSetColumnList;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,9 +21,10 @@ class ColumnStringMapItemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $names = $options['data_set_columns']->getNames();
         $builder
             ->add('from', ChoiceType::class, [
-                'choices' => array_combine($options['data_set_columns']->getKeys(), $options['data_set_columns']->getKeys()),
+                'choices' => array_combine($names, $names),
                 'placeholder' => '',
             ])
             ->add('to', TextType::class);
@@ -34,6 +35,6 @@ class ColumnStringMapItemType extends AbstractType
         parent::configureOptions($resolver);
         $resolver
             ->setRequired('data_set_columns')
-            ->setAllowedTypes('data_set_columns', ArrayCollection::class);
+            ->setAllowedTypes('data_set_columns', DataSetColumnList::class);
     }
 }
