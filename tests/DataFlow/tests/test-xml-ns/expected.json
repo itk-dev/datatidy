@@ -1,0 +1,9 @@
+[
+    {
+        "@xmlns:test": "https://example.com/test",
+        "e": {
+            "@test:attribute": "test-attribute-value",
+            "#": ""
+        }
+    }
+]

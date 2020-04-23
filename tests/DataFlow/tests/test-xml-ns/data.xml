@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+
+<test:root xmlns:test="https://example.com/test">
+    <e test:attribute="test-attribute-value"/>
+</test:root>
