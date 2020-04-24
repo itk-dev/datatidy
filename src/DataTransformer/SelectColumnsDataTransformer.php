@@ -49,8 +49,7 @@ class SelectColumnsDataTransformer extends AbstractDataTransformer
 
     public function transform(DataSet $input): DataSet
     {
-        $columns = $input->getColumns();
-        $newColumns = $this->transformColumns($columns);
+        $newColumns = $this->transformColumns($input);
 
         $output = $input->copy($newColumns->toArray())->createTable();
 
@@ -66,8 +65,9 @@ class SelectColumnsDataTransformer extends AbstractDataTransformer
         return $output->buildFromSQL($sql);
     }
 
-    public function transformColumns(ArrayCollection $columns): ArrayCollection
+    public function transformColumns(DataSet $dataSet): ArrayCollection
     {
+        $columns = $dataSet->getColumns();
         $names = $columns->getKeys();
         $diff = array_diff($this->columns, $names);
         if (!empty($diff)) {

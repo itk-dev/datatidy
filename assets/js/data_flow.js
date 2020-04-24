@@ -1,4 +1,5 @@
 import 'select2'
+import 'jquery.json-viewer/json-viewer/jquery.json-viewer'
 
 require('../scss/data-flow.scss')
 
@@ -102,4 +103,7 @@ $(() => {
 
 $(function () {
   $('[data-toggle="popover"]').popover()
+  $('.json-data-view').each((index, el) => $(el).jsonViewer(JSON.parse($(el).html()), {
+    collapsed: true
+  }))
 })

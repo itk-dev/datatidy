@@ -51,7 +51,7 @@ class CalculateDataTransformer extends AbstractDataTransformer
     public function transform(DataSet $input): DataSet
     {
         $columns = $input->getColumns();
-        $newColumns = $this->transformColumns($input->getColumns());
+        $newColumns = $this->transformColumns($input);
 
         [$names, $quotedExpression] = $this->getQuoteNamesInExpression($this->expression, $input);
         // Only existing columns can be used in calculation.
@@ -76,8 +76,9 @@ class CalculateDataTransformer extends AbstractDataTransformer
         return $output->buildFromSQL($sql);
     }
 
-    public function transformColumns(ArrayCollection $columns): ArrayCollection
+    public function transformColumns(DataSet $dataSet): ArrayCollection
     {
+        $columns = $dataSet->getColumns();
         $type = DataTypes::getType($this->type);
 
         $columns[$this->name] = new Column($this->name, $type);

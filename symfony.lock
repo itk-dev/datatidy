@@ -225,6 +225,9 @@
     "phan/phan": {
         "version": "2.2.13"
     },
+    "php": {
+        "version": "7.3"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },

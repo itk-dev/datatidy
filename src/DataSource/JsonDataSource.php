@@ -50,6 +50,11 @@ class JsonDataSource extends AbstractHttpDataSource implements DataSourceInterfa
                 $data = $this->propertyAccessor->getValue($data, $propertyPath);
             }
 
+            // We must return an array.
+            if (!$this->isArray($data)) {
+                $data = [$data];
+            }
+
             return $data;
         } catch (\Exception $exception) {
             throw new DataSourceRuntimeException($exception->getMessage());

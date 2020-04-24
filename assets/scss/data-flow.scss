@@ -5,6 +5,8 @@
 @import "data-flow/data_flow_recipe";
 @import "data-flow/settings_drawer";
 
+@import "~jquery.json-viewer/json-viewer/jquery.json-viewer.css";
+
 /* dataflow target column */
 #data_flow_data_targets {
     legend {

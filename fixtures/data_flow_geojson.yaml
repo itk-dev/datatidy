@@ -1,0 +1,65 @@
+App\Entity\DataSource:
+    geojson_data_source:
+        name: geojson
+        ttl: 3600
+        dataSource: App\DataSource\JsonDataSource
+        dataSourceOptions:
+            url: 'https://data.datatidy.srvitkphp73stg.itkdev.dk/data.datatidy.srvitkphp73stg.itkdev.dk/example.geojson.json'
+
+App\Entity\DataFlow:
+    geojson_data_flow:
+        name: GeoJSON
+        dataSource: '@geojson_data_source'
+        frequency: 60
+
+App\Entity\DataTransform:
+    geojson_data_transform_0:
+        data_flow: '@geojson_data_flow'
+        name: Expand features (array -> rows)
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+    geojson_data_transform_1:
+        data_flow: '@geojson_data_flow'
+        name: Expand features (object -> columns)
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+    geojson_data_transform_2:
+        data_flow: '@geojson_data_flow'
+        name: Expand features properties
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns: ['features/properties']
+
+    geojson_data_transform_3:
+        data_flow: '@geojson_data_flow'
+        name: Collapse features properties
+        transformer: App\DataTransformer\CollapseColumnDataTransformer
+        transformerOptions:
+            columns: ['features/properties']
+
+    geojson_data_transform_4:
+        data_flow: '@geojson_data_flow'
+        name: Collapse features (columns -> object)
+        transformer: App\DataTransformer\CollapseColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+    geojson_data_transform_5:
+        data_flow: '@geojson_data_flow'
+        name: Collapse features (rows -> array)
+        transformer: App\DataTransformer\CollapseColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+# App\Entity\DataTarget:
+#     geojson_data_target:
+#         dataFlow: '@geojson_data_flow'
+#         description: test
+#         dataTarget: App\DataTarget\JsonHttpDataTarget
+#         dataTargetOptions:
+#             url: http://test/test-geojson/result.json
+#             asObject: false

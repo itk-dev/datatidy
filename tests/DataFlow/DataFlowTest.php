@@ -128,6 +128,7 @@ class DataFlowTest extends ContainerTestCase
         $serializer = $this->get('serializer');
 
         switch ($extension) {
+            case 'geojson':
             case 'json':
                 return $serializer->decode($content, 'json');
             case 'yaml':

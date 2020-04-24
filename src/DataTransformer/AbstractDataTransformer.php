@@ -11,6 +11,7 @@
 namespace App\DataTransformer;
 
 use App\DataSet\DataSet;
+use App\DataTransformer\Exception\InvalidColumnException;
 use App\DataTransformer\Exception\InvalidKeyException;
 use App\Traits\OptionsTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,7 +29,10 @@ abstract class AbstractDataTransformer
     /**
      * Transform columns.
      */
-    abstract public function transformColumns(ArrayCollection $columns): ArrayCollection;
+    public function transformColumns(DataSet $dataSet): ArrayCollection
+    {
+        return $dataSet->getColumns();
+    }
 
     /**
      * Rename a column.
@@ -39,6 +43,18 @@ abstract class AbstractDataTransformer
         unset($options['name']);
 
         return new Column($name, $column->getType(), $options);
+    }
+
+    /**
+     * @param array|string[]           $names
+     * @param ArrayCollection|Column[] $columns
+     */
+    protected function requireColumns(array $names, ArrayCollection $columns)
+    {
+        $diff = array_diff($names, $columns->getKeys());
+        if (!empty($diff)) {
+            throw new InvalidColumnException(sprintf('invalid columns: %s', implode(', ', $diff)));
+        }
     }
 
     /**

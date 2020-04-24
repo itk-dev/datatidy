@@ -20,7 +20,7 @@ abstract class AbstractOption implements \JsonSerializable
     /**
      * @Required
      *
-     * @Enum({"column", "columns", "string", "map", "bool", "int", "type", "choice", "data_flow"})
+     * @Enum({"column", "columns", "collapse_columns", "string", "map", "bool", "int", "type", "choice", "data_flow"})
      *
      * @var string
      */

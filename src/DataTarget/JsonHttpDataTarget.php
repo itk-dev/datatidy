@@ -11,6 +11,7 @@
 namespace App\DataTarget;
 
 use App\Annotation\DataTarget;
+use App\Annotation\DataTarget\Option;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -21,10 +22,15 @@ use Doctrine\Common\Collections\Collection;
  */
 class JsonHttpDataTarget extends AbstractHttpDataTarget
 {
+    /**
+     * @Option(name="As object", description="Send data as a JSON object (the first row in the result)", type="bool", default=false)
+     */
+    private $asObject;
+
     protected function getPostOptions(array $rows, Collection $columns): array
     {
         return [
-            'json' => $rows,
+            'json' => $this->asObject ? reset($rows) : $rows,
         ];
     }
 }
