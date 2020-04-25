@@ -81,6 +81,8 @@ services:
     ports:
       - "1025"
       - "8025"
+    labels:
+      com.symfony.server.service-prefix: 'MAILER'
 
   redis:
     image: redis:5

@@ -34,7 +34,7 @@ class DataTargetController extends AbstractController
     /**
      * @Route("/{path}", requirements={"path"=".+"}, name="get", methods={"GET"})
      */
-    public function get(string $path)
+    public function getData(string $path)
     {
         $filename = $this->targetPath.'/'.$path;
 
@@ -55,7 +55,7 @@ class DataTargetController extends AbstractController
     /**
      * @Route("/{path}", requirements={"path"=".+"}, name="post", methods={"POST"})
      */
-    public function post(Request $request, string $path, Filesystem $filesystem)
+    public function postData(Request $request, string $path, Filesystem $filesystem)
     {
         $filename = $this->targetPath.'/'.$path;
 

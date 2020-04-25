@@ -6,9 +6,8 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "friendsofsymfony/user-bundle": "^2.1",
         "gedmo/doctrine-extensions": "^2.4",
-        "itk-dev/user-bundle": "^0.1",
+        "itk-dev/user-bundle": "2.x-dev",
         "league/csv": "^9.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "4.4.*",
@@ -33,7 +32,8 @@
         "symfony/validator": "4.4.*",
         "symfony/web-link": "4.4.*",
         "symfony/webpack-encore-bundle": "^1.6",
-        "symfony/yaml": "4.4.*"
+        "symfony/yaml": "4.4.*",
+        "symfonycasts/reset-password-bundle": "^1.1"
     },
     "require-dev": {
         "behat/mink": "^1.7@dev",
@@ -117,6 +117,12 @@
         "symfony": {
             "allow-contrib": true,
             "require": "4.4.*"
+        }
+    },
+    "repositories": {
+        "itk-dev/user-bundle": {
+            "type": "path",
+            "url": "_misc/packages/itk-dev/user-bundle"
         }
     }
 }

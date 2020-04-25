@@ -53,7 +53,7 @@ class DataSourceController extends AbstractController
     /**
      * @Route("/{path}", requirements={"path"=".+"}, name="get", methods={"GET"})
      */
-    public function get(string $path)
+    public function getData(string $path)
     {
         $filename = $this->resourcePath.'/'.$path;
 
