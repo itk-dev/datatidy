@@ -13,6 +13,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use ItkDev\UserBundle\User\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +25,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UserController extends AbstractController
 {
+    /** @var UserManager */
+    private $userManager;
+
+    public function __construct(UserManager $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
     /**
      * @Route("/", name="index", methods={"GET"})
      */
@@ -45,6 +54,8 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userManager->updateUser($user);
+
+            $this->addFlash('success', sprintf('User %s created', $user->getUsername()));
 
             return $this->redirectToRoute('user_index');
         }
