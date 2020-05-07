@@ -20,7 +20,7 @@ use InvalidArgumentException;
  * It basically acts as a shim around an ORM schema column.
  */
 class DataSetColumn extends Column
-{    
+{
     /** @var string */
     private $sqlName;
 
@@ -37,7 +37,7 @@ class DataSetColumn extends Column
 
         return new self($column->_name, $column->_type, $options);
     }
-    
+
     /**
      * Get a name that's safe for use in sql statements.
      */

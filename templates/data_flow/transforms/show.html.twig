@@ -148,7 +148,7 @@
                 {% for index, value in row %}
                     <td>
                         {% if value is iterable %}
-                            {% set id = 'value'~loop.parent.loop.index~'-'~loop.index %}
+                            {% set id = 'value' ~ loop.parent.loop.index ~ '-' ~ loop.index %}
                             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#{{ id }}">
                                 {{ 'Show value'|trans }}
                             </button>

@@ -50,7 +50,6 @@ class ReplaceValuesDataTransformer extends AbstractDataTransformer
 
     /**
      * @Option(type="bool", description="If set, use regular expressions for search and replace", required=false, default=false),
-     * *
      *
      * @var bool
      */
