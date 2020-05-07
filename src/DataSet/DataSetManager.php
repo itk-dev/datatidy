@@ -22,16 +22,6 @@ class DataSetManager
         $this->entityManager = $entityManager;
     }
 
-    public function createDataSet(string $name, array $columns, array $items = []): DataSet
-    {
-        $dataSet = new DataSet($name, $this->entityManager->getConnection(), $columns);
-        if (null !== $items) {
-            $dataSet->createTable()->loadData($items);
-        }
-
-        return $dataSet;
-    }
-
     public function createDataSetFromData(string $name, array $items, array $columns = null): DataSet
     {
         $dataSet = new DataSet($name, $this->entityManager->getConnection());

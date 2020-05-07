@@ -148,6 +148,28 @@ class DataHelper
         return $data;
     }
 
+    /**
+     * Remap keys and values in array.
+     *
+     * @see https://gist.github.com/jasand-pereza/84ecec7907f003564584#gistcomment-3133084
+     */
+    public static function remap(callable $callback, array $input): array
+    {
+        $output = [];
+        $key = null;
+        $value = null;
+
+        foreach ($input as $key => $value) {
+            $result = $callback($key, $value);
+
+            if (\is_array($result)) {
+                $output[key($result)] = current($result);
+            }
+        }
+
+        return $output;
+    }
+
     public function isAssoc(array $arr): bool
     {
         if ([] === $arr) {

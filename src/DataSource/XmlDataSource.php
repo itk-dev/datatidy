@@ -12,8 +12,8 @@ namespace App\DataSource;
 
 use App\Annotation\DataSource;
 use App\Annotation\DataSource\Option;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\DataSource\Exception\DataSourceRuntimeException;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 /**
  * @DataSource(name="XML", description="Pulls from a XML data source")
@@ -25,15 +25,22 @@ class XmlDataSource extends AbstractHttpDataSource implements DataSourceInterfac
      */
     private $root;
 
-    public function __construct(HttpClientInterface $httpClient, PropertyAccessorInterface $propertyAccessor)
-    {
-        parent::__construct($httpClient);
-    }
-
     public function pull()
     {
-        $response = $this->getResponse();
+        try {
+            $response = $this->getResponse();
 
-        throw new \RuntimeException('Lazy programmer exception: '.__METHOD__.' not implemented!');
+            $data = $this->serializer->decode($response->getContent(), 'xml', [
+                XmlEncoder::AS_COLLECTION => false,
+            ]);
+
+            // @TODO Handle root
+            // @TODO Make sure we have data in rows
+            $data = [$data];
+
+            return $data;
+        } catch (\Exception $exception) {
+            throw new DataSourceRuntimeException($exception->getMessage());
+        }
     }
 }

@@ -10,16 +10,16 @@
 
 namespace App\Form\Type\Option;
 
+use App\DataSet\DataSetColumnList;
 use App\DataTransformer\ExpandColumnDataTransformer;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class CollapseColumnsType extends ColumnsType
 {
     protected function getChoices(array $options)
     {
-        /** @var ArrayCollection $columns */
+        /** @var DataSetColumnList $columns */
         $columns = $options['data_set_columns'];
-        $names = $columns->getKeys();
+        $names = $columns->getNames();
 
         // Get names containing at least on expand column delimiter.
         $paths = array_filter(array_map(static function ($name) {

@@ -11,6 +11,7 @@
 namespace App\DataFlow;
 
 use App\DataSet\DataSet;
+use App\DataSet\DataSetColumnList;
 use App\DataSet\DataSetManager;
 use App\DataSource\DataSourceManager;
 use App\DataTarget\DataTargetManager;
@@ -18,7 +19,6 @@ use App\DataTransformer\DataTransformerManager;
 use App\Entity\DataFlow;
 use App\Repository\DataFlowRepository;
 use App\Traits\LogTrait;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\NullLogger;
@@ -97,14 +97,14 @@ class DataFlowManager
         return $this->dataSourceManager;
     }
 
-    public function runColumns(DataFlow $dataFlow, array $options = []): Collection
+    public function runColumns(DataFlow $dataFlow, array $options = []): DataSetColumnList
     {
         $options['publish'] = false;
 
         // @TODO: We should compute columns using only AbstractDataTransformer::transformColumns here.
         $result = $this->run($dataFlow, $options);
 
-        return $result->isSuccess() ? $result->getTransformResult(-1)->getColumns() : new ArrayCollection();
+        return $result->isSuccess() ? $result->getTransformResult(-1)->getColumns() : new DataSetColumnList();
     }
 
     public function run(DataFlow $dataFlow, array $options = []): DataFlowRunResult

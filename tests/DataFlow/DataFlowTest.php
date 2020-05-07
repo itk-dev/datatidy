@@ -12,8 +12,10 @@ namespace App\Tests\DataFlow;
 
 use App\DataSource\CsvDataSource;
 use App\DataSource\JsonDataSource;
+use App\DataSource\XmlDataSource;
 use App\DataTarget\CsvHttpDataTarget;
 use App\DataTarget\JsonHttpDataTarget;
+use App\DataTarget\XmlHttpDataTarget;
 use App\Entity\DataFlow;
 use App\Tests\ContainerTestCase;
 use App\Traits\LogTrait;
@@ -33,7 +35,14 @@ class DataFlowTest extends ContainerTestCase
     {
         // Break open data sources and targets and inject our mock http client.
         $httpClient = new DataSourceMockHttpClient();
-        foreach ([CsvDataSource::class, JsonDataSource::class, JsonHttpDataTarget::class, CsvHttpDataTarget::class] as $serviceClass) {
+        foreach ([
+                     CsvDataSource::class,
+                     JsonDataSource::class,
+                     XmlDataSource::class,
+                     CsvHttpDataTarget::class,
+                     JsonHttpDataTarget::class,
+                     XmlHttpDataTarget::class,
+                 ] as $serviceClass) {
             $service = $this->getContainer()->get($serviceClass);
             $property = new \ReflectionProperty($service, 'httpClient');
             $property->setAccessible(true);
@@ -68,7 +77,7 @@ class DataFlowTest extends ContainerTestCase
             $this->filesystem()->remove($filename);
         }
 
-        $dataFlow = $this->buildDataFlow($data['fixtures']);
+        $dataFlow = $this->buildDataFlow($data);
         $publish = $dataFlow->getDataTargets()->count() > 0;
 
         $this->debug('Running data flow (publish: {publish})', ['publish' => $publish ? 'yes' : 'no']);
@@ -133,6 +142,8 @@ class DataFlowTest extends ContainerTestCase
                 return $serializer->decode($content, 'json');
             case 'yaml':
                 return $serializer->decode($content, 'yaml');
+            case 'xml':
+                return $serializer->decode($content, 'xml');
             case 'csv':
                 return $serializer->decode($content, 'csv', [
                     'as_collection' => true,
@@ -148,19 +159,20 @@ class DataFlowTest extends ContainerTestCase
         /** @var DataLoaderInterface $loader */
         $loader = $this->get('nelmio_alice.data_loader');
 
-        $set = $loader->loadData($data);
+        $set = $loader->loadData($data['fixtures']);
         $dataFlow = null;
         /** @var EntityManagerInterface $em */
         $em = $this->get('doctrine.orm.entity_manager');
+        $dataFlowId = $data['data_flow_id'] ?? 'data_flow';
         foreach ($set->getObjects() as $id => $object) {
             $em->persist($object);
-            if ($object instanceof DataFlow && 'data_flow' === $id) {
+            if ($object instanceof DataFlow && $dataFlowId === $id) {
                 $dataFlow = $object;
             }
         }
         $em->flush();
         if (null === $dataFlow) {
-            throw new \RuntimeException('Cannot find data flow with id "data_flow"');
+            throw new \RuntimeException(sprintf('Cannot find data flow with id "%s"', $dataFlowId));
         }
 
         // Refresh data flow to set relations correctly.

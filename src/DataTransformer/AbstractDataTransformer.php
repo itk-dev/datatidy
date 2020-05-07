@@ -11,10 +11,10 @@
 namespace App\DataTransformer;
 
 use App\DataSet\DataSet;
-use App\DataTransformer\Exception\InvalidColumnException;
+use App\DataSet\DataSetColumn;
+use App\DataSet\DataSetColumnList;
 use App\DataTransformer\Exception\InvalidKeyException;
 use App\Traits\OptionsTrait;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\Column;
 
 abstract class AbstractDataTransformer
@@ -29,7 +29,7 @@ abstract class AbstractDataTransformer
     /**
      * Transform columns.
      */
-    public function transformColumns(DataSet $dataSet): ArrayCollection
+    public function transformColumns(DataSet $dataSet): DataSetColumnList
     {
         return $dataSet->getColumns();
     }
@@ -37,24 +37,12 @@ abstract class AbstractDataTransformer
     /**
      * Rename a column.
      */
-    protected function renameColumn(Column $column, string $name): Column
+    protected function renameColumn(DataSetColumn $column, string $name): Column
     {
         $options = $column->toArray();
         unset($options['name']);
 
-        return new Column($name, $column->getType(), $options);
-    }
-
-    /**
-     * @param array|string[]           $names
-     * @param ArrayCollection|Column[] $columns
-     */
-    protected function requireColumns(array $names, ArrayCollection $columns)
-    {
-        $diff = array_diff($names, $columns->getKeys());
-        if (!empty($diff)) {
-            throw new InvalidColumnException(sprintf('invalid columns: %s', implode(', ', $diff)));
-        }
+        return new DataSetColumn($name, $column->getType(), $options);
     }
 
     /**

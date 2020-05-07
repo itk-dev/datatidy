@@ -35,7 +35,7 @@ fixtures:
             transformerOptions:
                 dataFlow: '@data_flow_resultater'
                 joinType: inner
-                joinColumns: [id]
+                joinColumns: [Id]
                 includeAllColumns: false
 
 # default:

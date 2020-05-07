@@ -1,0 +1,47 @@
+App\Entity\DataSource:
+    xml_data_source:
+        name: xml
+        ttl: 3600
+        dataSource: App\DataSource\XmlDataSource
+        dataSourceOptions:
+            url: 'https://data.datatidy.srvitkphp73stg.itkdev.dk/webkort.aarhuskommune.dk/wfs/wfs/service/WFS/REQUEST/GetFeature/typename/spatialsuite/kloakoplande_2200/version/2.0.0/srsname/EPSG/25832/outputformat/gml2.xml'
+
+App\Entity\DataFlow:
+    xml_data_flow:
+        name: xml
+        dataSource: '@xml_data_source'
+        frequency: 60
+
+App\Entity\DataTransform:
+    xml_data_transform_0:
+        data_flow: '@xml_data_flow'
+        name: Select columns
+        transformer: App\DataTransformer\SelectColumnsDataTransformer
+        transformerOptions:
+            columns:
+                - 'gml:featureMember'
+            include: true
+
+    xml_data_transform_1:
+        data_flow: '@xml_data_flow'
+        name: Expand
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns:
+                - 'gml:featureMember'
+
+    xml_data_transform_2:
+        data_flow: '@xml_data_flow'
+        name: Expand
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns:
+                - 'gml:featureMember'
+
+    xml_data_transform_3:
+        data_flow: '@xml_data_flow'
+        name: Expand
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns:
+                - 'gml:featureMember/spatialsuite:kloakoplande_2200'

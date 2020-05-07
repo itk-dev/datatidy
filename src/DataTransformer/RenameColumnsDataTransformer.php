@@ -13,8 +13,8 @@ namespace App\DataTransformer;
 use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
+use App\DataSet\DataSetColumnList;
 use App\DataTransformer\Exception\InvalidColumnException;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @DataTransformer(
@@ -34,8 +34,7 @@ class RenameColumnsDataTransformer extends AbstractDataTransformer
     public function transform(DataSet $input): DataSet
     {
         $columns = $this->transformColumns($input);
-        $output = $input->copy($columns->toArray())
-            ->createTable();
+        $output = $input->copy($columns)->createTable();
 
         $sql = sprintf(
             'INSERT INTO %s(%s) SELECT %s FROM %s;',
@@ -48,7 +47,7 @@ class RenameColumnsDataTransformer extends AbstractDataTransformer
         return $output->buildFromSQL($sql);
     }
 
-    public function transformColumns(DataSet $dataSet): ArrayCollection
+    public function transformColumns(DataSet $dataSet): DataSetColumnList
     {
         $columns = $dataSet->getColumns();
         $map = [];
@@ -64,7 +63,7 @@ class RenameColumnsDataTransformer extends AbstractDataTransformer
             }
         }
 
-        $newColumns = new ArrayCollection();
+        $newColumns = new DataSetColumnList();
         foreach ($columns as $name => $column) {
             if (isset($map[$name])) {
                 $name = $map[$name];

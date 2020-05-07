@@ -1,0 +1,17 @@
+fixtures:
+    App\Entity\DataSource:
+        data_source:
+            name: xml
+            ttl: 3600
+            dataSource: App\DataSource\XmlDataSource
+            dataSourceOptions:
+                url: http://test/test-xml-ns/data.xml
+
+    App\Entity\DataFlow:
+        data_flow:
+            name: xml
+            dataSource: '@data_source'
+            frequency: 60
+
+expected:
+    filename: test-xml-ns/expected.json

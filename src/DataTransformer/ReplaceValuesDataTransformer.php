@@ -13,9 +13,10 @@ namespace App\DataTransformer;
 use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
+use App\DataSet\DataSetColumn;
+use App\DataSet\DataSetColumnList;
 use App\DataTransformer\Exception\InvalidColumnException;
 use App\Util\DataTypes;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Schema\Column;
 
 /**
@@ -49,7 +50,6 @@ class ReplaceValuesDataTransformer extends AbstractDataTransformer
 
     /**
      * @Option(type="bool", description="If set, use regular expressions for search and replace", required=false, default=false),
-     * *
      *
      * @var bool
      */
@@ -58,7 +58,7 @@ class ReplaceValuesDataTransformer extends AbstractDataTransformer
     public function transform(DataSet $input): DataSet
     {
         $columns = $this->transformColumns($input);
-        $result = $input->copy($columns->toArray())->createTable();
+        $result = $input->copy($columns)->createTable();
 
         $search = array_column($this->replacements, 'from');
         $replace = array_column($this->replacements, 'to');
@@ -91,10 +91,10 @@ class ReplaceValuesDataTransformer extends AbstractDataTransformer
         return $result;
     }
 
-    public function transformColumns(DataSet $dataSet): ArrayCollection
+    public function transformColumns(DataSet $dataSet): DataSetColumnList
     {
         $columns = $dataSet->getColumns();
-        $names = $columns->getKeys();
+        $names = $columns->getNames();
         $diff = array_diff($this->columns, $names);
         if (!empty($diff)) {
             throw new InvalidColumnException(sprintf('invalid columns: %s', implode(', ', $diff)));
@@ -104,7 +104,7 @@ class ReplaceValuesDataTransformer extends AbstractDataTransformer
 
         return $columns->map(function (Column $column) use ($type) {
             if ($column->getType() !== $type && \in_array($column->getName(), $this->columns, true)) {
-                return new Column($column->getName(), $type);
+                return new DataSetColumn($column->getName(), $type);
             }
 
             return $column;

@@ -13,11 +13,11 @@ namespace App\DataTransformer;
 use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
+use App\DataSet\DataSetColumn;
+use App\DataSet\DataSetColumnList;
 use App\DataTransformer\Exception\InvalidColumnException;
 use App\Util\DataTypes;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Platforms\Keywords\MariaDb102Keywords;
-use Doctrine\DBAL\Schema\Column;
 
 /**
  * @DataTransformer(
@@ -55,7 +55,7 @@ class CalculateDataTransformer extends AbstractDataTransformer
 
         [$names, $quotedExpression] = $this->getQuoteNamesInExpression($this->expression, $input);
         // Only existing columns can be used in calculation.
-        $invalidNames = array_diff($names, $columns->getKeys());
+        $invalidNames = array_diff($names, $columns->getNames());
         if (!empty($invalidNames)) {
             throw new InvalidColumnException(sprintf('Invalid names: %s', implode(', ', $invalidNames)));
         }
@@ -63,7 +63,7 @@ class CalculateDataTransformer extends AbstractDataTransformer
         $expressions = $input->getQuotedColumnNames();
         $expressions[$this->name] = $quotedExpression;
 
-        $output = $input->copy($newColumns->toArray())->createTable();
+        $output = $input->copy($newColumns)->createTable();
 
         $sql = sprintf(
             'INSERT INTO %s(%s) SELECT %s FROM %s;',
@@ -76,12 +76,12 @@ class CalculateDataTransformer extends AbstractDataTransformer
         return $output->buildFromSQL($sql);
     }
 
-    public function transformColumns(DataSet $dataSet): ArrayCollection
+    public function transformColumns(DataSet $dataSet): DataSetColumnList
     {
         $columns = $dataSet->getColumns();
         $type = DataTypes::getType($this->type);
 
-        $columns[$this->name] = new Column($this->name, $type);
+        $columns[] = new DataSetColumn($this->name, $type);
 
         return $columns;
     }
@@ -93,8 +93,8 @@ class CalculateDataTransformer extends AbstractDataTransformer
     {
         // Replace string literals with (hopefully) unique tokens.
         $strings = [];
-        $expression = preg_replace_callback('/"([\\\\"]|[^"])*"/', function ($match) use (&$strings) {
-            $token = sprintf('({[%03d]})', \count($strings));
+        $expression = preg_replace_callback('/"([\\\\"]|[^"])*"/', static function ($match) use (&$strings) {
+            $token = sprintf('(string{[%03d]})', \count($strings));
             $strings[$token] = $match['0'];
 
             return $token;
@@ -102,23 +102,27 @@ class CalculateDataTransformer extends AbstractDataTransformer
 
         // Collect names and unquote the ones escaped with backticks.
         $names = [];
-        if (false !== preg_match_all('/(?P<name>(?:[a-z_][a-z0-9_]*|`[^`]+`))/i', $expression, $matches)) {
-            foreach ($matches['name'] as $name) {
-                $unquoted = trim($name, '`');
-                if (!$this->isKeyword($name)) {
-                    $names[$name] = $unquoted;
-                }
+        $expressionNames = [];
+        $expression = preg_replace_callback('/(?P<name>(?:[a-z_][a-z0-9_]*|`[^`]+`))/i', function ($match) use (&$names, &$expressionNames) {
+            $token = sprintf('(name{[%03d]})', \count($names));
+            $name = $match['name'];
+            $unquoted = trim($name, '`');
+            if (!$this->isKeyword($name)) {
+                $names[$name] = $unquoted;
+                $expressionNames[$token] = $unquoted;
             }
-        }
 
-        // Order names by length.
-        uksort($names, static function ($a, $b) {
-            return \strlen($b) - \strlen($a);
-        });
+            return $token;
+        }, $expression);
 
-        foreach ($names as $key => $name) {
-            $expression = str_replace($key, $dataSet->getQuotedColumnName($name), $expression);
-        }
+        $sqlNames = $dataSet->getColumns()->getSqlNames();
+        $expressionNames = array_map(static function ($name) use ($dataSet, $sqlNames) {
+            // Note: $name may no be set in $sqlNames, e.g. if an invalid column is used. This is checked elsewhere.
+            return $dataSet->getQuotedColumnName($sqlNames[$name] ?? $name);
+        }, $expressionNames);
+
+        // Put quoted sql names back into the expression.
+        $expression = str_replace(array_keys($expressionNames), array_values($expressionNames), $expression);
 
         // Put strings back into the expression.
         $expression = str_replace(array_keys($strings), array_values($strings), $expression);

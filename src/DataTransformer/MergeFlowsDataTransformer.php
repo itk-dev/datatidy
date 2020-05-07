@@ -14,9 +14,9 @@ use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataFlow\DataFlowManager;
 use App\DataSet\DataSet;
+use App\DataSet\DataSetColumnList;
 use App\DataTransformer\Exception\TransformerRuntimeException;
 use App\Entity\DataFlow;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @DataTransformer(
@@ -82,17 +82,19 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
     {
         $dataSet = $this->getDataSet();
         $leftColumns = $input->getColumns();
+        $leftSystemNames = $leftColumns->getSqlNames();
         $rightColumns = $this->getRightColumns();
+        $rightSystemNames = $rightColumns->getSqlNames();
         $joinColumns = array_map(
-            static function ($name) use ($input) {
-                return $input->getQuotedColumnName($name, false);
+            static function ($name) use ($input, $leftSystemNames, $rightSystemNames) {
+                return $input->getQuotedColumnName($leftSystemNames[$name] ?? $rightSystemNames[$name], false);
             },
             $this->getJoinColumns($leftColumns, $rightColumns)
         );
 
         $newColumns = $this->transformColumns($input);
 
-        $output = $input->copy($newColumns->toArray())->createTable();
+        $output = $input->copy($newColumns)->createTable();
 
         $leftTableName = $input->getQuotedTableName();
         $rightTableName = $dataSet->getQuotedTableName();
@@ -123,8 +125,8 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
 
         $selectColumns = [];
         if (self::JOIN_TYPE_RIGHT !== $this->joinType) {
-            foreach ($leftColumns as $name => $column) {
-                $selectColumns[] = sprintf('%1$s.%2$s AS %2$s', $leftTableName, $input->getQuotedColumnName($name));
+            foreach ($leftColumns as $column) {
+                $selectColumns[] = sprintf('%1$s.%2$s AS %2$s', $leftTableName, $input->getQuotedColumnName($column->getSqlName()));
             }
 
             foreach ($rightColumns as $name => $column) {
@@ -133,18 +135,16 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
                     $selectColumns[] = sprintf(
                         '%1$s.%2$s AS %3$s',
                         $rightTableName,
-                        $dataSet->getQuotedColumnName($name),
+                        $dataSet->getQuotedColumnName($column->getSqlName()),
                         $dataSet->getQuotedColumnName($alias)
                     );
-                } else {
-                    if (!$leftColumns->containsKey($name)) {
-                        $selectColumns[] = sprintf(
-                            '%1$s.%2$s AS %3$s',
-                            $rightTableName,
-                            $dataSet->getQuotedColumnName($name),
-                            $dataSet->getQuotedColumnName($name)
-                        );
-                    }
+                } elseif (!$leftColumns->containsKey($name)) {
+                    $selectColumns[] = sprintf(
+                        '%1$s.%2$s AS %3$s',
+                        $rightTableName,
+                        $dataSet->getQuotedColumnName($column->getSqlName()),
+                        $dataSet->getQuotedColumnName($name)
+                    );
                 }
             }
         } else {
@@ -154,23 +154,21 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
                     $selectColumns[] = sprintf(
                         '%1$s.%2$s AS %3$s',
                         $leftTableName,
-                        $dataSet->getQuotedColumnName($name),
+                        $dataSet->getQuotedColumnName($column->getSqlName()),
                         $dataSet->getQuotedColumnName($alias)
                     );
-                } else {
-                    if (!$rightColumns->containsKey($name)) {
-                        $selectColumns[] = sprintf(
-                            '%1$s.%2$s AS %3$s',
-                            $leftTableName,
-                            $dataSet->getQuotedColumnName($name),
-                            $dataSet->getQuotedColumnName($name)
-                        );
-                    }
+                } elseif (!$rightColumns->containsKey($name)) {
+                    $selectColumns[] = sprintf(
+                        '%1$s.%2$s AS %3$s',
+                        $leftTableName,
+                        $dataSet->getQuotedColumnName($column->getSqlName()),
+                        $dataSet->getQuotedColumnName($name)
+                    );
                 }
             }
 
             foreach ($rightColumns as $name => $column) {
-                $selectColumns[] = sprintf('%1$s.%2$s AS %2$s', $rightTableName, $input->getQuotedColumnName($name));
+                $selectColumns[] = sprintf('%1$s.%2$s AS %2$s', $rightTableName, $input->getQuotedColumnName($column->getSqlName()));
             }
         }
 
@@ -187,36 +185,35 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
         return $output->buildFromSQL($sql);
     }
 
-    public function transformColumns(DataSet $dataSet): ArrayCollection
+    public function transformColumns(DataSet $dataSet): DataSetColumnList
     {
-        $columns = $dataSet->getColumns();
-        $leftColumns = $columns;
-        $columns = new ArrayCollection();
+        $leftColumns = $dataSet->getColumns();
         $rightColumns = $this->getRightColumns();
 
+        $columns = new DataSetColumnList();
         if (self::JOIN_TYPE_RIGHT !== $this->joinType) {
             foreach ($leftColumns as $name => $column) {
-                $columns[$name] = $column;
+                $columns[] = $column;
             }
             foreach ($rightColumns as $name => $column) {
                 if ($this->includeAllColumns) {
                     $name = $this->getRightColumnAlias($name);
-                    $columns[$name] = $this->renameColumn($column, $name);
+                    $columns[] = $this->renameColumn($column, $name);
                 } elseif (!$leftColumns->containsKey($name)) {
-                    $columns[$name] = $column;
+                    $columns[] = $column;
                 }
             }
         } else {
             foreach ($leftColumns as $name => $column) {
                 if ($this->includeAllColumns) {
                     $name = $this->getLeftColumnAlias($name);
-                    $columns[$name] = $this->renameColumn($column, $name);
+                    $columns[] = $this->renameColumn($column, $name);
                 } elseif (!$rightColumns->containsKey($name)) {
-                    $columns[$name] = $column;
+                    $columns[] = $column;
                 }
             }
             foreach ($rightColumns as $name => $column) {
-                $columns[$name] = $column;
+                $columns[] = $column;
             }
         }
 
@@ -233,18 +230,18 @@ class MergeFlowsDataTransformer extends AbstractDataTransformer
         return '_right_'.$name;
     }
 
-    private function getJoinColumns(ArrayCollection $columns, ArrayCollection $otherColumns)
+    private function getJoinColumns(DataSetColumnList $columns, DataSetColumnList $otherColumns)
     {
         if (self::JOIN_TYPE_CROSS === $this->joinType) {
             return [];
         }
 
-        return !empty($this->joinColumns) ? $this->joinColumns : array_intersect($columns->getKeys(), $otherColumns->getKeys());
+        return !empty($this->joinColumns) ? $this->joinColumns : array_intersect($columns->getDisplayNames(), $otherColumns->getDisplayNames());
     }
 
     private $rightColumns;
 
-    private function getRightColumns(): ArrayCollection
+    private function getRightColumns(): DataSetColumnList
     {
         if (null === $this->rightColumns) {
             $dataFlow = $this->getDataFlow();

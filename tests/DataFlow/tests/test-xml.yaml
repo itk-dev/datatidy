@@ -1,0 +1,27 @@
+fixtures:
+    App\Entity\DataSource:
+        data_source:
+            name: xml
+            ttl: 3600
+            dataSource: App\DataSource\XmlDataSource
+            dataSourceOptions:
+                url: http://test/test-xml/data.xml
+
+    App\Entity\DataFlow:
+        data_flow:
+            name: xml
+            dataSource: '@data_source'
+            frequency: 60
+
+    App\Entity\DataTarget:
+        xml_data_target:
+            dataFlow: '@data_flow'
+            description: xml
+            dataTarget: App\DataTarget\XmlHttpDataTarget
+            dataTargetOptions:
+                url: http://test/test-xml/result.xml
+                documentElementName: CATALOG
+
+expected:
+    filename: test-xml/result-expected.xml
+    actual_filename: test-xml/result.xml

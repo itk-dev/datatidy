@@ -68,7 +68,7 @@ class FilterDataTransformer extends AbstractDataTransformer
     public function transform(DataSet $input): DataSet
     {
         $columns = $this->transformColumns($input);
-        $output = $input->copy($columns->toArray())->createTable();
+        $output = $input->copy($columns)->createTable();
 
         foreach ($input->rows() as $row) {
             $value = $this->getValue($row, $this->column);
