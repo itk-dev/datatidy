@@ -15,7 +15,7 @@
             <tr>
                 <th>{{ 'Email'|trans }}</th>
                 <th>{{ 'Enabled'|trans }}</th>
-                <th>{{ 'LastLogin'|trans }}</th>
+                <th>{{ 'Last logged in at'|trans }}</th>
                 <th>{{ 'Roles'|trans }}</th>
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
@@ -25,7 +25,7 @@
                 <tr>
                     <td><a href="{{ path('user_show', {'id': user.id}) }}">{{ user.email }}</a></td>
                     <td>{{ user.enabled ? 'Yes'|trans : 'No'|trans }}</td>
-                    <td>{{ user.lastLoginAt ? user.lastLoginAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ user.lastLoggedInAt ? user.lastLoggedInAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
                     <td>
                         <a href="{{ path('user_edit', {'id': user.id}) }}"><i class="fal {{ iconClass('edit') }} fa-fw mr-2"></i>{{ 'Edit'|trans }}</a>
