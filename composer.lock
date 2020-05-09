@@ -1399,25 +1399,32 @@
             "dist": {
                 "type": "path",
                 "url": "_misc/packages/itk-dev/user-bundle",
-                "reference": "6b29bd5fe84048dafeb673ba2356ec78a706c130"
+                "reference": "d934bb3bddc2f6978862a119b94da5dc5a661ad7"
             },
             "require": {
                 "doctrine/orm": "*",
                 "php": "^7.0",
                 "symfony/console": "^4.4 || ^5.0",
                 "symfony/property-access": "^4.4 || ^5.0",
-                "symfony/security": "^4.4 || ^5.0",
+                "symfony/security-bundle": "^4.4 || ^5.0",
                 "symfonycasts/reset-password-bundle": "^1.1",
                 "twig/twig": "^2.12"
             },
             "require-dev": {
+                "dama/doctrine-test-bundle": "^6.3",
                 "friendsofphp/php-cs-fixer": "^2.15",
-                "friendsoftwig/twigcs": "^3.1"
+                "friendsoftwig/twigcs": "^3.1",
+                "symfony/phpunit-bridge": "^4.4 || ^5.0"
             },
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
                     "ItkDev\\UserBundle\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "ItkDev\\UserBundle\\Tests\\": "tests/"
                 }
             },
             "scripts": {
