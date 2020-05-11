@@ -243,6 +243,9 @@
     "pimple/pimple": {
         "version": "v3.2.3"
     },
+    "proj4php/proj4php": {
+        "version": "2.0.12"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },

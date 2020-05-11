@@ -1,0 +1,65 @@
+fixtures:
+    App\Entity\DataSource:
+        data_source:
+            name: geojson
+            ttl: 3600
+            dataSource: App\DataSource\JsonDataSource
+            dataSourceOptions:
+                url: http://test/test-geojson-change-coordinate-reference-system/data.900913.geojson
+
+    App\Entity\DataFlow:
+        data_flow:
+            name: test
+            dataSource: '@data_source'
+            frequency: 60
+
+    App\Entity\DataTransform:
+        data_transform_0:
+            data_flow: '@data_flow'
+            name: Expand features (array -> rows)
+            transformer: App\DataTransformer\ExpandColumnDataTransformer
+            transformerOptions:
+                columns: ['features']
+
+        data_transform_1:
+            data_flow: '@data_flow'
+            name: Expand features (object -> columns)
+            transformer: App\DataTransformer\ExpandColumnDataTransformer
+            transformerOptions:
+                columns: ['features']
+
+        data_transform_2:
+            data_flow: '@data_flow'
+            name: Change coordinate reference system
+            transformer: App\DataTransformer\GeoJSON\ChangeCoordinateReferenceSystemDataTransformer
+            transformerOptions:
+                columns: ['features/geometry']
+                source: 'EPSG:900913'
+                target: 'EPSG:4326'
+
+        data_transform_3:
+            data_flow: '@data_flow'
+            name: Collapse features (columns -> object)
+            transformer: App\DataTransformer\CollapseColumnDataTransformer
+            transformerOptions:
+                columns: ['features']
+
+        data_transform_4:
+            data_flow: '@data_flow'
+            name: Collapse features (rows -> array)
+            transformer: App\DataTransformer\CollapseColumnDataTransformer
+            transformerOptions:
+                columns: ['features']
+
+    App\Entity\DataTarget:
+        data_target:
+            dataFlow: '@data_flow'
+            description: test
+            dataTarget: App\DataTarget\JsonHttpDataTarget
+            dataTargetOptions:
+                url: http://test/test-geojson-change-coordinate-reference-system/result.json
+                asObject: true
+
+expected:
+    filename: test-geojson-change-coordinate-reference-system/expected.geojson
+    actual_filename: test-geojson-change-coordinate-reference-system/result.json

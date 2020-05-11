@@ -1,0 +1,51 @@
+App\Entity\DataSource:
+    geojson_change-projection_data_source:
+        name: geojson
+        ttl: 3600
+        dataSource: App\DataSource\JsonDataSource
+        dataSourceOptions:
+            url: 'https://kort.haderslev.dk/wfs/opendata/ows?service=WFS&request=GetFeature&typeName=opendata:daginstitutioner&outputFormat=application/json'
+
+App\Entity\DataFlow:
+    geojson_change-projection_data_flow:
+        name: 'GeoJSON: Change projection'
+        dataSource: '@geojson_change-projection_data_source'
+        frequency: 60
+
+App\Entity\DataTransform:
+    geojson_change-projection_data_transform_0:
+        data_flow: '@geojson_change-projection_data_flow'
+        name: Expand features (array -> rows)
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+    geojson_change-projection-data_transform_1:
+        data_flow: '@geojson_change-projection_data_flow'
+        name: Expand features (object -> columns)
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+    geojson_change-projection-data_transform_2:
+        data_flow: '@geojson_change-projection_data_flow'
+        name: Change coordinate reference system (EPSG:4326 -> EPSG:900913)
+        transformer: App\DataTransformer\GeoJSON\ChangeCoordinateReferenceSystemDataTransformer
+        transformerOptions:
+            columns: ['features/geometry']
+            source: 'EPSG:4326'
+            target: 'EPSG:900913'
+
+    geojson_change-projection-data_transform_3:
+        data_flow: '@geojson_change-projection_data_flow'
+        name: Collapse features (columns -> object)
+        transformer: App\DataTransformer\CollapseColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+    geojson_change-projection-data_transform_4:
+        data_flow: '@geojson_change-projection_data_flow'
+        name: Collapse features (rows -> array)
+        transformer: App\DataTransformer\CollapseColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
