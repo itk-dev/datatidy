@@ -1,0 +1,49 @@
+App\Entity\DataSource:
+    geojson_compute-centroid_data_source:
+        name: geojson
+        ttl: 3600
+        dataSource: App\DataSource\JsonDataSource
+        dataSourceOptions:
+            url: 'https://admin.opendata.dk/dataset/062ed13e-d53d-4ffb-abfc-b240abce0251/resource/f0d2472c-c19e-49f3-bb02-eb256279d29a/download/parkeringszone.geojson'
+
+App\Entity\DataFlow:
+    geojson_compute-centroid_data_flow:
+        name: 'GeoJSON: Compute centroid'
+        dataSource: '@geojson_compute-centroid_data_source'
+        frequency: 60
+
+App\Entity\DataTransform:
+    geojson_compute-centroid_data_transform_0:
+        data_flow: '@geojson_compute-centroid_data_flow'
+        name: Expand features (array -> rows)
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+    geojson_compute-centroid-data_transform_1:
+        data_flow: '@geojson_compute-centroid_data_flow'
+        name: Expand features (object -> columns)
+        transformer: App\DataTransformer\ExpandColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+    geojson_compute-centroid-data_transform_2:
+        data_flow: '@geojson_compute-centroid_data_flow'
+        name: Compute centroid
+        transformer: App\DataTransformer\GeoJSON\ComputeCentroidDataTransformer
+        transformerOptions:
+            columns: ['features/geometry']
+
+    geojson_compute-centroid-data_transform_3:
+        data_flow: '@geojson_compute-centroid_data_flow'
+        name: Collapse features (columns -> object)
+        transformer: App\DataTransformer\CollapseColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
+
+    geojson_compute-centroid-data_transform_4:
+        data_flow: '@geojson_compute-centroid_data_flow'
+        name: Collapse features (rows -> array)
+        transformer: App\DataTransformer\CollapseColumnDataTransformer
+        transformerOptions:
+            columns: ['features']
