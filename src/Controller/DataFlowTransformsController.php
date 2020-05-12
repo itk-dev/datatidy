@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -39,22 +40,32 @@ class DataFlowTransformsController extends AbstractController
     /** @var TranslatorInterface */
     private $translator;
 
+    /** @var SerializerInterface */
+    private $serializer;
+
     public function __construct(
         DataFlowManager $dataFlowManager,
         DataTransformerManager $dataTransformerManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SerializerInterface $serializer
     ) {
         $this->dataFlowManager = $dataFlowManager;
         $this->dataTransformerManager = $dataTransformerManager;
         $this->translator = $translator;
+        $this->serializer = $serializer;
     }
 
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("/.{_format}", name="index", methods={"GET"},
+     *     format="html",
+     *     requirements={
+     *         "_format": "csv|json",
+     *     }
+     * )
      */
-    public function index(DataFlow $dataFlow): Response
+    public function index(DataFlow $dataFlow, string $_format = 'html'): Response
     {
-        return $this->show($dataFlow);
+        return $this->show($dataFlow, null, $_format);
     }
 
     /**
@@ -79,13 +90,29 @@ class DataFlowTransformsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}.{_format}", name="show", methods={"GET"},
+     *     format="html",
+     *     requirements={
+     *         "_format": "csv|json",
+     *     }
+     * )
      */
-    public function show(DataFlow $dataFlow, DataTransform $transform = null): Response
+    public function show(DataFlow $dataFlow, DataTransform $transform = null, string $_format = 'html'): Response
     {
         $result = $this->dataFlowManager->run($dataFlow, [
             'number_of_steps' => null !== $transform ? $transform->getPosition() + 1 : 0,
         ]);
+
+        if ($result->isSuccess() && \in_array($_format, ['csv', 'json'], true)) {
+            $rows = $result->getLastTransformResult()->getRows();
+            $content = $this->serializer->serialize($rows, $_format);
+            $contentType = [
+                'csv' => 'text/csv',
+                'json' => 'application/json',
+            ][$_format] ?? 'text/plain';
+
+            return new Response($content, Response::HTTP_OK, ['content-type' => $contentType]);
+        }
 
         return $this->render('data_flow/transforms/show.html.twig', [
             'data_flow' => $dataFlow,
