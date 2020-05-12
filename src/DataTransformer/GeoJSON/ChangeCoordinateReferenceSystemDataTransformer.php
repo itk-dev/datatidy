@@ -14,10 +14,8 @@ use App\Annotation\DataTransformer;
 use App\Annotation\DataTransformer\Option;
 use App\DataSet\DataSet;
 use App\DataTransformer\AbstractDataTransformer;
+use App\Service\GeoJSONHelper;
 use phpDocumentor\Reflection\Type;
-use proj4php\Point;
-use proj4php\Proj;
-use proj4php\Proj4php;
 
 /**
  * @DataTransformer(
@@ -136,50 +134,29 @@ class ChangeCoordinateReferenceSystemDataTransformer extends AbstractDataTransfo
      */
     private $target;
 
+    /** @var GeoJSONHelper */
+    private $geoJSONHelper;
+
+    public function __construct(GeoJSONHelper $geoJSONHelper)
+    {
+        $this->geoJSONHelper = $geoJSONHelper;
+    }
+
     public function transform(DataSet $input): DataSet
     {
         $output = $input->copy()->createTable();
 
-        $proj4 = new Proj4php();
-        $source = new Proj($this->source, $proj4);
-        $target = new Proj($this->target, $proj4);
-
         foreach ($input->rows() as $row) {
             foreach ($this->columns as $column) {
                 $value = $this->getValue($row, $column);
-                array_walk($value, function (&$item) use ($proj4, $source, $target) {
-                    if ($this->isCoordinate($item)) {
-                        $sourcePoint = new Point(...array_merge($item, [$source]));
-                        var_export(['item' => $item]);
-                        $targetPoint = $proj4->transform($target, $sourcePoint);
-                        $item = \array_slice($targetPoint->toArray(), 0, \count($item));
-                        var_export(['item' => $item]);
-                    }
-                });
-                $row[$column] = $value;
+                if (\is_array($value)) {
+                    $row[$column] = $this->geoJSONHelper->changeCRS($value, $this->source, $this->target);
+                }
             }
 
             $output->insertRow($row);
         }
 
         return $output;
-    }
-
-    private function isCoordinate($item): bool
-    {
-        if (!\is_array($item)) {
-            return false;
-        }
-        if (!\in_array(\count($item), [2, 3])) {
-            return false;
-        }
-
-        foreach ($item as $value) {
-            if (!(\is_float($value) || \is_int($value))) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
