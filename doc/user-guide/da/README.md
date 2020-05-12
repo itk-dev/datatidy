@@ -68,6 +68,8 @@ I en opskrift køres datatransformationerne i en veldefineret rækkefølge og en
 transformation skal derfor kunne behandle resultatet af den foregående
 transformation.
 
+[Læs mere om datatransformationer](data-transforms.md)
+
 @TODO Transformer options
 
 ## Datamål
