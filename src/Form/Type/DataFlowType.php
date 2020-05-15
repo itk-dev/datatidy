@@ -17,11 +17,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Setono\CronExpressionBundle\Form\Type\CronExpressionType;
 
 class DataFlowType extends AbstractType
 {
@@ -39,7 +37,9 @@ class DataFlowType extends AbstractType
                         'multiple' => true,
                         'expanded' => true,
                     ])
-                    ->add('schedule', TextType::class)
+                    ->add('schedule', TextType::class, [
+                        'help' => $options['schedule_help'],
+                    ])
             )
             ->add(
                 $builder->create('data_source', FormType::class, [
@@ -72,6 +72,7 @@ class DataFlowType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => DataFlow::class,
+            'schedule_help' => 'Not scheduled yet.',
         ]);
     }
 }
