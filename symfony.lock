@@ -17,6 +17,9 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
+    "brick/reflection": {
+        "version": "0.3.0"
+    },
     "composer/semver": {
         "version": "1.5.0"
     },
@@ -107,6 +110,9 @@
     },
     "doctrine/reflection": {
         "version": "v1.0.0"
+    },
+    "dragonmantank/cron-expression": {
+        "version": "v2.3.0"
     },
     "easycorp/easy-log-handler": {
         "version": "1.0",
@@ -284,6 +290,9 @@
         "files": [
             "config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "setono/cron-expression-bundle": {
+        "version": "v1.2.0"
     },
     "squizlabs/php_codesniffer": {
         "version": "3.0",
