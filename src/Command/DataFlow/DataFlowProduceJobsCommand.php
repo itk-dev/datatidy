@@ -108,12 +108,10 @@ class DataFlowProduceJobsCommand extends Command
                 return false;
             }
 
-            if (null !== $dataFlow->getSchedule()) {
-                $cron = CronExpression::factory(\strval($dataFlow->getSchedule()));
-                return $cron->isDue();
-            }
-
-            return false;
+            return null !== $dataFlow->getSchedule()
+                ? $dataFlow->getSchedule()->isDue()
+                : false
+            ;
         });
     }
 }
