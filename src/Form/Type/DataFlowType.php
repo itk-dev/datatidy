@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Setono\CronExpressionBundle\Form\Type\CronExpressionType;
 
 class DataFlowType extends AbstractType
 {
@@ -38,7 +39,7 @@ class DataFlowType extends AbstractType
                         'multiple' => true,
                         'expanded' => true,
                     ])
-                    ->add('frequency', IntegerType::class)
+                    ->add('schedule', TextType::class)
             )
             ->add(
                 $builder->create('data_source', FormType::class, [

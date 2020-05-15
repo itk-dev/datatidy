@@ -74,12 +74,6 @@ class DataFlow
     private $dataTargets;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Gedmo\Versioned()
-     */
-    private $frequency = 0;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\DataFlowJob", mappedBy="dataFlow", orphanRemoval=true)
      */
     private $jobs;
@@ -89,6 +83,12 @@ class DataFlow
      * @ORM\JoinTable(name="data_flow_collaborator")
      */
     private $collaborators;
+
+    /**
+     * @ORM\Column(type="cron_expression", nullable=true)
+     * @Gedmo\Versioned()
+     */
+    private $schedule;
 
     public function __construct()
     {
@@ -239,18 +239,6 @@ class DataFlow
         return $this;
     }
 
-    public function getFrequency(): ?int
-    {
-        return $this->frequency;
-    }
-
-    public function setFrequency(int $frequency): self
-    {
-        $this->frequency = $frequency;
-
-        return $this;
-    }
-
     /**
      * @return Collection|DataFlowJob[]
      */
@@ -304,6 +292,18 @@ class DataFlow
         if ($this->collaborators->contains($collaborator)) {
             $this->collaborators->removeElement($collaborator);
         }
+
+        return $this;
+    }
+
+    public function getSchedule()
+    {
+        return $this->schedule;
+    }
+
+    public function setSchedule($schedule): self
+    {
+        $this->schedule = $schedule;
 
         return $this;
     }
