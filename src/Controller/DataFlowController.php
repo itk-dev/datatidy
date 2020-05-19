@@ -78,9 +78,14 @@ class DataFlowController extends AbstractController
     /**
      * @Route("/{id}/edit", name="data_flow_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, DataFlow $dataFlow): Response
+    public function edit(Request $request, DataFlow $dataFlow, TranslatorInterface $translator): Response
     {
-        $form = $this->createForm(DataFlowType::class, $dataFlow);
+        $scheduleHelp = null !== $dataFlow->getSchedule()
+            ? $translator->trans('Next at %time%', ['%time%' => $dataFlow->getSchedule()->getNextRunDate()->format('d-m-Y H:i:s')])
+            : ''
+        ;
+
+        $form = $this->createForm(DataFlowType::class, $dataFlow, ['schedule_help' => $scheduleHelp]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

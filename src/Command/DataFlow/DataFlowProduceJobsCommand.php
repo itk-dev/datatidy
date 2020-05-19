@@ -87,6 +87,8 @@ class DataFlowProduceJobsCommand extends Command
 
             $this->eventDispatcher->dispatch(new DataFlowJobQueuedEvent($job));
         }
+
+        return 0;
     }
 
     /**
@@ -96,28 +98,17 @@ class DataFlowProduceJobsCommand extends Command
      */
     private function getDataFlowsToRun(array $dataFlowCandidates): array
     {
-        $now = new \DateTime();
-
-        return array_filter($dataFlowCandidates, function (DataFlow $dataFlow) use ($now) {
-            // If data flow hasn't run yet at all is should do it now
-            if (empty($dataFlow->getLastRunAt())) {
-                return true;
-            }
-
+        return array_filter($dataFlowCandidates, function (DataFlow $dataFlow) {
             // If there already is an active job (not completed or failed jobs), if so we should not schedule a new job
             $activeJobs = $this->dataFlowJobRepository->findActiveJobsByDataFlow($dataFlow);
             if (!empty($activeJobs)) {
                 return false;
             }
 
-            // Difference in seconds between now and last time the data flow ran
-            $seconds = $now->getTimestamp() - $dataFlow->getLastRunAt()->getTimestamp();
-
-            if ($dataFlow->getFrequency() < $seconds) {
-                return true;
-            }
-
-            return false;
+            return null !== $dataFlow->getSchedule()
+                ? $dataFlow->getSchedule()->isDue()
+                : false
+            ;
         });
     }
 }

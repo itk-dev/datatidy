@@ -10,7 +10,7 @@ App\Entity\DataFlow:
     xml_data_flow:
         name: xml
         dataSource: '@xml_data_source'
-        frequency: 60
+        schedule: '1 1 * * *'
 
 App\Entity\DataTransform:
     xml_data_transform_0:

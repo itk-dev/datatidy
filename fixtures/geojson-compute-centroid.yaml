@@ -10,7 +10,7 @@ App\Entity\DataFlow:
     geojson_compute-centroid_data_flow:
         name: 'GeoJSON: Compute centroid'
         dataSource: '@geojson_compute-centroid_data_source'
-        frequency: 60
+        schedule: 1 * * * *
 
 App\Entity\DataTransform:
     geojson_compute-centroid_data_transform_0:

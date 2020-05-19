@@ -3,13 +3,13 @@ App\Entity\DataFlow:
         enabled: false
         name: Flow with error (invalid columns)
         dataSource: '@data_source:odaa-b3eeb0ff-c8a8-4824-99d6-e0a3747c8b0d'
-        frequency: 60
+        schedule: 1 * * * *
 
     data_flow_source_error:
         enabled: false
         name: Flow with error (invalid source)
         dataSource: '@data_source:invalid'
-        frequency: 60
+        schedule: 1 * * * *
 
 App\Entity\DataTransform:
     data_flow_transform_error_0:

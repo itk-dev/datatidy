@@ -10,7 +10,7 @@ App\Entity\DataFlow:
     geojson_change-projection_data_flow:
         name: 'GeoJSON: Change projection'
         dataSource: '@geojson_change-projection_data_source'
-        frequency: 60
+        schedule: 1 * * * *
 
 App\Entity\DataTransform:
     geojson_change-projection_data_transform_0:

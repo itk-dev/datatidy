@@ -10,7 +10,7 @@ App\Entity\DataFlow:
     csv_data_flow:
         name: csv
         dataSource: '@csv_data_source'
-        frequency: 60
+        schedule: '7 * 5 * *'
 
 App\Entity\DataTransform:
     csv_data_transform_0:

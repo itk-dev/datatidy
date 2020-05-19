@@ -3,7 +3,7 @@ App\Entity\DataFlow:
         enabled: false
         name: Data flow with filter
         dataSource: '@data_source:odaa-c65b055d-a020-4871-ab51-bdbc3fd73fd8'
-        frequency: 60
+        schedule: 1 * * * *
 
 App\Entity\DataTransform:
     data_flow_transform_0:
