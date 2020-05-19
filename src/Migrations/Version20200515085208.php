@@ -31,6 +31,7 @@ final class Version20200515085208 extends AbstractMigration
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE data_flow ADD schedule VARCHAR(255) DEFAULT NULL COMMENT \'(DC2Type:cron_expression)\'');
+        $this->addSql('UPDATE data_flow SET schedule = \'0 0 * * 0\'');
     }
 
     public function down(Schema $schema): void
