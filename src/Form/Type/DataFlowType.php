@@ -15,6 +15,7 @@ use App\Entity\DataSource;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,7 +38,17 @@ class DataFlowType extends AbstractType
                         'multiple' => true,
                         'expanded' => true,
                     ])
-                    ->add('schedule', TextType::class, [
+                    ->add('schedule', ChoiceType::class, [
+                        'choices' => [
+                            'Every minute' => '*/1 * * * *',
+                            'Every 15 minutes' => '*/15 * * * *',
+                            'Every 30 minutes' => '*/30 * * * *',
+                            'Every hour' => '*/60 * * * *',
+                            'Everyday at midnight' => '0 0 * * *',
+                            'Every week' => '0 0 * * 0',
+                            'Every month' => '0 0 1 * *',
+                        ],
+                        'choice_translation_domain' => true,
                         'help' => $options['schedule_help'],
                     ])
             )
