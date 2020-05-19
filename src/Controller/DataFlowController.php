@@ -18,7 +18,6 @@ use App\Form\Type\DataFlowCreateType;
 use App\Form\Type\DataFlowType;
 use App\Repository\DataFlowRepository;
 use App\Repository\DataTransformRepository;
-use Cron\CronExpression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -81,11 +80,10 @@ class DataFlowController extends AbstractController
      */
     public function edit(Request $request, DataFlow $dataFlow): Response
     {
-        $scheduleHelp = '';
-        if (null !== $dataFlow->getSchedule()) {
-            $cron = CronExpression::factory(\strval($dataFlow->getSchedule()));
-            $scheduleHelp = sprintf('Next at %s', $cron->getNextRunDate()->format('d-m-Y H:i:s'));
-        }
+        $scheduleHelp = null !== $dataFlow->getSchedule()
+            ? sprintf('Next at %s', $dataFlow->getSchedule()->getNextRunDate()->format('d-m-Y H:i:s'))
+            : ''
+        ;
 
         $form = $this->createForm(DataFlowType::class, $dataFlow, ['schedule_help' => $scheduleHelp]);
         $form->handleRequest($request);

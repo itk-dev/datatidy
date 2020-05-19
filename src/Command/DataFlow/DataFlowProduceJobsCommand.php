@@ -17,9 +17,7 @@ use App\Event\DataFlowJobQueuedEvent;
 use App\Message\RunDataFlowJobMessage;
 use App\Repository\DataFlowJobRepository;
 use App\Repository\DataFlowRepository;
-use Cron\CronExpression;
 use Doctrine\ORM\EntityManagerInterface;
-use Setono\CronExpressionBundle\Doctrine\DBAL\Types\CronExpressionType;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -101,7 +99,6 @@ class DataFlowProduceJobsCommand extends Command
     private function getDataFlowsToRun(array $dataFlowCandidates): array
     {
         return array_filter($dataFlowCandidates, function (DataFlow $dataFlow) {
-
             // If there already is an active job (not completed or failed jobs), if so we should not schedule a new job
             $activeJobs = $this->dataFlowJobRepository->findActiveJobsByDataFlow($dataFlow);
             if (!empty($activeJobs)) {
