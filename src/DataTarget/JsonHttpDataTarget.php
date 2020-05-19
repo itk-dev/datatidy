@@ -23,7 +23,7 @@ use Doctrine\Common\Collections\Collection;
 class JsonHttpDataTarget extends AbstractHttpDataTarget
 {
     /**
-     * @Option(name="As object", description="Send data as a JSON object (the first row in the result)", type="bool", default=false)
+     * @Option(name="As object", description="Send data as a JSON object (the first row in the result)", type="choice", choices={"No": false, "Yes":true}, required=true)
      */
     private $asObject;
 
