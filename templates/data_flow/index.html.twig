@@ -6,6 +6,7 @@
 {% block header %}{{ 'Data flows'|trans }}{% endblock %}
 
 {% block toolbar %}
+    {{ form(filterForm) }}
     <a class="btn btn-success btn-sm" href="{{ path('data_flow_new') }}">{{ 'New data flow'|trans }}</a>
 {% endblock %}
 
@@ -59,4 +60,9 @@
             {% endfor %}
         {% endblock %}
     {% endembed %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('data_flow_filter') }}
 {% endblock %}

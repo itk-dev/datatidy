@@ -14,10 +14,12 @@ use App\DataFlow\DataFlowManager;
 use App\DataTransformer\MergeFlowsDataTransformer;
 use App\Entity\DataFlow;
 use App\Entity\DataTransform;
+use App\Filter\DataFlowFilterType;
 use App\Form\Type\DataFlowCreateType;
 use App\Form\Type\DataFlowType;
 use App\Repository\DataFlowRepository;
 use App\Repository\DataTransformRepository;
+use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,10 +33,29 @@ class DataFlowController extends AbstractController
     /**
      * @Route("/", name="data_flow_index", methods={"GET"})
      */
-    public function index(DataFlowRepository $dataFlowRepository): Response
+    public function index(Request $request, DataFlowRepository $dataFlowRepository, FilterBuilderUpdaterInterface $filterBuilderUpdater): Response
     {
+        $filterForm = $this->createForm(DataFlowFilterType::class, null, [
+            'logged_in_user' => $this->getUser(),
+        ]);
+
+        $dataFlows = null;
+
+        if ($request->query->has($filterForm->getName())) {
+
+            $filterForm->submit($request->query->get($filterForm->getName()));
+
+            $filterBuilder = $dataFlowRepository->createQueryBuilder('e');
+            $filterBuilderUpdater->addFilterConditions($filterForm, $filterBuilder);
+
+            $dataFlows = $filterBuilder->getQuery()->getResult();
+        } else {
+            $dataFlows = $dataFlowRepository->findAll();
+        }
+
         return $this->render('data_flow/index.html.twig', [
-            'data_flows' => $dataFlowRepository->findAll(),
+            'data_flows' => $dataFlows,
+            'filterForm' => $filterForm->createView(),
         ]);
     }
 
