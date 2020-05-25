@@ -17,13 +17,21 @@ use Lexik\Bundle\FormFilterBundle\Filter\Query\QueryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class DataFlowFilterType extends AbstractType
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var User $loggedInUser */
-        $loggedInUser = $options['logged_in_user'];
+        /** @var User $currentUser */
+        $currentUser = $this->security->getUser();
 
         $builder->setMethod('GET');
         $builder->add('collaborators', Filters\ChoiceFilterType::class, [
@@ -31,7 +39,7 @@ class DataFlowFilterType extends AbstractType
             'placeholder' => false,
             'choices' => [
                 'All flows' => 'all',
-                'My flows' => $loggedInUser->getId(),
+                'My flows' => $currentUser->getId(),
             ],
             'apply_filter' => function (QueryInterface $filterQuery, $field, $values) {
                 if (empty($values['value'])) {

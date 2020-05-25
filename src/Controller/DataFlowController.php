@@ -35,9 +35,7 @@ class DataFlowController extends AbstractController
      */
     public function index(Request $request, DataFlowRepository $dataFlowRepository, FilterBuilderUpdaterInterface $filterBuilderUpdater): Response
     {
-        $filterForm = $this->createForm(DataFlowFilterType::class, null, [
-            'logged_in_user' => $this->getUser(),
-        ]);
+        $filterForm = $this->createForm(DataFlowFilterType::class);
 
         $dataFlows = null;
 
