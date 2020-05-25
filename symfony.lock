@@ -194,6 +194,9 @@
     "league/csv": {
         "version": "9.4.1"
     },
+    "lexik/form-filter-bundle": {
+        "version": "v6.0.1"
+    },
     "microsoft/tolerant-php-parser": {
         "version": "v0.0.18"
     },

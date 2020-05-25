@@ -10,6 +10,7 @@
         "gedmo/doctrine-extensions": "^2.4",
         "itk-dev/user-bundle": "^0.1",
         "league/csv": "^9.0",
+        "lexik/form-filter-bundle": "^6.0",
         "proj4php/proj4php": "^2.0",
         "sensio/framework-extra-bundle": "^5.1",
         "setono/cron-expression-bundle": "^1.2",
