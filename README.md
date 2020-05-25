@@ -71,6 +71,13 @@ docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migra
 docker-compose exec phpfpm bin/phpunit
 ```
 
+Alternatively, run with Symfony binary (clears your database):
+
+```bash
+APP_ENV=test symfony console doctrine:migrations:migrate --no-interaction
+APP_ENV=test symfony php bin/phpunit
+```
+
 See [Data flow tests](tests/DataFlow/README.md) for details on how to test data
 flows.
 

@@ -11,7 +11,7 @@ fixtures:
         data_flow:
             name: xml
             dataSource: '@data_source'
-            frequency: 60
+            schedule: '0 0 1 1 *'
 
     App\Entity\DataTarget:
         xml_data_target:
