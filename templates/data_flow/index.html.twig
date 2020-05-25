@@ -6,8 +6,14 @@
 {% block header %}{{ 'Data flows'|trans }}{% endblock %}
 
 {% block toolbar %}
-    {{ form(filterForm) }}
-    <a class="btn btn-success btn-sm" href="{{ path('data_flow_new') }}">{{ 'New data flow'|trans }}</a>
+    <div class="btn-group mr-2" role="group">
+        {{ form_start(filterForm, {'attr': {'class': 'form-inline'}}) }}
+            {{ form_widget(filterForm.collaborators, {'attr': {'class': 'form-control-sm'}}) }}
+        {{ form_end(filterForm) }}
+    </div>
+    <div class="btn-group mr-2" role="group">
+        <a class="btn btn-success btn-sm" href="{{ path('data_flow_new') }}">{{ 'New data flow'|trans }}</a>
+    </div>
 {% endblock %}
 
 {% block content %}
