@@ -86,7 +86,7 @@ class DataFlow
     private $collaborators;
 
     /**
-     * @ORM\Column(type="cron_expression", nullable=true)
+     * @ORM\Column(type="cron_expression")
      * @Gedmo\Versioned()
      */
     private $schedule;
@@ -98,6 +98,7 @@ class DataFlow
         $this->dataTargets = new ArrayCollection();
         $this->jobs = new ArrayCollection();
         $this->collaborators = new ArrayCollection();
+        $this->schedule = CronExpression::factory('@monthly');
     }
 
     public function getId(): ?string
