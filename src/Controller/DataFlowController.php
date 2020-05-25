@@ -42,7 +42,6 @@ class DataFlowController extends AbstractController
         $dataFlows = null;
 
         if ($request->query->has($filterForm->getName())) {
-
             $filterForm->submit($request->query->get($filterForm->getName()));
 
             $filterBuilder = $dataFlowRepository->createQueryBuilder('e');

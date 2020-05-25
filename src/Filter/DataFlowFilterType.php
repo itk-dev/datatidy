@@ -1,16 +1,22 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\Filter;
 
-
 use App\Entity\User;
+use Doctrine\ORM\QueryBuilder;
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
 use Lexik\Bundle\FormFilterBundle\Filter\Query\QueryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
-use Doctrine\ORM\QueryBuilder;
 
 class DataFlowFilterType extends AbstractType
 {
@@ -40,7 +46,7 @@ class DataFlowFilterType extends AbstractType
 
                 $expression = null;
 
-                if ('all' != $values['value']) {
+                if ('all' !== $values['value']) {
                     $expression = $queryBuilder->expr()->orX(
                         $queryBuilder->expr()->eq('e.createdBy', ':'.$paramName),
                         $queryBuilder->expr()->isMemberOf(':'.$paramName, $field)
@@ -48,10 +54,10 @@ class DataFlowFilterType extends AbstractType
                 }
 
                 // expression parameters
-                $parameters = array($paramName => $values['value']); // [ name => value ]
+                $parameters = [$paramName => $values['value']]; // [ name => value ]
 
                 return $filterQuery->createCondition($expression, $parameters);
-            }
+            },
         ]);
     }
 

@@ -1,12 +1,19 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\Filter;
 
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
 
 class DataFlowCollaboratorFilterType extends AbstractType
 {
@@ -17,7 +24,7 @@ class DataFlowCollaboratorFilterType extends AbstractType
             'choices' => [
                 'All flows' => '*',
                 'My flows' => '123',
-            ]
+            ],
         ]);
     }
 
