@@ -21,12 +21,12 @@ fixtures:
         data_flow:
             name: Prices
             dataSource: '@data_source_prices'
-            frequency: 60
+            schedule: '0 0 1 1 *'
 
         data_flow_quantities:
             name: Quantities
             dataSource: '@data_source_quantities'
-            frequency: 60
+            schedule: '0 0 1 1 *'
 
     App\Entity\DataTransform:
         data_transform_0:

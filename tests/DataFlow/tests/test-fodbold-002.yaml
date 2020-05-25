@@ -20,12 +20,12 @@ fixtures:
         data_flow:
             name: Main data flow
             dataSource: '@data_source_runde1'
-            frequency: 60
+            schedule: '0 0 1 1 *'
 
         data_flow_resultater:
             name: Secondaty data flow
             dataSource: '@data_source_resultater'
-            frequency: 60
+            schedule: '0 0 1 1 *'
 
     App\Entity\DataTransform:
         data_transform_0:
