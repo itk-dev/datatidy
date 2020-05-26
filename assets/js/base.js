@@ -28,6 +28,8 @@ import { faMinusCircle } from '@fortawesome/free-solid-svg-icons/faMinusCircle'
 
 const $ = require('jquery')
 global.$ = global.jQuery = $
+require('jquery.are-you-sure')
+
 require('../scss/base.scss')
 require('bootstrap')
 library.add(
@@ -65,26 +67,8 @@ dom.watch()
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
-})
 
-// Show alert when user is leaving a dirty form uncommitted
-let unsaved = false
-$(':input').change(function () {
-  unsaved = true
-})
-
-let isSubmitting = false
-$('form').submit(function () {
-  isSubmitting = true
-})
-
-window.addEventListener('beforeunload', function (e) {
-  if (!isSubmitting && unsaved) {
-    e.preventDefault()
-    e.returnValue = ''
-  } else {
-    delete e.returnValue
-  }
+  $('form').areYouSure()
 })
 
 $('#searchModal').on('shown.bs.modal', function () {

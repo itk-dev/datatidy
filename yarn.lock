@@ -4376,10 +4376,22 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
+jquery.are-you-sure@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/jquery.are-you-sure/-/jquery.are-you-sure-1.9.0.tgz#16aaa2c6080fa214f64027239ae3a34ad6a6265e"
+  integrity sha512-2r0uFx8CyAopjeHGOdvvwpFP921TnW1+v1uJXcAWQYHYGB1tryTDhQY+5u6HsVeMwbWiRTKVZFWnLaFpDvIqZQ==
+  dependencies:
+    jquery ">=1.4.2"
+
 jquery.json-viewer@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/jquery.json-viewer/-/jquery.json-viewer-1.4.0.tgz#6e0ede8ae3239cb20ac359f663b9aae4ec8a9d94"
   integrity sha512-6H1U/w+/8vMwDH5Im0OveuKPZ1fZWy7hgvR3Cn+HeamQIoWrVqBuRaE2TF/xEc6Hmi3vhQVRqZBmYGKTdOo2tw==
+
+jquery@>=1.4.2:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
+  integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
 
 jquery@^3.4.1:
   version "3.4.1"
