@@ -48,7 +48,7 @@ class RunDataFlowJobMessageHandler implements MessageHandlerInterface
         $dataFlow = $job->getDataFlow();
 
         /** @var DataFlowRunResult $result */
-        $result = $this->dataFlowManager->run($dataFlow);
+        $result = $this->dataFlowManager->run($dataFlow, ['publish' => true]);
 
         $job->setStartedAt(new \DateTime());
         $job->setStatus(DataFlowJob::STATUS_RUNNING);
