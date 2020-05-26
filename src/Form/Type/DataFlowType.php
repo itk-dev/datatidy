@@ -53,7 +53,7 @@ class DataFlowType extends AbstractType
                         'help' => $options['schedule_help'],
                     ])
                     ->add('enabled', CheckboxType::class, [
-                        'help' => 'Check if you want to have this flow run by automatically',
+                        'help' => 'Check if you want to have this flow run automatically',
                         'required' => false,
                     ])
             )
