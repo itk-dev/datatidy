@@ -86,3 +86,7 @@ window.addEventListener('beforeunload', function (e) {
     delete e.returnValue
   }
 })
+
+$('#searchModal').on('shown.bs.modal', function () {
+  $('#search-input').trigger('focus')
+})
