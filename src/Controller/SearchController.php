@@ -41,11 +41,10 @@ class SearchController extends AbstractController
 
         $matchedDataFlows = $this->searchDataFlows($query);
         $matchedDataSources = $this->searchDataSources($query);
-        
+
         return $this->render('search/index.html.twig', [
             'data_flows' => $matchedDataFlows,
             'data_sources' => $matchedDataSources,
-            'number_of_results' => count($matchedDataFlows) + count($matchedDataSources),
         ]);
     }
 
