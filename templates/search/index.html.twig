@@ -1,0 +1,14 @@
+{% extends 'data_source/layout.html.twig' %}
+{% trans_default_domain 'search' %}
+
+{% block title %}{{ 'Search results'|trans }}{% endblock %}
+
+{% block header %}{{ 'Found %number_of_results% results'|trans({'%number_of_results%': number_of_results}) }}{% endblock %}
+
+{% block content %}
+    <h4>{{ 'Flows'|trans }}</h4>
+    {% include 'data_flow/_table.html.twig' with {'data_flows': data_flows} %}
+
+    <h4>{{ 'Data library'|trans }}</h4>
+    {% include 'data_source/_table.html.twig' with {'data_sources': data_sources} %}
+{% endblock %}
