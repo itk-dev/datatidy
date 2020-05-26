@@ -39,14 +39,9 @@ class SearchController extends AbstractController
     {
         $query = $request->query->get('query', '');
 
-        if (!empty($query)) {
-            $matchedDataFlows = $this->searchDataFlows($query);
-            $matchedDataSources = $this->searchDataSources($query);
-        } else {
-            $matchedDataFlows = $this->dataFlowRepository->findAll();
-            $matchedDataSources = $this->dataSourceRepository->findAll();
-        }
-
+        $matchedDataFlows = $this->searchDataFlows($query);
+        $matchedDataSources = $this->searchDataSources($query);
+        
         return $this->render('search/index.html.twig', [
             'data_flows' => $matchedDataFlows,
             'data_sources' => $matchedDataSources,
@@ -56,6 +51,10 @@ class SearchController extends AbstractController
 
     private function searchDataFlows(string $search)
     {
+        if (empty($search)) {
+            return $this->dataFlowRepository->findAll();
+        }
+
         $queryBuilder = $this->dataFlowRepository->createQueryBuilder('e');
 
         $queryBuilder->where('e.name LIKE :search');
@@ -66,6 +65,10 @@ class SearchController extends AbstractController
 
     private function searchDataSources(string $search)
     {
+        if (empty($search)) {
+            return $this->dataSourceRepository->findAll();
+        }
+
         $queryBuilder = $this->dataSourceRepository->createQueryBuilder('e');
 
         $queryBuilder->where('e.name LIKE :search');
