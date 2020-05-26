@@ -12,36 +12,5 @@
 {% endblock %}
 
 {% block content %}
-    {% embed '_table.html.twig' %}
-        {% block thead %}
-            <tr>
-                <th>{{ 'Name'|trans }}</th>
-                <th>{{ 'TTL'|trans }}</th>
-                <th>{{ 'Last read at'|trans }}</th>
-                <th>{{ 'Updated at'|trans }}</th>
-                <th class="text-right">{{ 'Actions'|trans }}</th>
-            </tr>
-        {% endblock %}
-        {% block tbody %}
-            {% for data_source in data_sources %}
-                <tr>
-                    {# TODO: Add condtion to show badge width datatype
-                    {{ data_source.type ? 'XML' : 'JSON' }} #}
-                    <td><span class="badge badge-light mr-2 text-muted">XML</span>{#<span class="badge badge-light mr-2 text-muted">json</span>#}<a href="{{ path('data_source_show', {'id': data_source.id}) }}">{{ data_source.name }}</a></td>
-                    <td>{{ data_source.ttl }}</td>
-                    <td>{{ data_source.lastReadAt ? data_source.lastReadAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ data_source.updatedAt ? data_source.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td class="text-right">
-                        {% if is_granted('edit', data_source) %}
-                            <a href="{{ path('data_source_edit', {'id': data_source.id}) }}"><i class="fal {{ iconClass('edit') }} fa-fw mr-2"></i>{{ 'Edit'|trans }}</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="12">{{ 'No records found'|trans }}</td>
-                </tr>
-            {% endfor %}
-        {% endblock %}
-    {% endembed %}
+    {% include 'data_source/_table.html.twig' with {'data_sources': data_sources} %}
 {% endblock %}
