@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of itk-dev/datatidy.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
 
 namespace App\Controller;
 
@@ -40,12 +47,10 @@ class SearchController extends AbstractController
             $matchedDataSources = $this->dataSourceRepository->findAll();
         }
 
-
-
         return $this->render('search/index.html.twig', [
             'data_flows' => $matchedDataFlows,
             'data_sources' => $matchedDataSources,
-            'number_of_results' => sizeof($matchedDataFlows) + sizeof($matchedDataSources),
+            'number_of_results' => count($matchedDataFlows) + count($matchedDataSources),
         ]);
     }
 
