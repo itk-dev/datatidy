@@ -57,7 +57,7 @@ class SearchController extends AbstractController
         $queryBuilder = $this->dataFlowRepository->createQueryBuilder('e');
 
         $queryBuilder->where('e.name LIKE :search');
-        $queryBuilder->setParameter(':search', $search);
+        $queryBuilder->setParameter(':search', '%'.$search.'%');
 
         return $queryBuilder->getQuery()->getResult();
     }
@@ -71,7 +71,7 @@ class SearchController extends AbstractController
         $queryBuilder = $this->dataSourceRepository->createQueryBuilder('e');
 
         $queryBuilder->where('e.name LIKE :search');
-        $queryBuilder->setParameter(':search', $search);
+        $queryBuilder->setParameter(':search', '%'.$search.'%');
 
         return $queryBuilder->getQuery()->getResult();
     }
