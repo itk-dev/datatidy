@@ -16,8 +16,10 @@ Til dette formål, ud- og sammenfoldning af data, findes to datatransformationer
 
 ### Eksempel: GeoJSON
 
-I følgende GeoJSON-datakilde ønsker vi at oversætte vindretning
-(`wind_direction`) til kompaspunkter (1 → N, 2 → E, 3 → S, 4 → W):
+I følgende
+[GeoJSON-datakilde](https://data.datatidy.srvitkphp73stg.itkdev.dk/data.datatidy.srvitkphp73stg.itkdev.dk/examples/wind_direction.geojson.json)
+ønsker vi at oversætte vindretning (`wind_direction`) til kompaspunkter (1 → N,
+2 → E, 3 → S, 4 → W):
 
 ```json
 {

@@ -50,6 +50,28 @@ Datatidy formaterne [JSON](https://en.wikipedia.org/wiki/JSON) og
 En datakilde består af en url plus nogle indstillinger der styrer hvordan data
 hentes fra kilden, fx hvilket format data har (JSON, CSV, …).
 
+**Bemærk**: Det er afgørende at urlen til en datakilde ikke ændrer sig idet
+Datatidy løbende vil hente og behandle data fra kilden.
+
+Hvis man finder datakilder på [opendata.dk](https://www.opendata.dk/) skal man
+af og til holde tungen lige i munden for at få fat i den rigtige datakildeurl.
+
+På https://www.opendata.dk/city-of-frederiksberg/dagtilbud_frederiksberg peger
+“Download”-knappen på urlen
+https://admin.opendata.dk/dataset/8e0c004c-fa81-4cd3-84ca-20db643fff29/resource/2f142bbc-2517-416f-8748-69fc68a6a0d4/download/dagtilbud.geojson
+som viderestiller til
+https://cc-p-minio.ckan.io/ckan/opendatadenmark-prod/resources/2f142bbc-2517-416f-8748-69fc68a6a0d4/dagtilbud.geojson?AWSAccessKeyId=2effdd1004072cb9&Expires=1590566362&Signature=6%2FrZvQb%2F%2Bb34nsgXYLNIgzqam3Q%3D
+(ved redaktionens afslutning). Den endelige url virker kun midlertidigt og
+Datatidy kan derfor ikke bruge den som datakilde.
+
+Hvis man vil bruge “[Dagtilbud
+Frederiksberg](https://www.opendata.dk/city-of-frederiksberg/dagtilbud_frederiksberg)”
+som datakilde er det derfor afgørende at man bruger urlen
+https://admin.opendata.dk/dataset/8e0c004c-fa81-4cd3-84ca-20db643fff29/resource/2f142bbc-2517-416f-8748-69fc68a6a0d4/download/dagtilbud.geojson
+i sin datakilde. Denne url kan nemt findes ved at højreklikke på
+“Download”-knappen og vælge “Copy link address”.
+
+
 ## Datatransformationer
 
 I Datatidy består *et datasæt* af rækker og kolonner, populært kaldet *en
