@@ -63,9 +63,9 @@ class DataFlowTransformsController extends AbstractController
      *     }
      * )
      */
-    public function index(DataFlow $dataFlow, string $_format = 'html'): Response
+    public function index(Request $request, DataFlow $dataFlow, string $_format = 'html'): Response
     {
-        return $this->show($dataFlow, null, $_format);
+        return $this->show($request, $dataFlow, null, $_format);
     }
 
     /**
@@ -97,15 +97,18 @@ class DataFlowTransformsController extends AbstractController
      *     }
      * )
      */
-    public function show(DataFlow $dataFlow, DataTransform $transform = null, string $_format = 'html'): Response
+    public function show(Request $request, DataFlow $dataFlow, DataTransform $transform = null, string $_format = 'html'): Response
     {
         $result = $this->dataFlowManager->run($dataFlow, [
             'number_of_steps' => null !== $transform ? $transform->getPosition() + 1 : 0,
         ]);
 
         if ($result->isSuccess() && \in_array($_format, ['csv', 'json'], true)) {
-            $rows = $result->getLastTransformResult()->getRows();
-            $content = $this->serializer->serialize($rows, $_format);
+            $data = $result->getLastTransformResult()->getRows();
+            if ($request->get('as_object')) {
+                $data = reset($data);
+            }
+            $content = $this->serializer->serialize($data, $_format);
             $contentType = [
                 'csv' => 'text/csv',
                 'json' => 'application/json',
