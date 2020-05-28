@@ -15,6 +15,7 @@ use App\Entity\DataSource;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -50,6 +51,10 @@ class DataFlowType extends AbstractType
                         ],
                         'choice_translation_domain' => true,
                         'help' => $options['schedule_help'],
+                    ])
+                    ->add('enabled', CheckboxType::class, [
+                        'help' => 'Check if you want to have this flow run automatically',
+                        'required' => false,
                     ])
             )
             ->add(
