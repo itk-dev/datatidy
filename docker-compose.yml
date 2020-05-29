@@ -43,6 +43,7 @@ services:
       - PHP_IDE_CONFIG=serverName=localhost
     depends_on:
       - mariadb
+      - chrome
     volumes:
       - .:/app:delegated
       - vendor-cache:/app/vendor
@@ -102,6 +103,16 @@ services:
       - MYSQL_PASSWORD=db
       - MYSQL_DATABASE=db_test
       #- ENCRYPT=1 # Uncomment to enable database encryption.
+
+  chrome:
+    image: selenium/standalone-chrome:3.141.59
+    volumes:
+        - /dev/shm:/dev/shm
+    ports:
+      - '4444'
+      - '5900'
+    networks:
+      - app
 
   sql_data_target:
     image: itkdev/mariadb:latest

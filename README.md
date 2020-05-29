@@ -123,10 +123,26 @@ flows.
 
 ## UI tests
 
+Note: This will reset your database!
+
+@TODO: How do we make sure that we run the site in the `test` environment?
+
 ```sh
-docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
-docker-compose exec -e APP_ENV=test phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
+cd vendor/symfony/panther/chromedriver-bin/ && ./update.sh && cd -
+```
+
+```sh
+docker-compose exec phpfpm composer install
+docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
+docker-compose exec phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
 docker-compose exec phpfpm vendor/bin/behat
+```
+
+```sh
+APP_ENV=test symfony composer install
+APP_ENV=test symfony console doctrine:migrations:migrate --no-interaction
+APP_ENV=test symfony console hautelook:fixtures:load --purge-with-truncate --no-interaction
+APP_ENV=test PANTHER_NO_HEADLESS=1 symfony php ./vendor/bin/behat
 ```
 
 ## Deployment

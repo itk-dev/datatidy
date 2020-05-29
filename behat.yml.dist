@@ -3,12 +3,31 @@ default:
         default:
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
+                - Behatch\Context\BrowserContext
+                - Behatch\Context\DebugContext:
+                    screenshotDir: "screenshots"
+                - App\Tests\Behat\AppContext
 
     extensions:
         FriendsOfBehat\SymfonyExtension: null
+        Behatch\Extension: ~
+        Robertfausk\Behat\PantherExtension: ~ # no configuration here
         Behat\MinkExtension:
-            show_cmd: 'open %s'
-            base_url: 'http://datatidy.local.computer/'
-            sessions:
-                symfony:
-                    symfony: ~
+           javascript_session: javascript_chrome
+           sessions:
+               default:
+                   panther:
+                       options:
+                           browser: 'firefox'
+               javascript:
+                   panther:
+                       options: ~
+               javascript_chrome:
+                   panther:
+                       options:
+                           browser: 'chrome'
+                           webServerDir: '%paths.base%/public' # your custom public dir
+               javascript_firefox:
+                   panther:
+                       options:
+                           browser: 'firefox'
