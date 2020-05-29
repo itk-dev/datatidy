@@ -4,6 +4,17 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    # https://symfony.com/doc/4.4/routing.html#generating-urls-in-commands
+    'env(ROUTER_REQUEST_CONTEXT_SCHEME)': 'http'
+    'env(REQUEST_LISTENER_HTTP_PORT)': 80
+    'env(REQUEST_LISTENER_HTTPS_PORT)': 443
+
+    router.request_context.scheme: '%env(ROUTER_REQUEST_CONTEXT_SCHEME)%'
+    router.request_context.host: '%env(ROUTER_REQUEST_CONTEXT_HOST)%'
+    request_listener.http_port: '%env(REQUEST_LISTENER_HTTP_PORT)%'
+    request_listener.https_port: '%env(REQUEST_LISTENER_HTTPS_PORT)%'
+    asset.request_context.base_path: '%router.request_context.base_url%'
+
     site_url: '%env(SITE_URL)%'
     site_name: '%env(SITE_NAME)%'
     site_logo_path: '%env(SITE_LOGO_PATH)%'
