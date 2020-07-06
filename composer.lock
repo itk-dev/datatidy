@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a58a12a1320e0a5cfa99cb500e189be6",
+    "content-hash": "7f14d66e4b6c9e93dbae32419cd43ab8",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1745,14 +1745,21 @@
         {
             "name": "itk-dev/terms-bundle",
             "version": "4.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itk-dev/terms-bundle.git",
+                "reference": "fe3e964ff1451123203115fc2cdff3af928f5780"
+            },
             "dist": {
-                "type": "path",
-                "url": "_misc/packages/itk-dev/terms-bundle",
-                "reference": "3e8163ccc97445792d299c0f5372f03d7a3f96ed"
+                "type": "zip",
+                "url": "https://api.github.com/repos/itk-dev/terms-bundle/zipball/fe3e964ff1451123203115fc2cdff3af928f5780",
+                "reference": "fe3e964ff1451123203115fc2cdff3af928f5780",
+                "shasum": ""
             },
             "require": {
                 "friendsofsymfony/user-bundle": "^2.0",
-                "symfony/framework-bundle": "^4.0"
+                "symfony/framework-bundle": "^4.0",
+                "symfony/twig-pack": "*"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.10",
@@ -1764,28 +1771,7 @@
                     "ItkDev\\TermsBundle\\": ""
                 }
             },
-            "scripts": {
-                "check-coding-standards/php-cs-fixer": [
-                    "php -n vendor/bin/php-cs-fixer --config=.php_cs.dist fix --dry-run"
-                ],
-                "check-coding-standards/phpcs": [
-                    "vendor/bin/phpcs --standard=phpcs.xml.dist"
-                ],
-                "check-coding-standards": [
-                    "@check-coding-standards/php-cs-fixer",
-                    "@check-coding-standards/phpcs"
-                ],
-                "apply-coding-standards/php-cs-fixer": [
-                    "php -n vendor/bin/php-cs-fixer --config=.php_cs.dist fix"
-                ],
-                "apply-coding-standards/phpcs": [
-                    "vendor/bin/phpcbf --standard=phpcs.xml.dist"
-                ],
-                "apply-coding-standards": [
-                    "@apply-coding-standards/php-cs-fixer",
-                    "@apply-coding-standards/phpcs"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1795,9 +1781,7 @@
                     "email": "rimi@aarhus.dk"
                 }
             ],
-            "transport-options": {
-                "relative": true
-            }
+            "time": "2020-07-06T13:47:11+00:00"
         },
         {
             "name": "itk-dev/user-bundle",
@@ -10537,6 +10521,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "itk-dev/terms-bundle": 20,
         "behat/mink": 20
     },
     "prefer-stable": false,

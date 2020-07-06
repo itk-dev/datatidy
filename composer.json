@@ -8,7 +8,7 @@
         "ext-json": "*",
         "friendsofsymfony/user-bundle": "^2.1",
         "gedmo/doctrine-extensions": "^2.4",
-        "itk-dev/terms-bundle": "*",
+        "itk-dev/terms-bundle": "4.x-dev",
         "itk-dev/user-bundle": "^0.1",
         "league/csv": "^9.0",
         "lexik/form-filter-bundle": "^6.0",
@@ -121,12 +121,6 @@
         "symfony": {
             "allow-contrib": true,
             "require": "4.4.*"
-        }
-    },
-    "repositories": {
-        "itk-dev/terms-bundle": {
-            "type": "path",
-            "url": "_misc/packages/itk-dev/terms-bundle"
         }
     },
     "minimum-stability": "dev"

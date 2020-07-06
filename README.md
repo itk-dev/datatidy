@@ -139,6 +139,10 @@ php bin/console doctrine:migrations:migrate --no-interaction
 
 Want more? See the [official Symfony 4.3 documentation](https://symfony.com/doc/4.3/deployment.html) section about deployment.
 
+### Terms and condition
+
+Create the file `misc/terms/content.html.twig` with your terms and condition.
+
 ### Jobs
 
 #### Consumer
