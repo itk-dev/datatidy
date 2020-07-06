@@ -229,6 +229,10 @@ deployment.
 
 Create the file `misc/terms/content.html.twig` with your terms and condition.
 
+### Terms and condition
+
+Create the file `misc/terms/content.html.twig` with your terms and condition.
+
 ### Jobs
 
 #### Consumer
