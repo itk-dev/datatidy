@@ -145,6 +145,12 @@ APP_ENV=test symfony console hautelook:fixtures:load --purge-with-truncate --no-
 APP_ENV=test PANTHER_NO_HEADLESS=1 symfony php ./vendor/bin/behat
 ```
 
+https://peter.sh/experiments/chromium-command-line-switches/
+
+```sh
+APP_ENV=test PANTHER_NO_HEADLESS=1 PANTHER_CHROME_ARGUMENTS='--window-size=1200,1100' symfony php ./vendor/bin/behat
+```
+
 ## Deployment
 
 You will need an environment where the following is present:
