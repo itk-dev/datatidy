@@ -15,7 +15,7 @@
         "eslint-plugin-node": "^10.0.0",
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-standard": "^4.0.1",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "jquery.are-you-sure": "^1.9.0",
         "jquery.json-viewer": "^1.4.0",
         "node-sass": "^4.12.0",
