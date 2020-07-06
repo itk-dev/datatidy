@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8a539b18c27bf354372c40406812de9",
+    "content-hash": "a58a12a1320e0a5cfa99cb500e189be6",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1741,6 +1741,63 @@
                 "uploadable"
             ],
             "time": "2020-05-10T22:20:03+00:00"
+        },
+        {
+            "name": "itk-dev/terms-bundle",
+            "version": "4.x-dev",
+            "dist": {
+                "type": "path",
+                "url": "_misc/packages/itk-dev/terms-bundle",
+                "reference": "3e8163ccc97445792d299c0f5372f03d7a3f96ed"
+            },
+            "require": {
+                "friendsofsymfony/user-bundle": "^2.0",
+                "symfony/framework-bundle": "^4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.10",
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "ItkDev\\TermsBundle\\": ""
+                }
+            },
+            "scripts": {
+                "check-coding-standards/php-cs-fixer": [
+                    "php -n vendor/bin/php-cs-fixer --config=.php_cs.dist fix --dry-run"
+                ],
+                "check-coding-standards/phpcs": [
+                    "vendor/bin/phpcs --standard=phpcs.xml.dist"
+                ],
+                "check-coding-standards": [
+                    "@check-coding-standards/php-cs-fixer",
+                    "@check-coding-standards/phpcs"
+                ],
+                "apply-coding-standards/php-cs-fixer": [
+                    "php -n vendor/bin/php-cs-fixer --config=.php_cs.dist fix"
+                ],
+                "apply-coding-standards/phpcs": [
+                    "vendor/bin/phpcbf --standard=phpcs.xml.dist"
+                ],
+                "apply-coding-standards": [
+                    "@apply-coding-standards/php-cs-fixer",
+                    "@apply-coding-standards/phpcs"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mikkel Ricky",
+                    "email": "rimi@aarhus.dk"
+                }
+            ],
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "itk-dev/user-bundle",
@@ -10478,7 +10535,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "behat/mink": 20
     },

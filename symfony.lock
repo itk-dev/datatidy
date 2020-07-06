@@ -170,6 +170,9 @@
             "fixtures/.gitignore"
         ]
     },
+    "itk-dev/terms-bundle": {
+        "version": "4.x-dev"
+    },
     "itk-dev/user-bundle": {
         "version": "v0.1.1"
     },
