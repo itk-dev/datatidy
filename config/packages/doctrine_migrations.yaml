@@ -1,3 +1,17 @@
 doctrine_migrations:
     migrations_paths:
         'DoctrineMigrations': '%kernel.project_dir%/src/Migrations'
+    # @see https://github.com/doctrine/DoctrineMigrationsBundle/issues/336#issuecomment-648786565
+    services:
+        'Doctrine\Migrations\Version\MigrationFactory': 'App\Migrations\Factory\MigrationFactoryDecorator'
+
+# @see https://github.com/doctrine/DoctrineMigrationsBundle/issues/336#issuecomment-648786565
+services:
+    _defaults:
+        autowire: true
+
+    Doctrine\Migrations\Version\DbalMigrationFactory: ~
+
+    App\Migrations\Factory\MigrationFactoryDecorator:
+        decorates: Doctrine\Migrations\Version\DbalMigrationFactory
+        arguments: ['@App\Migrations\Factory\MigrationFactoryDecorator.inner', '@service_container']
