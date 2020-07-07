@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+cat <<EOF
+
+${bold}Checking coding standards${normal}
+
+EOF
+
+if ! docker run --volume $PWD:/app itkdev/php7.3-fpm:latest composer check-coding-standards; then
+  cat >&2 << EOF
+Please fix any coding standards issues before commiting!
+EOF
+  exit 1
+fi
+
+if ! docker run --volume $PWD:/app itkdev/php7.3-fpm:latest composer check-coding-standards/twigcs; then
+  cat >&2 << EOF
+Please fix any coding standards issues before commiting!
+EOF
+  exit 1
+fi
+
+if ! docker run --volume $PWD:/app --workdir=/app node:latest yarn check-coding-standards; then
+  cat >&2 << EOF
+Please fix any coding standards issues before commiting!
+EOF
+  exit 1
+fi
+
+exit 0
