@@ -1,8 +1,10 @@
 {
+    "name": "itk-dev/datatidy",
+    "description": "Datatidy is a data wrangler application based on the Symfony 4 framework",
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "~7.3.0",
+        "php": "^7.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -113,6 +115,15 @@
         "apply-coding-standards": [
             "@apply-coding-standards/php-cs-fixer",
             "@apply-coding-standards/phpcs"
+        ],
+        "actions/phpcs": [
+            "phpcs --standard=phpcs.xml.dist --report=checkstyle"
+        ],
+        "actions/phpcsfixer": [
+            "php-cs-fixer --config=.php_cs.dist fix --dry-run --diff --diff-format=udiff"
+        ],
+        "actions/phan": [
+            "./vendor/bin/phan --no-progress-bar --allow-polyfill-parser"
         ]
     },
     "conflict": {
