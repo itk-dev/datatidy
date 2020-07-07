@@ -20,6 +20,7 @@
                 <td class="text-right">
                     {% if is_granted('edit', data_source) %}
                         <a href="{{ path('data_source_edit', {'id': data_source.id}) }}"><i class="fal {{ iconClass('edit') }} fa-fw mr-2"></i>{{ 'Edit'|trans }}</a>
+                        <a href="{{ path('data_source_delete', {'id': data_source.id}) }}"><i class="fal {{ iconClass('delete') }} fa-fw mr-2"></i>{{ 'Delete'|trans }}</a>
                     {% endif %}
                 </td>
             </tr>

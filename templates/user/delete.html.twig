@@ -1,0 +1,28 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'user' %}
+
+{% block title 'Delete user'|trans %}
+
+{% block header 'Delete user'|trans %}
+
+{% block toolbar %}
+    <a class="btn btn-secondary btn-sm" href="{{ path('user_index') }}">{{ 'Back to list'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    {% if messages is defined %}
+        <h1>{{ 'User cannot be deleted'|trans }}</h1>
+
+        {% for message in messages %}
+            <div class="alert alert-{{ message.type }}">{{ message.message }}</div>
+        {% endfor %}
+    {% elseif form is defined %}
+        <div class="bg-white p-3 shadow-sm">
+            <p>{{ 'Confirm that you want to delete the user %user%.'|trans({'%user%': user.username}) }}</p>
+
+            {{ form_start(form) }}
+                <button class="btn btn-danger">{{ 'Delete user'|trans }}</button>
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+{% endblock %}

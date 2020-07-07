@@ -12,12 +12,15 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\ReferenceManager\UserReferenceManager;
 use App\Repository\UserRepository;
+use Exception;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/admin/user", name="user_")
@@ -92,5 +95,52 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/delete", name="delete", methods={"GET","DELETE"})
+     */
+    public function delete(Request $request, User $user, TranslatorInterface $translator, UserReferenceManager $referenceManager): Response
+    {
+        $form = $this->createFormBuilder($user)
+            ->setMethod('DELETE')
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $referenceManager->delete($user);
+                $this->addFlash(
+                    'success',
+                    $translator->trans('User %user% deleted', [
+                        '%user%' => $user->getUsername(),
+                    ])
+                );
+            } catch (Exception $exception) {
+                $this->addFlash(
+                    'danger',
+                    $translator->trans('Error deleting user %user%: %message%', [
+                        '%user%' => $user->getUsername(),
+                        '%message%' => $exception->getMessage(),
+                    ])
+                );
+            }
+
+            return $this->redirectToRoute('user_index');
+        }
+
+        $parameters = [
+            'user' => $user,
+        ];
+
+        $messages = $referenceManager->getDeleteMessages($user);
+
+        if (!empty($messages)) {
+            $parameters['messages'] = $messages;
+        } else {
+            $parameters['form'] = $form->createView();
+        }
+
+        return $this->render('user/delete.html.twig', $parameters);
     }
 }

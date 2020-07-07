@@ -75,7 +75,7 @@ class DataFlow
     private $dataTargets;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DataFlowJob", mappedBy="dataFlow", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\DataFlowJob", mappedBy="dataFlow", orphanRemoval=true, cascade={"remove"})
      */
     private $jobs;
 

@@ -53,7 +53,7 @@ class DataFlowJob
     private $startedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DataFlowJobLogEntry", mappedBy="job")
+     * @ORM\OneToMany(targetEntity="App\Entity\DataFlowJobLogEntry", mappedBy="job", cascade={"remove"})
      * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $logEntries;
