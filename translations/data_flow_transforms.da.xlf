@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" target-language="da" datatype="plaintext" original="file.ext">
     <header>
@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="G06B315" resname="Save transform">
         <source>Save transform</source>
-        <target state="translated">Get transformation</target>
+        <target state="translated">Gem transformation</target>
       </trans-unit>
       <trans-unit id="3QL4jFg" resname="Back to data flow">
         <source>Back to data flow</source>
