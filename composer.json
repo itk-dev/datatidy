@@ -1,4 +1,6 @@
 {
+    "name": "itk-dev/datatidy",
+    "description": "Datatidy is a data wrangler application based on the Symfony 4 framework",
     "type": "project",
     "license": "proprietary",
     "require": {
