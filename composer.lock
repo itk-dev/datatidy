@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8a539b18c27bf354372c40406812de9",
+    "content-hash": "7f14d66e4b6c9e93dbae32419cd43ab8",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1741,6 +1741,47 @@
                 "uploadable"
             ],
             "time": "2020-05-10T22:20:03+00:00"
+        },
+        {
+            "name": "itk-dev/terms-bundle",
+            "version": "4.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itk-dev/terms-bundle.git",
+                "reference": "fe3e964ff1451123203115fc2cdff3af928f5780"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itk-dev/terms-bundle/zipball/fe3e964ff1451123203115fc2cdff3af928f5780",
+                "reference": "fe3e964ff1451123203115fc2cdff3af928f5780",
+                "shasum": ""
+            },
+            "require": {
+                "friendsofsymfony/user-bundle": "^2.0",
+                "symfony/framework-bundle": "^4.0",
+                "symfony/twig-pack": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.10",
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "ItkDev\\TermsBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mikkel Ricky",
+                    "email": "rimi@aarhus.dk"
+                }
+            ],
+            "time": "2020-07-06T13:47:11+00:00"
         },
         {
             "name": "itk-dev/user-bundle",
@@ -10478,8 +10519,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
+        "itk-dev/terms-bundle": 20,
         "behat/mink": 20
     },
     "prefer-stable": false,

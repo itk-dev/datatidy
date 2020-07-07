@@ -10,6 +10,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -28,8 +29,26 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @var DateTimeInterface
+     * @ORM\Column(name="terms_accepted_at", type="datetime", nullable=true)
+     */
+    protected $termsAcceptedAt;
+
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getTermsAcceptedAt(): ?DateTimeInterface
+    {
+        return $this->termsAcceptedAt;
+    }
+
+    public function setTermsAcceptedAt(DateTimeInterface $termsAcceptedAt): self
+    {
+        $this->termsAcceptedAt = $termsAcceptedAt;
+
+        return $this;
     }
 }

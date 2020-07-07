@@ -1,0 +1,3 @@
+itk_dev_terms:
+    path: ^/
+    user_terms_content_path: '%env(resolve:TERMS_CONTENT_PATH)%'

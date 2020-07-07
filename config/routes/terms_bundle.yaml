@@ -1,0 +1,3 @@
+terms_bundle:
+    resource: '@ItkDevTermsBundle/Resources/config/routing.xml'
+    prefix: /terms

@@ -23,4 +23,5 @@ return [
     FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle::class => ['test' => true],
     Setono\CronExpressionBundle\SetonoCronExpressionBundle::class => ['all' => true],
     Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle::class => ['all' => true],
+    ItkDev\TermsBundle\ItkDevTermsBundle::class => ['all' => true],
 ];
