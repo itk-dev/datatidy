@@ -14,6 +14,7 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository");
@@ -26,6 +27,7 @@ class User extends BaseUser
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
+     * @Groups({"collaborator"})
      */
     protected $id;
 
@@ -34,6 +36,12 @@ class User extends BaseUser
      * @ORM\Column(name="terms_accepted_at", type="datetime", nullable=true)
      */
     protected $termsAcceptedAt;
+
+    /**
+     * @var string
+     * @Groups({"collaborator"})
+     */
+    protected $email;
 
     public function getId(): ?string
     {

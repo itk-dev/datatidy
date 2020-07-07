@@ -103,6 +103,11 @@ $(() => {
   buildOptionsForms()
 
   $('form').areYouSure()
+
+  // Expand the settings if there are form errors.
+  if ($('#settingsDrawer .form-error-message').length > 0) {
+    $('#settingsDrawer').collapse('show')
+  }
 })
 
 $(function () {

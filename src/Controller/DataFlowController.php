@@ -19,10 +19,13 @@ use App\Form\Type\DataFlowCreateType;
 use App\Form\Type\DataFlowType;
 use App\Repository\DataFlowRepository;
 use App\Repository\DataTransformRepository;
+use App\Repository\UserRepository;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -199,5 +202,30 @@ class DataFlowController extends AbstractController
         $url = $request->get('referer') ?? $this->redirectToRoute('data_flow_edit', ['id' => $dataFlow->getId()]);
 
         return $this->redirect($url);
+    }
+
+    /**
+     * @Route("/{id}/collaborator/search", name="data_flow_collaborator_search", methods={"GET"})
+     */
+    public function collaboratorSearch(Request $request, DataFlow $dataFlow, UserRepository $userRepository, SerializerInterface $serializer)
+    {
+        $collaborators = $dataFlow->getCollaborators();
+        $collaborators->add($dataFlow->getCreatedBy());
+
+        $queryBuilder = $userRepository->createQueryBuilder('u')
+            ->select(['u.id', 'u.email AS text'])
+            ->where('u.username = :query')
+            ->setParameter('query', $request->get('q'));
+        if (!$collaborators->isEmpty()) {
+            $queryBuilder->andWhere('u.id NOT IN (:collaborators)')
+                ->setParameter('collaborators', $dataFlow->getCollaborators());
+        }
+        $nonCollaborators = $queryBuilder
+             ->getQuery()
+             ->execute();
+
+        $data = ['results' => $nonCollaborators];
+
+        return new JsonResponse($serializer->serialize($data, 'json', ['groups' => ['collaborator']]), Response::HTTP_OK, [], true);
     }
 }
