@@ -19,8 +19,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DataTargetManager
 {
-    use LogTrait;
     use ContainerAwareTrait;
+    use LogTrait;
 
     private $dataTargets;
 

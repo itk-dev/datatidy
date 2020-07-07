@@ -56,7 +56,7 @@ class DataTargetType extends AbstractType
             ]);
 
         // @see https://symfony.com/doc/current/form/dynamic_form_modification.html
-        $formModifier = function (FormInterface $form, string $dataTarget = null) use ($options) {
+        $formModifier = function (FormInterface $form, string $dataTarget = null) {
             $this->helper->buildForm($form, $this->manager->getDataTargetOptions($dataTarget), 'dataTargetOptions');
         };
 
