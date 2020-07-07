@@ -22,22 +22,42 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\RouterInterface;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class DataFlowType extends AbstractType
 {
+    /** @var RouterInterface */
+    private $router;
+
+    public function __construct(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var DataFlow|null $flow */
+        $flow = $builder->getData();
+
         $builder
             ->add(
                 $builder->create('settings', FormType::class, [
                     'inherit_data' => true,
                 ])
                     ->add('name', TextType::class)
-                    // @TODO: Use AJAX to load the list of users.
-                    ->add('collaborators', EntityType::class, [
+                    ->add('collaborators', Select2EntityType::class, [
                         'class' => User::class,
                         'multiple' => true,
-                        'expanded' => true,
+                        'required' => false,
+                        'remote_route' => 'data_flow_collaborator_search',
+                        'remote_params' => [
+                            'id' => $flow->getId(),
+                            '_format' => 'select2',
+                        ],
+                        'minimum_input_length' => 6,
+                        'placeholder' => 'Enter email',
+                        'help' => 'Enter email addresses of users that you want to give access to edit this data flow',
                     ])
                     ->add('schedule', ChoiceType::class, [
                         'choices' => [

@@ -1,4 +1,4 @@
-{% set show_user_info = is_granted('ROLE_ADMIN') %}
+{% set show_user_info = is_granted('ROLE_SUPER_ADMIN') %}
 
 {% embed '_table.html.twig' %}
     {% block thead %}

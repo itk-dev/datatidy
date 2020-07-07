@@ -145,3 +145,9 @@
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ data_flow.id) }}">
     </form>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('data_flow_transforms') }}
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+{% endblock %}
