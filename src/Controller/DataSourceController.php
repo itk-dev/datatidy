@@ -12,7 +12,9 @@ namespace App\Controller;
 
 use App\Entity\DataSource;
 use App\Form\Type\DataSourceType;
+use App\ReferenceManager\DataSourceReferenceManager;
 use App\Repository\DataSourceRepository;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,33 +91,49 @@ class DataSourceController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="data_source_delete", methods={"DELETE"})
+     * @Route("/{id}/delete", name="data_source_delete", methods={"GET","DELETE"})
      */
-    public function delete(Request $request, DataSource $dataSource, TranslatorInterface $translator): Response
+    public function delete(Request $request, DataSource $dataSource, DataSourceReferenceManager $referenceManager, TranslatorInterface $translator): Response
     {
-        try {
-            if ($this->isCsrfTokenValid('delete'.$dataSource->getId(), $request->request->get('_token'))) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($dataSource);
-                $entityManager->flush();
-            }
-            $this->addFlash('success', $translator->trans('Data source %name% succesfully deleted', [
-                '%name%' => $dataSource->getName(),
-            ]));
-        } catch (\Exception $exception) {
-            $this->addFlashData(
-                'danger',
-                [
-                    'message' => $translator->trans('Error deleting data source %name%', [
-                        '%name%' => $dataSource->getName(),
-                    ]),
-                    'details' => $exception->getMessage(),
-                ]
-            );
+        $form = $this->createFormBuilder($dataSource)
+            ->setMethod('DELETE')
+            ->getForm();
 
-            return $this->redirectToRoute('data_source_edit', ['id' => $dataSource->getId()]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $referenceManager->delete($dataSource);
+                $this->addFlash(
+                    'success',
+                    $translator->trans('Data source %data_source% deleted', [
+                        '%data_source%' => $dataSource->getName(),
+                    ])
+                );
+            } catch (Exception $exception) {
+                $this->addFlash(
+                    'danger',
+                    $translator->trans('Error deleting %data_source%: %message%', [
+                        '%data_source%' => $dataSource->getName(),
+                        '%message%' => $exception->getMessage(),
+                    ])
+                );
+            }
+
+            return $this->redirectToRoute('data_source_index');
         }
 
-        return $this->redirectToRoute('data_source_index');
+        $parameters = [
+            'data_source' => $dataSource,
+        ];
+
+        $messages = $referenceManager->getDeleteMessages($dataSource);
+
+        if (!empty($messages)) {
+            $parameters['messages'] = $messages;
+        } else {
+            $parameters['form'] = $form->createView();
+        }
+
+        return $this->render('data_source/delete.html.twig', $parameters);
     }
 }

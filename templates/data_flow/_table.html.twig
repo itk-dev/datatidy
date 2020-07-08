@@ -36,6 +36,7 @@
                         <div class="btn-group" role="group" aria-label="">
                             <a href="{{ path('data_flow_edit', {'id': data_flow.id}) }}" class="btn text-primary m-0 p-0 mr-3" data-toggle="tooltip" title="{{ 'Edit flow'|trans }}"><i class="fal {{ iconClass('edit') }} mr-1"></i><span class="sr-only">{{ 'Edit flow'|trans }}</span></a>
                             <a href="{{ path('data_flow_transforms_index', {'data_flow': data_flow.id}) }}" class="btn text-primary m-0 p-0 mr-3 mr-2" data-toggle="tooltip" title="{{ 'Change recipe'|trans }}"><i class="fal {{ iconClass('recipe') }} mr-1"></i><span class="sr-only">{{ 'Change recipe'|trans }}</span></a>
+                            <a href="{{ path('data_flow_delete', {'id': data_flow.id}) }}" class="btn text-danger m-0 p-0 mr-3 mr-2" data-toggle="tooltip" title="{{ 'Delete flow'|trans }}"><i class="fal {{ iconClass('delete') }} mr-1"></i><span class="sr-only">{{ 'Delete flow'|trans }}</span></a>
                         </div>
                     {% endif %}
                 </td>

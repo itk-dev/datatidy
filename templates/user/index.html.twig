@@ -29,6 +29,7 @@
                     <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
                     <td>
                         <a href="{{ path('user_edit', {'id': user.id}) }}"><i class="fal {{ iconClass('edit') }} fa-fw mr-2"></i>{{ 'Edit'|trans }}</a>
+                        <a href="{{ path('user_delete', {'id': user.id}) }}"><i class="fal {{ iconClass('delete') }} fa-fw mr-2"></i>{{ 'Delete'|trans }}</a>
                     </td>
                 </tr>
             {% else %}

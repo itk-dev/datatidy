@@ -1,0 +1,28 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_flow' %}
+
+{% block title 'Delete data flow'|trans %}
+
+{% block header 'Delete data flow'|trans %}
+
+{% block toolbar %}
+    <a class="btn btn-secondary btn-sm" href="{{ path('data_flow_index') }}">{{ 'Back to list'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    {% if messages is defined %}
+        <h1>{{ 'Data flow cannot be deleted'|trans }}</h1>
+
+        {% for message in messages %}
+            <div class="alert alert-{{ message.type }}">{{ message.message }}</div>
+        {% endfor %}
+    {% elseif form is defined %}
+        <div class="bg-white p-3 shadow-sm">
+            <p>{{ 'Confirm that you want to delete the data flow %data_flow%.'|trans({'%data_flow%': data_flow.name}) }}</p>
+
+            {{ form_start(form) }}
+                <button class="btn btn-danger">{{ 'Delete data flow'|trans }}</button>
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+{% endblock %}

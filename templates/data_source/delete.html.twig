@@ -1,0 +1,28 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'data_source' %}
+
+{% block title 'Delete data source'|trans %}
+
+{% block header 'Delete data source'|trans %}
+
+{% block toolbar %}
+    <a class="btn btn-secondary btn-sm" href="{{ path('data_source_index') }}">{{ 'Back to list'|trans }}</a>
+{% endblock %}
+
+{% block content %}
+    {% if messages is defined %}
+        <h1>{{ 'Data source cannot be deleted'|trans }}</h1>
+
+        {% for message in messages %}
+            <div class="alert alert-{{ message.type }}">{{ message.message }}</div>
+        {% endfor %}
+    {% elseif form is defined %}
+        <div class="bg-white p-3 shadow-sm">
+            <p>{{ 'Confirm that you want to delete the data source %data_source%.'|trans({'%data_source%': data_source.name}) }}</p>
+
+            {{ form_start(form) }}
+                <button class="btn btn-danger">{{ 'Delete data source'|trans }}</button>
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+{% endblock %}
