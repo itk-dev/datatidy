@@ -16,6 +16,14 @@
         {% for message in messages %}
             <div class="alert alert-{{ message.type }}">{{ message.message }}</div>
         {% endfor %}
+
+        {% if is_anonymized %}
+            <div class="alert alert-info">{{ 'User is anonymized'|trans }}</div>
+        {% elseif anonymize_form is defined %}
+            {{ form_start(anonymize_form) }}
+                <button class="btn btn-danger">{{ 'Anonymize user'|trans }}</button>
+            {{ form_end(anonymize_form) }}
+        {% endif %}
     {% elseif form is defined %}
         <div class="bg-white p-3 shadow-sm">
             <p>{{ 'Confirm that you want to delete the user %user%.'|trans({'%user%': user.username}) }}</p>

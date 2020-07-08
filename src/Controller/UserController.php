@@ -10,6 +10,7 @@
 
 namespace App\Controller;
 
+use App\Anonymizer\UserAnonymizer;
 use App\Entity\User;
 use App\Form\UserType;
 use App\ReferenceManager\UserReferenceManager;
@@ -98,10 +99,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="delete", methods={"GET","DELETE"})
+     * @Route("/{id}/delete", name="delete", methods={"GET","DELETE", "UPDATE"})
      */
-    public function delete(Request $request, User $user, TranslatorInterface $translator, UserReferenceManager $referenceManager): Response
+    public function delete(Request $request, User $user, TranslatorInterface $translator, UserReferenceManager $referenceManager, UserAnonymizer $anonymizer): Response
     {
+        $parameters = [
+            'user' => $user,
+        ];
+
         $form = $this->createFormBuilder($user)
             ->setMethod('DELETE')
             ->getForm();
@@ -129,9 +134,38 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_index');
         }
 
-        $parameters = [
-            'user' => $user,
-        ];
+        $isAnonymized = $anonymizer->isAnonymized($user);
+
+        $parameters['is_anonymized'] = $isAnonymized;
+
+        if (!$isAnonymized) {
+            $anonymizeForm = $this->createFormBuilder($user)
+                ->setMethod('UPDATE')
+                ->getForm();
+            $anonymizeForm->handleRequest($request);
+            if ($anonymizeForm->isSubmitted() && $anonymizeForm->isValid()) {
+                try {
+                    $anonymizer->anonymize($user);
+
+                    $this->addFlash(
+                        'success',
+                        $translator->trans('User anonymized')
+                    );
+                } catch (Exception $exception) {
+                    $this->addFlash(
+                        'danger',
+                        $translator->trans('Error anonymizing user %user%: %message%', [
+                            '%user%' => $user->getUsername(),
+                            '%message%' => $exception->getMessage(),
+                        ])
+                    );
+                }
+
+                return $this->redirectToRoute('user_index');
+            }
+
+            $parameters['anonymize_form'] = $anonymizeForm->createView();
+        }
 
         $messages = $referenceManager->getDeleteMessages($user);
 
