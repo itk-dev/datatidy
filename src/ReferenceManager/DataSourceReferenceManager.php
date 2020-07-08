@@ -12,15 +12,13 @@ namespace App\ReferenceManager;
 
 use App\Entity\DataFlow;
 use App\Entity\DataSource;
-use App\Entity\User;
-use App\Repository\DataFlowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DataSourceReferenceManager implements ReferenceManagerInterface
 {
-    /** @var DataFlowRepository */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
     /** @var Security */
@@ -42,7 +40,7 @@ class DataSourceReferenceManager implements ReferenceManagerInterface
     }
 
     /**
-     * Get a list of messages telling why a given user cannot be deleted.
+     * Get a list of messages telling why a given data source cannot be deleted.
      *
      * @return Message[]
      */

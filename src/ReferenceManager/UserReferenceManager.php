@@ -13,7 +13,6 @@ namespace App\ReferenceManager;
 use App\Entity\DataFlow;
 use App\Entity\DataSource;
 use App\Entity\User;
-use App\Repository\DataFlowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -24,7 +23,7 @@ class UserReferenceManager implements ReferenceManagerInterface
     /** @var UserManagerInterface */
     private $userManager;
 
-    /** @var DataFlowRepository */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
     /** @var Security */
@@ -51,23 +50,23 @@ class UserReferenceManager implements ReferenceManagerInterface
      *
      * @return Message[]
      */
-    public function getDeleteMessages($dataFlow): array
+    public function getDeleteMessages($user): array
     {
         $messages = [];
 
-        if ($dataFlow instanceof User) {
-            if ($dataFlow === $this->security->getUser()) {
+        if ($user instanceof User) {
+            if ($user === $this->security->getUser()) {
                 $messages[] = new Message($this->translator->trans('You cannot delete yourself'));
             } else {
                 if (!$this->security->isGranted('ROLE_USER_ADMIN')) {
-                    $messages[] = new Message($this->translator->trans('You are not allowed to delete user: %user%', ['%user%' => $dataFlow->getUsername()]));
+                    $messages[] = new Message($this->translator->trans('You are not allowed to delete user: %user%', ['%user%' => $user->getUsername()]));
                 }
-                $dataSources = $this->entityManager->getRepository(DataSource::class)->findBy(['createdBy' => $dataFlow]);
+                $dataSources = $this->entityManager->getRepository(DataSource::class)->findBy(['createdBy' => $user]);
                 if (!empty($dataSources)) {
                     $messages[] = new Message($this->translator->trans('User has data sources'));
                 }
 
-                $dataFlows = $this->entityManager->getRepository(DataFlow::class)->findBy(['createdBy' => $dataFlow]);
+                $dataFlows = $this->entityManager->getRepository(DataFlow::class)->findBy(['createdBy' => $user]);
                 if (!empty($dataFlows)) {
                     $messages[] = new Message($this->translator->trans('User has data flows'));
                 }

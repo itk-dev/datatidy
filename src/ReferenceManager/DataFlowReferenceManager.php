@@ -13,14 +13,13 @@ namespace App\ReferenceManager;
 use App\DataTransformer\MergeFlowsDataTransformer;
 use App\Entity\DataFlow;
 use App\Entity\DataTransform;
-use App\Repository\DataFlowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DataFlowReferenceManager implements ReferenceManagerInterface
 {
-    /** @var DataFlowRepository */
+    /** @var EntityManagerInterface */
     private $entityManager;
 
     /** @var Security */
@@ -42,7 +41,7 @@ class DataFlowReferenceManager implements ReferenceManagerInterface
     }
 
     /**
-     * Get a list of messages telling why a given user cannot be deleted.
+     * Get a list of messages telling why a given data flow cannot be deleted.
      *
      * @return Message[]
      */
@@ -75,9 +74,9 @@ class DataFlowReferenceManager implements ReferenceManagerInterface
         return $messages;
     }
 
-    public function delete($dataSource, bool $flush = true)
+    public function delete($dataFlow, bool $flush = true)
     {
-        $this->entityManager->remove($dataSource);
+        $this->entityManager->remove($dataFlow);
         if ($flush) {
             $this->entityManager->flush();
         }
