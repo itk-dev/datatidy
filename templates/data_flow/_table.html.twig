@@ -1,14 +1,16 @@
 {% set show_user_info = is_granted('ROLE_SUPER_ADMIN') %}
 
+{% set use_paginator = data_flows.paginatorOptions is defined %}
+
 {% embed '_table.html.twig' %}
     {% block thead %}
         <tr>
-            <th>{{ 'Name'|trans }}</th>
+            <th>{{ use_paginator ? knp_pagination_sortable(data_flows, 'Name'|trans, 'e.name') : 'Name'|trans }}</th>
             <th class="w-10">{{ 'Data source'|trans }}</th>
             <th><span class="d-none d-xl-table-cell">{{ 'Number of transforms'|trans }}</span><span class="d-table-cell d-xl-none" title="{{ 'Number of transforms'|trans }}">#</span></th>
             {# <th>{{ 'TTL'|trans }}</th> TODO: Can we leave this column out of the list? #}
-            <th>{{ 'Updated'|trans }}</th>
-            <th class="d-none d-xl-table-cell">{{ 'Last run'|trans }}</th>
+            <th>{{ use_paginator ? knp_pagination_sortable(data_flows, 'Updated'|trans, 'e.updatedAt') : 'Updated'|trans }}</th>
+            <th class="d-none d-xl-table-cell">{{ use_paginator ? knp_pagination_sortable(data_flows, 'Last run'|trans, 'e.lastRunAt') : 'Last run'|trans }}</th>
             {% if show_user_info %}
                 <th class="d-none d-xl-table-cell">{{ 'Owner'|trans }}</th>
                 {# <th>{{ 'Shared'|trans }}</th> TODO: Can we leave this column out of the list? #}
@@ -46,5 +48,13 @@
                 <td colspan="12">{{ 'No records found'|trans }}</td>
             </tr>
         {% endfor %}
+    {% endblock %}
+
+    {% block table_footer %}
+        {% if use_paginator %}
+            <div class="navigation">
+                {{ knp_pagination_render(data_flows) }}
+            </div>
+        {% endif %}
     {% endblock %}
 {% endembed %}

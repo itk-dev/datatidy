@@ -176,6 +176,12 @@
     "itk-dev/user-bundle": {
         "version": "v0.1.1"
     },
+    "knplabs/knp-components": {
+        "version": "2.5.0-dev"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "5.3.x-dev"
+    },
     "league/csv": {
         "version": "9.4.1"
     },
@@ -348,6 +354,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.3.5"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "2.1-dev"
     },
     "symfony/doctrine-bridge": {
         "version": "v4.3.5"

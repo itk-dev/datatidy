@@ -12,6 +12,7 @@
         "gedmo/doctrine-extensions": "^2.4",
         "itk-dev/terms-bundle": "4.x-dev",
         "itk-dev/user-bundle": "^0.1",
+        "knplabs/knp-paginator-bundle": "^5.3@dev",
         "league/csv": "^9.0",
         "lexik/form-filter-bundle": "^6.0",
         "proj4php/proj4php": "^2.0",

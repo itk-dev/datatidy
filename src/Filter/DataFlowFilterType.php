@@ -34,39 +34,71 @@ class DataFlowFilterType extends AbstractType
         $currentUser = $this->security->getUser();
 
         $builder->setMethod('GET');
-        $builder->add('collaborators', Filters\ChoiceFilterType::class, [
-            'label' => false,
-            'placeholder' => false,
-            'choices' => [
-                'All flows' => 'all',
-                'My flows' => $currentUser->getId(),
-            ],
-            'apply_filter' => function (QueryInterface $filterQuery, $field, $values) {
-                if (empty($values['value'])) {
-                    return null;
-                }
+        $builder
+            ->add('query', Filters\TextFilterType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Search …',
+                ],
+                'apply_filter' => static function (QueryInterface $filterQuery, $field, $values) {
+                    if (empty($values['value'])) {
+                        return null;
+                    }
+                    $paramName = sprintf('p_%s', str_replace('.', '_', $field));
+                    $alias = $values['alias'];
+                    // expression that represent the condition
+                    /** @var QueryBuilder $queryBuilder */
+                    $queryBuilder = $filterQuery->getQueryBuilder();
 
-                $paramName = sprintf('p_%s', str_replace('.', '_', $field));
+                    $expression = $queryBuilder->expr()->orX();
+                    $parameters = [];
+                    $searchFieldNames = [
+                        'name',
+                    ];
+                    if (!empty($searchFieldNames)) {
+                        foreach ($searchFieldNames as $fieldName) {
+                            $expression->add(
+                                $queryBuilder->expr()->like($alias.'.'.$fieldName, ':'.$paramName)
+                            );
+                        }
+                        $parameters[$paramName] = '%'.$values['value'].'%';
+                    }
 
-                // expression that represent the condition
-                /** @var QueryBuilder $queryBuilder */
-                $queryBuilder = $filterQuery->getQueryBuilder();
+                    return $filterQuery->createCondition($expression, $parameters);
+                },
+            ])
+            ->add('collaborators', Filters\ChoiceFilterType::class, [
+                'label' => false,
+                'placeholder' => false,
+                'choices' => [
+                    'All flows' => 'all',
+                    'My flows' => $currentUser->getId(),
+                ],
+                'apply_filter' => static function (QueryInterface $filterQuery, $field, $values) {
+                    if (empty($values['value'])) {
+                        return null;
+                    }
 
-                $expression = null;
+                    $paramName = sprintf('p_%s', str_replace('.', '_', $field));
 
-                if ('all' !== $values['value']) {
-                    $expression = $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->eq('e.createdBy', ':'.$paramName),
-                        $queryBuilder->expr()->isMemberOf(':'.$paramName, $field)
-                    );
-                }
+                    // expression that represent the condition
+                    /** @var QueryBuilder $queryBuilder */
+                    $queryBuilder = $filterQuery->getQueryBuilder();
 
-                // expression parameters
-                $parameters = [$paramName => $values['value']]; // [ name => value ]
+                    $expression = null;
+                    $parameters = [];
 
-                return $filterQuery->createCondition($expression, $parameters);
-            },
-        ]);
+                    if ('all' !== $values['value']) {
+                        $expression = $queryBuilder->expr()->orX(
+                            $queryBuilder->expr()->eq('e.createdBy', ':'.$paramName),
+                            $queryBuilder->expr()->isMemberOf(':'.$paramName, $field)
+                        );
+                        $parameters[$paramName] = $values['value'];
+                    }
+
+                    return $filterQuery->createCondition($expression, $parameters);
+                },
+            ]);
     }
 
     public function getBlockPrefix()
