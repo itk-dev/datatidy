@@ -78,6 +78,7 @@ class DataFlowFilterType extends AbstractType
     {
         $resolver->setDefaults([
             'logged_in_user' => null,
+            'csrf_protection' => false,
         ]);
     }
 }
