@@ -41,6 +41,15 @@ class DataFlowController extends AbstractController
     ): Response {
         $filterForm = $this->createForm(DataFlowFilterType::class);
 
+        // Redirect to list showing only current user's flows if no filter is active.
+        if (!$request->query->has($filterForm->getName())) {
+            return $this->redirectToRoute('data_flow_index', [
+                $filterForm->getName() => [
+                    $filterForm->get('collaborators')->getName() => $this->getUser()->getId(),
+                ],
+            ]);
+        }
+
         $dataFlows = null;
 
         if ($request->query->has($filterForm->getName())) {
