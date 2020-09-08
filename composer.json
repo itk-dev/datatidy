@@ -137,5 +137,6 @@
             "require": "4.4.*"
         }
     },
+    "prefer-stable": true,
     "minimum-stability": "dev"
 }
