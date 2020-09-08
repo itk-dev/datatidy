@@ -50,7 +50,7 @@ class UserController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, TranslatorInterface $translator): Response
     {
         $user = $this->userManager->createUser();
         $form = $this->createForm(UserType::class, $user);
@@ -58,6 +58,8 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userManager->updateUser($user);
+
+            $this->addFlash('success', $translator->trans('User %user% created', ['%user%' => $user->getUsername()]));
 
             return $this->redirectToRoute('user_index');
         }
@@ -81,13 +83,15 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, User $user, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userManager->updateUser($user);
+
+            $this->addFlash('success', $translator->trans('User %user% updated', ['%user%' => $user->getUsername()]));
 
             return $this->redirectToRoute('user_index');
         }
