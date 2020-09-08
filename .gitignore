@@ -35,3 +35,4 @@ yarn-error.log
 ###< friends-of-behat/symfony-extension ###
 
 misc/terms/content.html.twig
+src/preload.php

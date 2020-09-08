@@ -509,6 +509,9 @@
     "symfony/polyfill-intl-idn": {
         "version": "v1.12.0"
     },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "1.18-dev"
+    },
     "symfony/polyfill-mbstring": {
         "version": "v1.12.0"
     },
