@@ -18,6 +18,7 @@ use App\Form\Type\DataFlowType;
 use App\ReferenceManager\DataFlowReferenceManager;
 use App\Repository\DataFlowRepository;
 use App\Repository\UserRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,25 +38,36 @@ class DataFlowController extends AbstractController
     public function index(
         Request $request,
         DataFlowRepository $dataFlowRepository,
-        FilterBuilderUpdaterInterface $filterBuilderUpdater
+        FilterBuilderUpdaterInterface $filterBuilderUpdater,
+        PaginatorInterface $paginator
     ): Response {
         $filterForm = $this->createForm(DataFlowFilterType::class);
 
-        $dataFlows = null;
+        // Redirect to list showing only current user's flows if no filter is active.
+        if (!$request->query->has($filterForm->getName())) {
+            return $this->redirectToRoute('data_flow_index', [
+                $filterForm->getName() => [
+                    $filterForm->get('collaborators')->getName() => $this->getUser()->getId(),
+                ],
+            ]);
+        }
 
         if ($request->query->has($filterForm->getName())) {
             $filterForm->submit($request->query->get($filterForm->getName()));
-
-            $filterBuilder = $dataFlowRepository->createQueryBuilder('e');
-            $filterBuilderUpdater->addFilterConditions($filterForm, $filterBuilder);
-
-            $dataFlows = $filterBuilder->getQuery()->getResult();
-        } else {
-            $dataFlows = $dataFlowRepository->findAll();
         }
 
+        $filterBuilder = $dataFlowRepository->createQueryBuilder('e');
+        $filterBuilderUpdater->addFilterConditions($filterForm, $filterBuilder);
+        $query = $filterBuilder->getQuery();
+
+        $paginator = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
         return $this->render('data_flow/index.html.twig', [
-            'data_flows' => $dataFlows,
+            'data_flows' => $paginator,
             'filterForm' => $filterForm->createView(),
         ]);
     }
