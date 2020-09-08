@@ -17,6 +17,7 @@ use App\ReferenceManager\UserReferenceManager;
 use App\Repository\UserRepository;
 use Exception;
 use FOS\UserBundle\Model\UserManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,10 +41,22 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
+        $queryBuilder = $userRepository->createQueryBuilder('e');
+
+        $paginator = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1), /*page number*/
+            50, /*limit per page*/
+            [
+                'defaultSortFieldName' => 'e.email',
+                'defaultSortDirection' => 'asc',
+            ]
+        );
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $paginator,
         ]);
     }
 
