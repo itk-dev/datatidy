@@ -6,7 +6,7 @@
     {% block thead %}
         <tr>
             <th>{{ use_paginator ? knp_pagination_sortable(data_flows, 'Name'|trans, 'e.name') : 'Name'|trans }}</th>
-            <th class="w-10">{{ 'Data source'|trans }}</th>
+            <th class="w-10">{{ use_paginator ? knp_pagination_sortable(data_flows, 'Data source'|trans, 'dataSource.name') : 'Data source'|trans }}</th>
             <th><span class="d-none d-xl-table-cell">{{ 'Number of transforms'|trans }}</span><span class="d-table-cell d-xl-none" title="{{ 'Number of transforms'|trans }}">#</span></th>
             {# <th>{{ 'TTL'|trans }}</th> TODO: Can we leave this column out of the list? #}
             <th>{{ use_paginator ? knp_pagination_sortable(data_flows, 'Updated'|trans, 'e.updatedAt') : 'Updated'|trans }}</th>
@@ -23,7 +23,7 @@
             <tr>
                 <td><i class="fal {{ iconClass('dataflow') }} fa-fw mr-2 text-gray-300"></i><a href="{{ path('data_flow_show', {id: data_flow.id}) }}">{{ data_flow.name }}</a>
                 </td>
-                <td>{{ data_flow.dataSource }}</td>
+                <td><a href="{{ path('data_source_show', {'id': data_flow.dataSource.id}) }}">{{ data_flow.dataSource.name }}</a></td>
                 <td>{{ data_flow.transforms|length }}</td>
                 {# <td>{{ data_flow.ttl }}</td> #}
                 <td>{{ data_flow.updatedAt ? data_flow.updatedAt|date('Y-m-d H:i:s') : '' }}</td>

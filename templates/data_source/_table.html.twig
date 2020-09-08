@@ -1,10 +1,12 @@
+{% set use_paginator = data_sources.paginatorOptions is defined %}
+
 {% embed '_table.html.twig' %}
     {% block thead %}
         <tr>
-            <th>{{ 'Name'|trans }}</th>
-            <th>{{ 'TTL'|trans }}</th>
-            <th>{{ 'Last read at'|trans }}</th>
-            <th>{{ 'Updated at'|trans }}</th>
+            <th>{{ use_paginator ? knp_pagination_sortable(data_sources, 'Name'|trans, 'e.name') : 'Name'|trans }}</th>
+            <th>{{ use_paginator ? knp_pagination_sortable(data_sources, 'TTL'|trans, 'e.ttl') : 'TTL'|trans }}</th>
+            <th>{{ use_paginator ? knp_pagination_sortable(data_sources, 'Last read at'|trans, 'e.lastReadAt') : 'Last read at'|trans }}</th>
+            <th>{{ use_paginator ? knp_pagination_sortable(data_sources, 'Updated at'|trans, 'e.updatedAt') : 'Updated at'|trans }}</th>
             <th class="text-right">{{ 'Actions'|trans }}</th>
         </tr>
     {% endblock %}
