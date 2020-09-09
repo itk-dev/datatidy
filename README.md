@@ -2,6 +2,8 @@
 
 Datatidy is a data wrangler application based on the Symfony 4 framework. It can take one or more datasources from public APIs, make some transformations and deliver the result to a datastore.
 
+Check out [the user guide](doc/user-guide/) for details on how to use Datatidy to process data.
+
 ## Getting started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.

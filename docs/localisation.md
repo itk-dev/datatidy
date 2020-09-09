@@ -17,7 +17,7 @@ There are two rules we adheres to when creating and writing translations:
 
 ```twig
 {# Set the default translation domain for the Twig template #}
-{% trans_default_domain 'users' %}
+{% raw %}{% trans_default_domain 'users' %}{% endraw %}
 
 {{ 'Change password'|trans }}
 
