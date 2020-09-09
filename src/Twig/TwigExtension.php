@@ -114,6 +114,8 @@ class TwigExtension extends AbstractExtension
                 return 'fa-plus-circle';
             case 'cancelled':
                 return 'fa-minus-circle';
+            case 'user_guide':
+                return 'fa-book';
             default:
                 return '';
         }

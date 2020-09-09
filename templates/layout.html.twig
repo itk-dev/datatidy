@@ -60,6 +60,15 @@
                                 </li>
                             {% endif %}
 
+                            {% if user_guide.url|default(false) %}
+                                <li class="nav-item">
+                                    <a href="{{ user_guide.url }}" class="nav-link">
+                                        <i class="fal {{ iconClass('user_guide') }} fa-fw mr-2"></i>
+                                        {{ user_guide.menu_title|default('User guide'|trans) }}
+                                    </a>
+                                </li>
+                            {% endif %}
+
                             {% if app.user|default(false) %}
                             <li class="nav-item dropdown mt-auto">
                                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</a>
