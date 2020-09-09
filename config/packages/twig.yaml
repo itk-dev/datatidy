@@ -13,3 +13,6 @@ twig:
         site_name: '%site_name%'
         site_logo_path: '%site_logo_path%'
         bugherd_apikey: '%bugherd_apikey%'
+        user_guide:
+            url: '%env(USER_GUIDE_URL)%'
+            menu_title: '%env(USER_GUIDE_MENU_TITLE)%'

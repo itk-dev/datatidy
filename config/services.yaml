@@ -25,6 +25,9 @@ parameters:
     env(BUGHERD_APIKEY): ~
     bugherd_apikey: '%env(BUGHERD_APIKEY)%'
 
+    'env(USER_GUIDE_URL)': ~
+    'env(USER_GUIDE_MENU_TITLE)': ~
+
 services:
     # default configuration for services in *this* file
     _defaults:

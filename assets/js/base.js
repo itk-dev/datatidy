@@ -28,6 +28,7 @@ import { faMinusCircle } from '@fortawesome/free-solid-svg-icons/faMinusCircle'
 import { faSort } from '@fortawesome/free-solid-svg-icons/faSort'
 import { faSortDown } from '@fortawesome/free-solid-svg-icons/faSortDown'
 import { faSortUp } from '@fortawesome/free-solid-svg-icons/faSortUp'
+import { faBook } from '@fortawesome/pro-light-svg-icons/faBook'
 
 const $ = require('jquery')
 global.$ = global.jQuery = $
@@ -63,7 +64,8 @@ library.add(
   faMinusCircle,
   faSort,
   faSortDown,
-  faSortUp
+  faSortUp,
+  faBook
 )
 
 const imagesContext = require.context('../images', true, /\.(png|jpg|jpeg|gif|ico|svg|webp)$/)
