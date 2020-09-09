@@ -9,13 +9,22 @@
     <a class="btn btn-success btn-sm" href="{{ path('user_new') }}">{{ 'New user'|trans }}</a>
 {% endblock %}
 
+{% set use_paginator = users.paginatorOptions is defined %}
+
 {% block content %}
     {% embed '_table.html.twig' %}
+        {% macro render_roles(roles) %}
+            {% for role in roles -%}
+                {% if not loop.first %},{% endif %}
+                {{ role|replace({'ROLE_': ''})|replace({'_': ' '})|lower|capitalize }}
+            {%- endfor %}
+        {% endmacro %}
+
         {% block thead %}
             <tr>
-                <th>{{ 'Email'|trans }}</th>
-                <th>{{ 'Enabled'|trans }}</th>
-                <th>{{ 'LastLogin'|trans }}</th>
+                <th>{{ use_paginator ? knp_pagination_sortable(users, 'Email'|trans, 'e.email') : 'Email'|trans }}</th>
+                <th>{{ use_paginator ? knp_pagination_sortable(users, 'Enabled'|trans, 'e.enabled') : 'Enabled'|trans }}</th>
+                <th>{{ use_paginator ? knp_pagination_sortable(users, 'LastLogin'|trans, 'e.lastLogin') : 'LastLogin'|trans }}</th>
                 <th>{{ 'Roles'|trans }}</th>
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
@@ -26,7 +35,7 @@
                     <td><a href="{{ path('user_show', {'id': user.id}) }}">{{ user.email }}</a></td>
                     <td>{{ user.enabled ? 'Yes'|trans : 'No'|trans }}</td>
                     <td>{{ user.lastLogin ? user.lastLogin|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ user.roles ? user.roles|join(', ') : '' }}</td>
+                    <td>{{ user.roles ? _self.render_roles(user.roles) }}</td>
                     <td>
                         <a href="{{ path('user_edit', {'id': user.id}) }}"><i class="fal {{ iconClass('edit') }} fa-fw mr-2"></i>{{ 'Edit'|trans }}</a>
                         <a href="{{ path('user_delete', {'id': user.id}) }}"><i class="fal {{ iconClass('delete') }} fa-fw mr-2"></i>{{ 'Delete'|trans }}</a>
@@ -37,6 +46,14 @@
                     <td colspan="5">{{ 'No users found'|trans }}</td>
                 </tr>
             {% endfor %}
+        {% endblock %}
+
+        {% block table_footer %}
+            {% if use_paginator %}
+                <div class="navigation">
+                    {{ knp_pagination_render(users) }}
+                </div>
+            {% endif %}
         {% endblock %}
     {% endembed %}
 {% endblock %}

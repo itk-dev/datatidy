@@ -17,6 +17,7 @@ use App\ReferenceManager\UserReferenceManager;
 use App\Repository\UserRepository;
 use Exception;
 use FOS\UserBundle\Model\UserManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,17 +41,29 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
+        $queryBuilder = $userRepository->createQueryBuilder('e');
+
+        $paginator = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1), /*page number*/
+            50, /*limit per page*/
+            [
+                'defaultSortFieldName' => 'e.email',
+                'defaultSortDirection' => 'asc',
+            ]
+        );
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $paginator,
         ]);
     }
 
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, TranslatorInterface $translator): Response
     {
         $user = $this->userManager->createUser();
         $form = $this->createForm(UserType::class, $user);
@@ -58,6 +71,8 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userManager->updateUser($user);
+
+            $this->addFlash('success', $translator->trans('User %user% created', ['%user%' => $user->getUsername()]));
 
             return $this->redirectToRoute('user_index');
         }
@@ -81,13 +96,15 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, User $user, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userManager->updateUser($user);
+
+            $this->addFlash('success', $translator->trans('User %user% updated', ['%user%' => $user->getUsername()]));
 
             return $this->redirectToRoute('user_index');
         }
