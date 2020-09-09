@@ -58,12 +58,21 @@ class DataFlowController extends AbstractController
 
         $filterBuilder = $dataFlowRepository->createQueryBuilder('e');
         $filterBuilderUpdater->addFilterConditions($filterForm, $filterBuilder);
+
+        // Add sortable fields.
+        $filterBuilder->leftJoin('e.dataSource', 'dataSource');
+        $filterBuilder->addSelect('partial dataSource.{id, name}');
+
         $query = $filterBuilder->getQuery();
 
         $paginator = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
-            10 /*limit per page*/
+            50, /*limit per page*/
+            [
+                'defaultSortFieldName' => 'e.name',
+                'defaultSortDirection' => 'asc',
+            ]
         );
 
         return $this->render('data_flow/index.html.twig', [

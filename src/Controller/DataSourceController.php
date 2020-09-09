@@ -15,6 +15,7 @@ use App\Form\Type\DataSourceType;
 use App\ReferenceManager\DataSourceReferenceManager;
 use App\Repository\DataSourceRepository;
 use Exception;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,10 +30,22 @@ class DataSourceController extends AbstractController
     /**
      * @Route("/", name="data_source_index", methods={"GET"})
      */
-    public function index(DataSourceRepository $dataSourceRepository): Response
+    public function index(Request $request, DataSourceRepository $dataSourceRepository, PaginatorInterface $paginator): Response
     {
+        $queryBuilder = $dataSourceRepository->createQueryBuilder('e');
+
+        $paginator = $paginator->paginate(
+            $queryBuilder->getQuery(),
+            $request->query->getInt('page', 1), /*page number*/
+            50, /*limit per page*/
+            [
+                'defaultSortFieldName' => 'e.name',
+                'defaultSortDirection' => 'asc',
+            ]
+        );
+
         return $this->render('data_source/index.html.twig', [
-            'data_sources' => $dataSourceRepository->findAll(),
+            'data_sources' => $paginator,
         ]);
     }
 
