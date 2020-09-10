@@ -5,21 +5,21 @@
 
 {% block header %}{{ 'Jobs'|trans }}{% endblock %}
 
+{% set use_paginator = data_flow_jobs.paginatorOptions is defined %}
+
 {% block content %}
     {% embed '_table.html.twig' %}
         {% block thead %}
             <tr>
-                <th>{{ 'Id'|trans }}</th>
-                <th>{{ 'Data flow'|trans }}</th>
-                <th>{{ 'Status'|trans }}</th>
-                <th>{{ 'Created at'|trans }}</th>
+                <th>{{ use_paginator ? knp_pagination_sortable(data_flow_jobs, 'Data flow'|trans, 'dataFlow.name') : 'Data flow'|trans }}</th>
+                <th>{{ use_paginator ? knp_pagination_sortable(data_flow_jobs, 'Status'|trans, 'e.status') : 'Status'|trans }}</th>
+                <th>{{ use_paginator ? knp_pagination_sortable(data_flow_jobs, 'Created at'|trans, 'e.createdAt') : 'Created at'|trans }}</th>
                 <th>{{ 'Actions'|trans }}</th>
             </tr>
         {% endblock %}
         {% block tbody %}
             {% for data_flow_job in data_flow_jobs %}
                 <tr>
-                    <td>{{ data_flow_job.id }}</td>
                     <td><a href="{{ path('data_flow_show', {id: data_flow_job.dataFlow.id}) }}">{{ data_flow_job.dataFlow.name }}</a></td>
                     <td>{{ data_flow_job.status }}</td>
                     <td>{{ data_flow_job.createdAt ? data_flow_job.createdAt|date('Y-m-d H:i:s') : '' }}</td>
@@ -32,6 +32,14 @@
                     <td colspan="5">{{ 'no records found'|trans }}</td>
                 </tr>
             {% endfor %}
+        {% endblock %}
+
+        {% block table_footer %}
+            {% if use_paginator %}
+                <div class="navigation">
+                    {{ knp_pagination_render(data_flow_jobs) }}
+                </div>
+            {% endif %}
         {% endblock %}
     {% endembed %}
 {% endblock %}
