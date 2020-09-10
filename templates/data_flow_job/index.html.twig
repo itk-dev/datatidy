@@ -20,7 +20,7 @@
             {% for data_flow_job in data_flow_jobs %}
                 <tr>
                     <td>{{ data_flow_job.id }}</td>
-                    <td>{{ data_flow_job.dataFlow.name }}</td>
+                    <td><a href="{{ path('data_flow_show', {id: data_flow_job.dataFlow.id}) }}">{{ data_flow_job.dataFlow.name }}</a></td>
                     <td>{{ data_flow_job.status }}</td>
                     <td>{{ data_flow_job.createdAt ? data_flow_job.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>
