@@ -32,4 +32,12 @@
             </tr>
         {% endfor %}
     {% endblock %}
+
+    {% block table_footer %}
+        {% if use_paginator %}
+            <div class="navigation">
+                {{ knp_pagination_render(data_sources) }}
+            </div>
+        {% endif %}
+    {% endblock %}
 {% endembed %}
