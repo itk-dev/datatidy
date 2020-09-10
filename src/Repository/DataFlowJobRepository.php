@@ -16,6 +16,8 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method DataFlowJob|null find($id, $lockMode = null, $lockVersion = null)
@@ -51,6 +53,20 @@ class DataFlowJobRepository extends ServiceEntityRepository
         $collection = new ArrayCollection($qb->getQuery()->getResult());
 
         return $collection->slice(0, $limit);
+    }
+
+    /**
+     * Builds a query for all data flow jobs that the user is either the creator or a collaborator of.
+     */
+    public function getByUserQuery(UserInterface $user, string $alias = 'e'): Query
+    {
+        return $this->createQueryBuilder($alias)
+            ->leftJoin('e.dataFlow', 'dataFlow')
+            ->andWhere('dataFlow.createdBy = :user')
+            ->leftJoin('dataFlow.collaborators', 'data_flow_collaborators')
+            ->orWhere(':user MEMBER OF dataFlow.collaborators')
+            ->setParameter(':user', $user)
+            ->getQuery();
     }
 
     /**

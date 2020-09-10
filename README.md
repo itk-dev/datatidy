@@ -122,6 +122,22 @@ MAILER_FROM_NAME=Info
 MESSENGER_TRANSPORT_DSN=redis://url:port/messages
 ```
 
+_Note_: If you're running multiple instances of Datatidy with the same redis
+server, you must use different stream names (`messages` in the
+`MESSENGER_TRANSPORT_DSN` example above), e.g.
+
+```ini
+# First Datatidy instance
+MESSENGER_TRANSPORT_DSN=redis://url:port/datatidy-1-messages
+```
+
+and
+
+```ini
+# Another Datatidy instance
+MESSENGER_TRANSPORT_DSN=redis://url:port/datatidy-2-messages
+```
+
 Install the dependencies and build the assets:
 
 ```bash

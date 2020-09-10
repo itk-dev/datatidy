@@ -13,6 +13,8 @@ namespace App\Controller;
 use App\Entity\DataFlowJob;
 use App\Entity\User;
 use App\Repository\DataFlowJobRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,18 +26,24 @@ class DataFlowJobController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(DataFlowJobRepository $dataFlowJobRepository): Response
+    public function index(Request $request, DataFlowJobRepository $dataFlowJobRepository, PaginatorInterface $paginator): Response
     {
         /** @var User $user */
         $user = $this->getUser();
+        $query = $dataFlowJobRepository->getByUserQuery($user, 'e');
 
-        $jobs = $dataFlowJobRepository->findByUser(
-            $user,
-            ['createdAt' => 'desc']
+        $paginator = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), /*page number*/
+            50, /*limit per page*/
+            [
+                'defaultSortFieldName' => 'e.createdAt',
+                'defaultSortDirection' => 'desc',
+            ]
         );
 
         return $this->render('data_flow_job/index.html.twig', [
-            'data_flow_jobs' => $jobs,
+            'data_flow_jobs' => $paginator,
         ]);
     }
 
