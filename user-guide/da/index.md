@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Brugervejledning"
-permalink: /user-guide/da
+permalink: /user-guide/da/
 ---
 
 Datatidy er et værktøj til at “forbedre” åbne datasæt så de bliver nemmere at
