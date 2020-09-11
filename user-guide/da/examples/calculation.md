@@ -1,8 +1,6 @@
 ---
 layout: page
 title: "Beregning"
-permalink: /user-guide/da/examples/calculation/
-exclude: true
 ---
 
 Disse eksempler tager udgangspunkt i [datakilden defineret i Det store

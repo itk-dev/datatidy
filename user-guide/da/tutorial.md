@@ -1,6 +1,5 @@
 ---
 layout: page
-permalink: /user-guide/da/tutorial/
 ---
 
 # Det store eksempel

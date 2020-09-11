@@ -1,7 +1,6 @@
 ---
 layout: page
 title: "Datatransformationer"
-permalink: /user-guide/da/data-transforms/
 ---
 
 ## Struktureret data
