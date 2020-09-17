@@ -1,7 +1,4 @@
----
-layout: page
-title: "Beregning"
----
+# Beregning
 
 Disse eksempler tager udgangspunkt i [datakilden defineret i Det store
 eksempel](../tutorial#datakilden).

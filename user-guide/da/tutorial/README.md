@@ -1,7 +1,3 @@
----
-layout: page
----
-
 # Det store eksempel
 
 Dette eksempel viser hvordan [data fra Aarhus kommunes

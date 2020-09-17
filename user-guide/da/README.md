@@ -1,7 +1,4 @@
----
-layout: page
-title: "Brugervejledning"
----
+# Brugervejledning
 
 Datatidy er et værktøj til at “forbedre” åbne datasæt så de bliver nemmere at
 bruge for slutbrugere fx til at bygge apps eller lave visualiseringer af
@@ -108,5 +105,5 @@ Se [Det store eksempel](tutorial) for en gennemgang af brug af Datatidy.
 
 Eksempler på transformationer:
 
-* [Filter](examples/filter)
-* [Beregning](examples/calculation)
+* [Filter](examples/filter.md)
+* [Beregning](examples/calculation.md)

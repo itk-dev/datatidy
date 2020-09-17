@@ -1,7 +1,4 @@
----
-layout: page
-title: "Datatransformationer"
----
+# Datatransformationer
 
 ## Struktureret data
 

@@ -1,10 +1,7 @@
-# Datatidy user guide
+# Datatidy
 
-[GitHub Pages](https://pages.github.com/) for the Datatidy user guide.
+Datatidy is a data wrangler application based on the Symfony 4 framework. It can
+take one or more datasources from public APIs, make some transformations and
+deliver the result to a datastore.
 
-## Building locally
-
-```sh
-bundler install
-bundle exec jekyll serve
-```
+[Brugervejledning](user-guide/da/)
