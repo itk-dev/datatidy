@@ -27,8 +27,13 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username:
 # github_username:  itk-dev
 
+repository: itk-dev/datatidy
+
+
 # Build settings
 theme: minima
+
+# @see https://docs.github.com/en/github/working-with-github-pages/about-github-pages-and-jekyll#plugins
 plugins:
   - jekyll-feed
   # https://github.com/benbalter/jekyll-relative-links
@@ -37,8 +42,13 @@ relative_links:
   enabled: true
   collections: true
 
+titles_from_headings:
+  enabled:     true
+  strip_title: true
+  collections: true
+
 header_pages:
-  - user-guide/da/index.md
+  - user-guide/da/README.md
 
 # Exclude from processing.
 # The following items will not be processed, by default.
