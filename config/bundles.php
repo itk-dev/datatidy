@@ -26,4 +26,5 @@ return [
     ItkDev\TermsBundle\ItkDevTermsBundle::class => ['all' => true],
     Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle::class => ['all' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
+    ItkDev\WebAccessibilityStatementBundle\ItkDevWebAccessibilityStatementBundle::class => ['all' => true],
 ];

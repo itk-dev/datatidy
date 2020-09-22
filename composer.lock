@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65b6413f2d33288afe25cd651f4a7c25",
+    "content-hash": "f50cd2762cbed2f74a4ef2c890e48561",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1899,6 +1899,42 @@
                 }
             ],
             "time": "2019-11-20T08:26:38+00:00"
+        },
+        {
+            "name": "itk-dev/web-accessibility-statement-bundle",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itk-dev/web-accessibility-statement-bundle.git",
+                "reference": "f0444c751466820d8cc9536238396198bea4bc36"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itk-dev/web-accessibility-statement-bundle/zipball/f0444c751466820d8cc9536238396198bea4bc36",
+                "reference": "f0444c751466820d8cc9536238396198bea4bc36",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "^3.2 || ^4.0 || ^5.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "ItkDev\\WebAccessibilityStatementBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mikkel Ricky",
+                    "email": "rimi@aarhus.dk"
+                }
+            ],
+            "description": "Web accessibility statement bundle",
+            "time": "2020-09-23T09:01:29+00:00"
         },
         {
             "name": "knplabs/knp-components",
