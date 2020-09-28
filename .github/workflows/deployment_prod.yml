@@ -52,7 +52,7 @@ jobs:
             composer install
             bin/console doctrine:migrations:migrate --no-interaction --no-debug
             bin/console cache:clear --no-debug
-            sudo servicer supervisor restart
+            sudo service supervisor restart
           host: ${{ secrets.HOST_PROD }}
           key: ${{ secrets.PRIVATE_KEY }}
           cert: ${{ secrets.PUBLIC_KEY_CERT }}
