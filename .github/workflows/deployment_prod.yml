@@ -1,0 +1,58 @@
+---
+on:
+  push:
+    tags:
+      - '*'
+
+name: Deployment (prod)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Get yarn cache directory
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: yarn-
+
+      - name: Install yarn packages
+        run: docker run -v $PWD:/app:rw -v ${{ steps.yarn-cache.outputs.dir }}:/usr/local/share/.cache/yarn/v6:rw itkdev/yarn:latest install
+
+      - name: Build assets
+        run: docker run -v $PWD:/app:rw -v ${{ steps.yarn-cache.outputs.dir }}:/usr/local/share/.cache/yarn/v6:rw itkdev/yarn:latest build
+
+      - name: Sync assets to remote server
+        uses: itk-dev/actions-rsync@master
+        with:
+          src: public/build
+          dest: ${{ secrets.APP_PATH_PROD }}/public/build
+          host: ${{ secrets.HOST_PROD }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          cert: ${{ secrets.PUBLIC_KEY_CERT }}
+
+  remote:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run remote commands
+        uses: itk-dev/actions-remote-ssh@master
+        with:
+          command: |
+            cd ${{ secrets.APP_PATH_PROD }}
+            git clean -d --force
+            git checkout master
+            git fetch
+            git reset origin/master --hard
+            composer install
+            bin/console doctrine:migrations:migrate --no-interaction --no-debug
+            bin/console cache:clear --no-debug
+            sudo servicer supervisor restart
+          host: ${{ secrets.HOST_PROD }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          cert: ${{ secrets.PUBLIC_KEY_CERT }}
