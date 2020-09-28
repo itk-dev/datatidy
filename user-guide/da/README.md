@@ -44,7 +44,7 @@ frit tilgængeligt fra datamålet (som nu spiller rollen som datakilde).
 
 En datakilde skal kunne levere data som svar på en simpel
 [HTTP](https://da.wikipedia.org/wiki/HTTP)-forespørgsel og pt. understøtter
-Datatidy formaterne [JSON](https://en.wikipedia.org/wiki/JSON) og
+Datatidy formaterne [JSON](https://en.wikipedia.org/wiki/JSON) (herunder [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON)) og
 [CSV](https://en.wikipedia.org/wiki/Comma-separated_values).
 
 En datakilde består af en url plus nogle indstillinger der styrer hvordan data
