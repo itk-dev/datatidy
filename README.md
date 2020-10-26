@@ -128,13 +128,8 @@ Note: This will reset your database!
 @TODO: How do we make sure that we run the site in the `test` environment?
 
 ```sh
-cd vendor/symfony/panther/chromedriver-bin/ && ./update.sh && cd -
-```
-
-```sh
-docker-compose exec phpfpm composer install
-docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
-docker-compose exec phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
+docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
+docker-compose exec -e APP_ENV=test phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
 docker-compose exec phpfpm vendor/bin/behat
 ```
 
@@ -151,6 +146,7 @@ https://peter.sh/experiments/chromium-command-line-switches/
 APP_ENV=test PANTHER_NO_HEADLESS=1 PANTHER_CHROME_ARGUMENTS='--window-size=1200,1100' symfony php ./vendor/bin/behat
 ```
 
+>>>>>>> Stashed changes
 ## Deployment
 
 You will need an environment where the following is present:
