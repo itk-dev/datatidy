@@ -176,6 +176,9 @@
     "itk-dev/user-bundle": {
         "version": "v0.1.1"
     },
+    "itk-dev/web-accessibility-statement-bundle": {
+        "version": "1.0.2"
+    },
     "knplabs/knp-components": {
         "version": "2.5.0-dev"
     },
