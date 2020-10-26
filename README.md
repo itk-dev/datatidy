@@ -1,10 +1,35 @@
 # Datatidy
 
-Datatidy is a data wrangler application based on the Symfony 4 framework. It can take one or more datasources from public APIs, make some transformations and deliver the result to a datastore.
+Datatidy is a data wrangler application based on the Symfony 4 framework. It can
+take one or more datasources from public APIs, make some transformations and
+deliver the result to a datastore.
+
+## Installation
+
+Build assets by running
+
+```sh
+FONTAWESOME_NPM_AUTH_TOKEN='your-fontawesome-token' \
+  docker run -v ${PWD}:/app -w /app -e FONTAWESOME_NPM_AUTH_TOKEN -e NPM_CONFIG_USERCONFIG=.npmrc.install \
+  node:latest yarn install
+docker run -v ${PWD}:/app -w /app node:latest yarn build
+```
+
+Create and edit `.env.local` as needed to override defaults in `.env` and
+install the code by running
+
+```sh
+composer install --no-dev --classmap-authoritative
+bin/console cache:clear
+bin/console doctrine:migrations:migrate --no-interaction
+composer dump-env prod
+```
 
 ## Getting started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your
+local machine for development and testing purposes. See deployment for notes on
+how to deploy the project on a live system.
 
 ### Prerequisites
 
@@ -23,8 +48,9 @@ docker-compose exec phpfpm composer install
 docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 
 # Note: We need a custom userconfig file and an environment variables to authenticate when installing Font Awesome Pro.
-FONTAWESOME_NPM_AUTH_TOKEN='font awesome pro token' docker run -v ${PWD}:/app -e FONTAWESOME_NPM_AUTH_TOKEN -e NPM_CONFIG_USERCONFIG=.npmrc.install itkdev/yarn:latest install
-docker run -v ${PWD}:/app itkdev/yarn:latest encore dev
+FONTAWESOME_NPM_AUTH_TOKEN='font awesome pro token' \
+  docker run -v ${PWD}:/app -e FONTAWESOME_NPM_AUTH_TOKEN -e NPM_CONFIG_USERCONFIG=.npmrc.install node:latest yarn install
+docker run -v ${PWD}:/app node:latest yarn dev
 ```
 
 Use
@@ -102,7 +128,8 @@ You will need an environment where the following is present:
 
 Distribute the app to a place where NGINX can serve it from.
 
-Create a .env.local file where you set the following variables:
+Create a `.env.local` file where you set the following variables:
+
 ```ini
 APP_ENV=prod
 APP_SECRET=some-very-secret-string-which-is-not-the-same-as-in-.env
@@ -142,7 +169,12 @@ Install the dependencies and build the assets:
 
 ```bash
 # Install the dependencies
-composer install --no-dev
+composer install --no-dev --classmap-authoritative
+FONTAWESOME_NPM_AUTH_TOKEN='your-fontawesome-token' \
+  docker run -v ${PWD}:/app -w /app -e FONTAWESOME_NPM_AUTH_TOKEN -e NPM_CONFIG_USERCONFIG=.npmrc.install \
+  node:latest yarn install
+docker run -v ${PWD}:/app -w /app node:latest yarn build
+
 yarn install --production
 
 # Build the assets
@@ -153,7 +185,9 @@ php bin/console doctrine:database:create --no-interaction
 php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
-Want more? See the [official Symfony 4.3 documentation](https://symfony.com/doc/4.3/deployment.html) section about deployment.
+Want more? See the [official Symfony 4.3
+documentation](https://symfony.com/doc/4.3/deployment.html) section about
+deployment.
 
 ### Terms and condition
 
@@ -163,7 +197,10 @@ Create the file `misc/terms/content.html.twig` with your terms and condition.
 
 #### Consumer
 
-In order to have jobs processed the queue consumer has to be running. You probably want something to watch that the process is running all the time, and take an action if it doesn't. You could use [Supervisor](http://supervisor.org) as this something with the following settings added:
+In order to have jobs processed the queue consumer has to be running. You
+probably want something to watch that the process is running all the time, and
+take an action if it doesn't. You could use [Supervisor](http://supervisor.org)
+as this something with the following settings added:
 
 ```ini
 [datatidy:consumer]
@@ -178,7 +215,9 @@ stdout_logfile=path/to/output.file
 
 #### Producer
 
-You'll need to run the producer every minute to create jobs the consumer can process. You could for example use cron with the following settings to run the producer every minute:
+You'll need to run the producer every minute to create jobs the consumer can
+process. You could for example use cron with the following settings to run the
+producer every minute:
 
 ```crontab
 * * * * * /usr/bin/env php path/to/datatidy/bin/console datatidy:data-flow:produce-jobs > path/to/output.file
@@ -186,8 +225,11 @@ You'll need to run the producer every minute to create jobs the consumer can pro
 
 #### Handling long running jobs
 
-Sometimes and for different reasons a job may run for a long time. And because jobs only can be created if there is no other active jobs for a DataFlow, you need to set those jobs in a non-active state.
-To help you accomplish this a command is available:
+Sometimes and for different reasons a job may run for a long time. And because
+jobs only can be created if there is no other active jobs for a DataFlow, you
+need to set those jobs in a non-active state.  To help you accomplish this a
+command is available:
+
 ```crontab
 */30 * * * * /usr/bin/env php /path/to/datatidy/bin/console datatidy:data-flow:timeout-jobs --timeout-threshold=30 > path/to/output.file
 ```
@@ -221,16 +263,19 @@ docker run -v ${PWD}:/app itkdev/yarn:latest apply-coding-standards
 ### Pull Request Process
 
 1. Update the README.md with details of changes that are relevant.
-2. You may merge the Pull Request in once you have the sign-off of one other developer, or if you
-   do not have permission to do that, you may request the reviewer to merge it for you.
+2. You may merge the Pull Request in once you have the sign-off of one other
+   developer, or if you do not have permission to do that, you may request the
+   reviewer to merge it for you.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/itk-dev/datatidy/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available,
+see the [tags on this repository](https://github.com/itk-dev/datatidy/tags).
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the
+[LICENSE.md](LICENSE.md) file for details
 
 ## Loading fixtures
 
