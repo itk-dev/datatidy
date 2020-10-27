@@ -146,7 +146,6 @@ https://peter.sh/experiments/chromium-command-line-switches/
 APP_ENV=test PANTHER_NO_HEADLESS=1 PANTHER_CHROME_ARGUMENTS='--window-size=1200,1100' symfony php ./vendor/bin/behat
 ```
 
->>>>>>> Stashed changes
 ## Deployment
 
 You will need an environment where the following is present:
