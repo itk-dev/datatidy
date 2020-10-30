@@ -97,6 +97,20 @@ docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migra
 docker-compose exec phpfpm bin/phpunit
 ```
 
+Add `SYMFONY_DEPRECATIONS_HELPER=disabled` to hide deprecation notices:
+
+```bash
+docker-compose exec -e SYMFONY_DEPRECATIONS_HELPER=disabled phpfpm bin/phpunit
+```
+
+Note: a symlink with an absolute target is created when installing
+`symfony/phpunit-bridge`, but this causes trouble if you want to run tests
+outside `docker`. To make the link relative, run:
+
+```bash
+ln -sf ../../../../../vendor/symfony/phpunit-bridge bin/.phpunit/phpunit-7.5-0/vendor/symfony/
+```
+
 Alternatively, run with Symfony binary (clears your database):
 
 ```bash
