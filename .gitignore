@@ -34,5 +34,8 @@ yarn-error.log
 /behat.yml
 ###< friends-of-behat/symfony-extension ###
 
+
 misc/terms/content.html.twig
 src/preload.php
+
+screenshots

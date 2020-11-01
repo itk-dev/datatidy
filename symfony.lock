@@ -17,6 +17,9 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
+    "behatch/contexts": {
+        "version": "3.3.0"
+    },
     "brick/reflection": {
         "version": "0.3.0"
     },
@@ -117,6 +120,9 @@
     "felixfbecker/advanced-json-rpc": {
         "version": "v3.0.4"
     },
+    "friends-of-behat/mink-extension": {
+        "version": "2.3.1"
+    },
     "friends-of-behat/symfony-extension": {
         "version": "2.0",
         "recipe": {
@@ -179,6 +185,9 @@
     "itk-dev/web-accessibility-statement-bundle": {
         "version": "1.0.2"
     },
+    "justinrainbow/json-schema": {
+        "version": "5.2.10"
+    },
     "knplabs/knp-components": {
         "version": "2.5.0-dev"
     },
@@ -234,6 +243,9 @@
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
+    "php-webdriver/webdriver": {
+        "version": "1.8.3"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
     },
@@ -260,6 +272,12 @@
     },
     "psr/log": {
         "version": "1.1.0"
+    },
+    "robertfausk/behat-panther-extension": {
+        "version": "v1.0.3"
+    },
+    "robertfausk/mink-panther-driver": {
+        "version": "v1.0.6"
     },
     "sabre/event": {
         "version": "5.0.3"
@@ -498,6 +516,9 @@
     },
     "symfony/orm-pack": {
         "version": "v1.0.6"
+    },
+    "symfony/panther": {
+        "version": "v0.8.0"
     },
     "symfony/phpunit-bridge": {
         "version": "4.3",

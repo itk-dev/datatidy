@@ -123,10 +123,27 @@ flows.
 
 ## UI tests
 
+Note: This will reset your database!
+
+@TODO: How do we make sure that we run the site in the `test` environment?
+
 ```sh
 docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
 docker-compose exec -e APP_ENV=test phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
 docker-compose exec phpfpm vendor/bin/behat
+```
+
+```sh
+APP_ENV=test symfony composer install
+APP_ENV=test symfony console doctrine:migrations:migrate --no-interaction
+APP_ENV=test symfony console hautelook:fixtures:load --purge-with-truncate --no-interaction
+APP_ENV=test PANTHER_NO_HEADLESS=1 symfony php ./vendor/bin/behat
+```
+
+https://peter.sh/experiments/chromium-command-line-switches/
+
+```sh
+APP_ENV=test PANTHER_NO_HEADLESS=1 PANTHER_CHROME_ARGUMENTS='--window-size=1200,1100' symfony php ./vendor/bin/behat
 ```
 
 ## Deployment
@@ -202,6 +219,10 @@ php bin/console doctrine:migrations:migrate --no-interaction
 Want more? See the [official Symfony 4.3
 documentation](https://symfony.com/doc/4.3/deployment.html) section about
 deployment.
+
+### Terms and condition
+
+Create the file `misc/terms/content.html.twig` with your terms and condition.
 
 ### Terms and condition
 
