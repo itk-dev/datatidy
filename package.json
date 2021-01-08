@@ -46,6 +46,7 @@
         "apply-coding-standards": "yarn run apply-coding-standards/scss; yarn run apply-coding-standards/js"
     },
     "dependencies": {
+        "cypress": "^6.2.1",
         "select2": "^4.0.12"
     }
 }

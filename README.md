@@ -121,12 +121,16 @@ APP_ENV=test symfony php bin/phpunit
 See [Data flow tests](tests/DataFlow/README.md) for details on how to test data
 flows.
 
-## UI tests
+### UI tests
+
+**Note**: This will empty your database.
 
 ```sh
-docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
-docker-compose exec -e APP_ENV=test phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
-docker-compose exec phpfpm vendor/bin/behat
+symfony composer install
+symfony console doctrine:migrations:migrate --no-interaction
+symfony local:server:start --daemon
+yarn install
+yarn cypress open
 ```
 
 ## Deployment
