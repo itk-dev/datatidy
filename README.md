@@ -125,9 +125,51 @@ flows.
 
 **Note**: This will empty your database.
 
+Cypress headless
+(cf. https://www.cypress.io/blog/2019/05/02/run-cypress-with-a-single-docker-command/#Docker-compose):
+
 ```sh
+docker-compose up -d
+docker-compose exec phpfpm composer install
+docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
+docker-compose exec phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
+docker-compose up --exit-code-from cypress
+```
+
+Check the `cypress/videos/` folder for recordings of the tests run.
+
+Cypress interactive:
+
+See
+https://gist.github.com/rimi-itk/176d504d3e936a0d4ba92413c2706c8e#initial-knee-bends
+for prerequisites for running the following commands on a Mac.
+
+```sh
+# get the IP address of the host machine and allow X11 to accept incoming connections from that IP address
+IP=$(ipconfig getifaddr en0)
+/usr/X11/bin/xhost + $IP
+
+killall socat Xquartz
+socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
+open -a Xquartz
+
+docker-compose up -d
+docker-compose exec phpfpm composer install
+docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
+docker-compose exec phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
+docker-compose -f docker-compose.yml -f cy-open.yml up --exit-code-from cypress
+
+# Kill socat and Xquartz
+killall socat Xquartz
+```
+
+Using the Symfony binary:
+
+```sh
+docker-compose up -d
 symfony composer install
 symfony console doctrine:migrations:migrate --no-interaction
+symfony console hautelook:fixtures:load --purge-with-truncate --no-interaction
 symfony local:server:start --daemon
 yarn install
 yarn cypress open

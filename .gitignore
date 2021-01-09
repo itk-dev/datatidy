@@ -36,3 +36,6 @@ yarn-error.log
 
 misc/terms/content.html.twig
 src/preload.php
+
+cypress/videos
+cypress/screenshots

@@ -1,7 +1,7 @@
 describe('Create data flow', () => {
   beforeEach(() => {
     // reset and seed the database prior to every test
-    cy.exec('symfony console hautelook:fixtures:load --no-interaction')
+    // @todo How do we do this? DO we do this?
   })
 
   it('creates data flow', () => {

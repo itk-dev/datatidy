@@ -1,0 +1,17 @@
+# @see https://www.cypress.io/blog/2019/05/02/run-cypress-with-a-single-docker-command/#Docker-compose
+version: "3"
+
+services:
+  cypress:
+    # pass custom command to start Cypress otherwise it will use the entrypoint
+    # specified in the Cypress Docker image.
+    # also pass "--project <folder>" so that when Cypress opens
+    # it can find file "cypress.json" and show integration specs
+    # https://on.cypress.io/command-line#cypress-open
+    entrypoint: cypress open --project /e2e
+    environment:
+      - DISPLAY=host.docker.internal:0
+    volumes:
+      # for Cypress to communicate with the X11 server pass this socket file
+      # in addition to any other mapped volumes
+      - /tmp/.X11-unix:/tmp/.X11-unix
