@@ -132,7 +132,7 @@ class DataFlowTest extends ContainerTestCase
     private function loadData(string $filename): array
     {
         $content = file_get_contents($filename);
-        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $extension = pathinfo($filename, \PATHINFO_EXTENSION);
         /** @var SerializerInterface $serializer */
         $serializer = $this->get('serializer');
 

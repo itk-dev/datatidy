@@ -83,7 +83,7 @@ class AppCompilerPass implements CompilerPassInterface
         $services = $this->container->findTaggedServiceIds($tag);
         $services = array_filter($services, static function ($class) use ($serviceClass) {
             return is_a($class, $serviceClass, true);
-        }, ARRAY_FILTER_USE_KEY);
+        }, \ARRAY_FILTER_USE_KEY);
 
         $annotationReader = $this->container->get('annotation_reader');
 

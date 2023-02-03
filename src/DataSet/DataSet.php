@@ -207,7 +207,7 @@ class DataSet
                 $type = $columns[$name]->getType();
 
                 if (\is_array($value)) {
-                    $value = json_encode($value, JSON_THROW_ON_ERROR, 512);
+                    $value = json_encode($value, \JSON_THROW_ON_ERROR, 512);
                 }
                 $statement->bindValue($sqlNames[$name], $type->convertToPHPValue($value, $this->platform), $type);
             }
@@ -369,10 +369,10 @@ class DataSet
 
     private static function getValue($value, Type $type)
     {
-        if (filter_var($value, FILTER_VALIDATE_INT)) {
+        if (filter_var($value, \FILTER_VALIDATE_INT)) {
             return (int) $value;
         }
-        if (filter_var($value, FILTER_VALIDATE_FLOAT)) {
+        if (filter_var($value, \FILTER_VALIDATE_FLOAT)) {
             return (float) $value;
         }
 
@@ -420,10 +420,10 @@ class DataSet
             if (null === $value) {
                 continue;
             }
-            if (false !== filter_var($value, FILTER_VALIDATE_INT)) {
+            if (false !== filter_var($value, \FILTER_VALIDATE_INT)) {
                 ++$votes[Type::INTEGER];
             }
-            if (false !== filter_var($value, FILTER_VALIDATE_FLOAT)) {
+            if (false !== filter_var($value, \FILTER_VALIDATE_FLOAT)) {
                 ++$votes[Type::FLOAT];
             }
             if (!is_scalar($value)) {

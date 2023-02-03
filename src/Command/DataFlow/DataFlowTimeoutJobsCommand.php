@@ -42,7 +42,7 @@ class DataFlowTimeoutJobsCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $timeoutThreshold = $input->getOption('timeout-threshold');
-        if (false === filter_var($timeoutThreshold, FILTER_VALIDATE_INT)) {
+        if (false === filter_var($timeoutThreshold, \FILTER_VALIDATE_INT)) {
             throw new \InvalidArgumentException('timeout-threshold can only be an integer value.');
         }
 

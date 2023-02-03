@@ -37,7 +37,7 @@ class DataSourceMockHttpClient extends MockHttpClient
 
     private function get($url, $options)
     {
-        $filename = __DIR__.'/tests/'.parse_url($url, PHP_URL_PATH);
+        $filename = __DIR__.'/tests/'.parse_url($url, \PHP_URL_PATH);
 
         if (!file_exists($filename)) {
             throw new NotFoundHttpException($url.' '.$filename);
@@ -48,7 +48,7 @@ class DataSourceMockHttpClient extends MockHttpClient
 
     private function post($url, $options)
     {
-        $filename = __DIR__.'/tests/'.parse_url($url, PHP_URL_PATH);
+        $filename = __DIR__.'/tests/'.parse_url($url, \PHP_URL_PATH);
 
         $content = null;
         if (isset($options['body'])) {

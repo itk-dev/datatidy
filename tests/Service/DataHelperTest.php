@@ -78,7 +78,7 @@ class DataHelperTest extends ContainerTestCase
         ]
     }
 ]
-JSON, true, 512, JSON_THROW_ON_ERROR);
+JSON, true, 512, \JSON_THROW_ON_ERROR);
 
         $actual = $this->dataHelper->expand($data, 'features');
         $expected = json_decode(<<<'JSON'
@@ -153,7 +153,7 @@ JSON, true, 512, JSON_THROW_ON_ERROR);
         }
     }
 ]
-JSON, true, 512, JSON_THROW_ON_ERROR);
+JSON, true, 512, \JSON_THROW_ON_ERROR);
         $this->assertSame($expected, $actual);
 
         $data = $actual;
@@ -224,7 +224,7 @@ JSON, true, 512, JSON_THROW_ON_ERROR);
         }
     }
 ]
-JSON, true, 512, JSON_THROW_ON_ERROR);
+JSON, true, 512, \JSON_THROW_ON_ERROR);
         $this->assertSame($expected, $actual);
 
         $data = $actual;
@@ -290,7 +290,7 @@ JSON, true, 512, JSON_THROW_ON_ERROR);
         "features.properties.prop1": { "this": "that" }
     }
 ]
-JSON, true, 512, JSON_THROW_ON_ERROR);
+JSON, true, 512, \JSON_THROW_ON_ERROR);
         $this->assertSame($expected, $actual);
     }
 
@@ -350,7 +350,7 @@ JSON, true, 512, JSON_THROW_ON_ERROR);
     ]
 }
 ]
-JSON, true, 512, JSON_THROW_ON_ERROR);
+JSON, true, 512, \JSON_THROW_ON_ERROR);
 
         $steps = [
             'crs',

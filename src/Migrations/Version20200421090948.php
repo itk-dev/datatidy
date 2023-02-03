@@ -51,11 +51,11 @@ final class Version20200421090948 extends AbstractMigration implements Container
         $statement = $this->connection->prepare("SELECT $idName, $dataTargetOptionsName FROM $tableName WHERE $dataTargetName = :dataTarget");
         $statement->execute(['dataTarget' => JsonHttpDataTarget::class]);
         foreach ($statement->fetchAll() as $row) {
-            $dataTargetOptions = json_decode($row[$dataTargetOptionsName], true, 512, JSON_THROW_ON_ERROR);
+            $dataTargetOptions = json_decode($row[$dataTargetOptionsName], true, 512, \JSON_THROW_ON_ERROR);
             $dataTargetOptions['asObject'] = false;
             $this->connection->update(
                 $tableName,
-                [$dataTargetOptionsName => json_encode($dataTargetOptions, JSON_THROW_ON_ERROR, 512)],
+                [$dataTargetOptionsName => json_encode($dataTargetOptions, \JSON_THROW_ON_ERROR, 512)],
                 [$idName => $row[$idName]]
             );
         }
@@ -79,11 +79,11 @@ final class Version20200421090948 extends AbstractMigration implements Container
         $statement = $this->connection->prepare("SELECT $idName, $dataTargetOptionsName FROM $tableName WHERE $dataTargetName = :dataTarget");
         $statement->execute(['dataTarget' => JsonHttpDataTarget::class]);
         foreach ($statement->fetchAll() as $row) {
-            $dataTargetOptions = json_decode($row[$dataTargetOptionsName], true, 512, JSON_THROW_ON_ERROR);
+            $dataTargetOptions = json_decode($row[$dataTargetOptionsName], true, 512, \JSON_THROW_ON_ERROR);
             unset($dataTargetOptions['asObject']);
             $this->connection->update(
                 $tableName,
-                [$dataTargetOptionsName => json_encode($dataTargetOptions, JSON_THROW_ON_ERROR, 512)],
+                [$dataTargetOptionsName => json_encode($dataTargetOptions, \JSON_THROW_ON_ERROR, 512)],
                 [$idName => $row[$idName]]
             );
         }

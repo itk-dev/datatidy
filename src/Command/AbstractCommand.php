@@ -24,7 +24,7 @@ abstract class AbstractCommand extends Command
         parent::__construct($name);
 
         $this->rightAligned = new TableStyle();
-        $this->rightAligned->setPadType(STR_PAD_LEFT);
+        $this->rightAligned->setPadType(\STR_PAD_LEFT);
     }
 
     protected function setColumnStyle(Table $table, array $columns, TableStyle $style): void
