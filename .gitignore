@@ -36,3 +36,8 @@ yarn-error.log
 
 misc/terms/content.html.twig
 src/preload.php
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
