@@ -60,7 +60,7 @@ class DataHelper
     {
         return json_encode(array_filter($row, static function ($name) use ($excludeKey) {
             return $name !== $excludeKey;
-        }, ARRAY_FILTER_USE_KEY), JSON_THROW_ON_ERROR, 512);
+        }, \ARRAY_FILTER_USE_KEY), \JSON_THROW_ON_ERROR, 512);
     }
 
     public function collapseArray(array $data, string $key, array $options = []): array

@@ -42,7 +42,7 @@ class JsonDataSource extends AbstractHttpDataSource implements DataSourceInterfa
         try {
             $response = $this->getResponse();
 
-            $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+            $data = json_decode($response->getContent(), true, 512, \JSON_THROW_ON_ERROR);
 
             if (!empty($this->root)) {
                 $propertyPath = $this->buildPropertyPath($this->root);

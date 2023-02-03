@@ -66,7 +66,7 @@ class DataSourceController extends AbstractController
                 'csv' => 'text/csv',
                 'json' => 'application/json',
                 'xml' => 'application/xml',
-            ][pathinfo($filename, PATHINFO_EXTENSION)] ?? 'text/plain';
+            ][pathinfo($filename, \PATHINFO_EXTENSION)] ?? 'text/plain';
 
         return new Response($content, 200, ['content-type' => $contentType]);
     }

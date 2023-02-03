@@ -121,7 +121,7 @@ class DataFlowManager
         }
 
         $result->addDataSet($dataSet);
-        $numberOfSteps = $options['number_of_steps'] ?? PHP_INT_MAX;
+        $numberOfSteps = $options['number_of_steps'] ?? \PHP_INT_MAX;
         $transforms = $dataFlow->getTransforms();
         foreach ($transforms as $index => $transform) {
             if ($index >= $numberOfSteps) {

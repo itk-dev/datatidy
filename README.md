@@ -10,9 +10,8 @@ Build assets by running
 
 ```sh
 FONTAWESOME_NPM_AUTH_TOKEN='your-fontawesome-token' \
-  docker run -v ${PWD}:/app -w /app -e FONTAWESOME_NPM_AUTH_TOKEN -e NPM_CONFIG_USERCONFIG=.npmrc.install \
-  node:latest yarn install
-docker run -v ${PWD}:/app -w /app node:latest yarn build
+  docker compose run --env FONTAWESOME_NPM_AUTH_TOKEN --env NPM_CONFIG_USERCONFIG=.npmrc.install node yarn install
+docker compose run node yarn build
 ```
 
 Create and edit `.env.local` as needed to override defaults in `.env` and
@@ -41,22 +40,22 @@ how to deploy the project on a live system.
 See [Development on Mac](#development-on-mac) if you're developing on a Mac.
 
 ```bash
-docker-compose pull
-docker-compose up --detach
+docker compose pull
+docker compose up --detach
 
-docker-compose exec phpfpm composer install
-docker-compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
+docker compose exec phpfpm composer install
+docker compose exec phpfpm bin/console doctrine:migrations:migrate --no-interaction
 
 # Note: We need a custom userconfig file and an environment variables to authenticate when installing Font Awesome Pro.
-FONTAWESOME_NPM_AUTH_TOKEN='font awesome pro token' \
-  docker run -v ${PWD}:/app -e FONTAWESOME_NPM_AUTH_TOKEN -e NPM_CONFIG_USERCONFIG=.npmrc.install node:latest yarn install
-docker run -v ${PWD}:/app node:latest yarn dev
+FONTAWESOME_NPM_AUTH_TOKEN='your-fontawesome-token' \
+  docker compose run --env FONTAWESOME_NPM_AUTH_TOKEN --env NPM_CONFIG_USERCONFIG=.npmrc.install node yarn install
+docker compose run node yarn dev
 ```
 
 Use
 
 ```sh
-docker run -v ${PWD}:/app --tty --interactive itkdev/yarn:latest watch
+docker compose run node yarn watch
 ```
 
 to watch for changes (hit Ctrl+C to kill the process).
@@ -64,16 +63,16 @@ to watch for changes (hit Ctrl+C to kill the process).
 Create a user:
 
 ```bash
-docker-compose exec phpfpm bin/console fos:user:create
+docker compose exec phpfpm bin/console fos:user:create
 
 # Super admin user
-docker-compose exec phpfpm bin/console fos:user:create --super-admin
+docker compose exec phpfpm bin/console fos:user:create --super-admin
 ```
 
 Open the site in your default browser:
 
 ```bash
-open http://$(docker-compose port nginx 80)
+open "http://$(docker compose port nginx 80)"
 ```
 
 #### Jobs
@@ -81,26 +80,26 @@ open http://$(docker-compose port nginx 80)
 Start the queue consumer:
 
 ```bash
-docker-compose exec phpfpm bin/console messenger:consume async
+docker compose exec phpfpm bin/console messenger:consume async
 ```
 
 Produce some jobs:
 
 ```bash
-docker-compose exec phpfpm bin/console datatidy:data-flow:produce-jobs
+docker compose exec phpfpm bin/console datatidy:data-flow:produce-jobs
 ```
 
 ## Running the tests
 
 ```bash
-docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
-docker-compose exec phpfpm bin/phpunit
+docker compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
+docker compose exec phpfpm bin/phpunit
 ```
 
 Add `SYMFONY_DEPRECATIONS_HELPER=disabled` to hide deprecation notices:
 
 ```bash
-docker-compose exec -e SYMFONY_DEPRECATIONS_HELPER=disabled phpfpm bin/phpunit
+docker compose exec -e SYMFONY_DEPRECATIONS_HELPER=disabled phpfpm bin/phpunit
 ```
 
 Note: a symlink with an absolute target is created when installing
@@ -124,9 +123,9 @@ flows.
 ## UI tests
 
 ```sh
-docker-compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
-docker-compose exec -e APP_ENV=test phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
-docker-compose exec phpfpm vendor/bin/behat
+docker compose exec -e APP_ENV=test phpfpm bin/console doctrine:migrations:migrate --no-interaction
+docker compose exec -e APP_ENV=test phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
+docker compose exec phpfpm vendor/bin/behat
 ```
 
 ## Deployment
@@ -259,15 +258,15 @@ Before opening a Pull Request, make sure that our coding standards are followed:
 ```bash
 # PHP
 # Check to see if any violations is found:
-docker-compose exec phpfpm composer check-coding-standards
-docker-compose exec phpfpm vendor/bin/phan --allow-polyfill-parser
+docker compose exec phpfpm composer check-coding-standards
+docker compose exec phpfpm vendor/bin/phan --allow-polyfill-parser
 
 # You can see if the tools can fix them for you:
-docker-compose exec phpfpm composer apply-coding-standards
+docker compose exec phpfpm composer apply-coding-standards
 
 # Twig
 # Only checks for violations.
-docker-compose exec phpfpm composer check-coding-standards/twigcs
+docker compose exec phpfpm composer check-coding-standards/twigcs
 
 # CSS, SCSS and JS
 docker run -v ${PWD}:/app itkdev/yarn:latest check-coding-standards
@@ -294,7 +293,7 @@ This project is licensed under the MIT License - see the
 ## Loading fixtures
 
 ```sh
-docker-compose exec phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
+docker compose exec phpfpm bin/console hautelook:fixtures:load --purge-with-truncate --no-interaction
 ```
 
 ### Running a flow
@@ -302,7 +301,7 @@ docker-compose exec phpfpm bin/console hautelook:fixtures:load --purge-with-trun
 The `datatidy:data-flow:run` console command can run a data flow by name or id:
 
 ```sh
-docker-compose exec phpfpm bin/console datatidy:data-flow:run --help
+docker compose exec phpfpm bin/console datatidy:data-flow:run --help
 ```
 
 ## Development on Mac
@@ -315,7 +314,7 @@ Install the [`symfony` binary](https://symfony.com/download) to get started.
 ### Starting the show
 
 ```sh
-docker-compose up -d
+docker compose up --detach
 symfony composer install
 symfony console doctrine:migrations:migrate --no-interaction
 symfony console hautelook:fixtures:load --no-interaction
